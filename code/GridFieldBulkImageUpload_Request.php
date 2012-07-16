@@ -133,10 +133,12 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 			$form->Backlink = $one_level_up->Link;
 		}
 		
+		return $form->forTemplate();
+		/*
 		$response = new SS_HTTPResponse(Convert::raw2json(array('Content' => $form->forTemplate())));
 		$response->addHeader('Content-Type', 'text/json');
 		$response->addHeader('X-Title', 'SilverStripe - Bulk '.$this->gridField->list->dataClass.' Image Upload');
-		return $response;		
+		return $response;	*/	
 	}
 	
 	
