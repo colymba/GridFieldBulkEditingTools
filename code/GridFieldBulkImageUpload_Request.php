@@ -19,16 +19,19 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	 * @var Controller
 	 */
 	protected $controller;
-		
+	
 	/**
-	 *	
-	 * @var Array 
+	 *
+	 * @var FieldList 
 	 */
-	protected $createdRecords;
+	protected $recordCMSFieldList;
 	
-	
+	/**
+	 *
+	 */
 	static $url_handlers = array(
-		'$Action!' => '$Action'
+		'$Action!' => '$Action'/*,
+		'' => 'uploadForm'*/
 	);
 	
 	/**
@@ -40,27 +43,112 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	public function __construct($gridField, $component, $controller) {
 		$this->gridField = $gridField;
 		$this->component = $component;
-		$this->controller = $controller;
-		$this->createdRecords = array();
+		$this->controller = $controller;		
 		parent::__construct();
 	}
 
 	/**
 	 * Returns the URL for this RequestHandler
+	 * 
 	 * @param String $action
 	 * @return String 
 	 */
 	public function Link($action = null) {
 		return Controller::join_links($this->gridField->Link(), 'bulkimageupload', $action);
 	}
-			
+	
+	/**
+	 * Returns the name of the Image field name from the managed record
+	 * Either as set in the component config or the default one
+	 * 
+	 * @return string 
+	 */
+	function getRecordImageField()
+	{
+		$fieldName = $this->component->getRecordImageField();
+		if ( $fieldName == null ) $fieldName = $this->getDefaultRecordImageField();
+		
+		return $fieldName;
+	}
+	
+	/**
+	 * Returns the list of editable fields from the managed record
+	 * Either as set in the component config or the default ones
+	 * 
+	 * @return array 
+	 */
+	function getRecordEditableFields()
+	{
+		$fields = $this->component->getRecordEditableFields();
+		if ( $fields == null ) $fields = $this->getDefaultRecordEditableFields();
+		
+		return $fields;
+	}
+	
+	/**
+	 * Get the first has_one Image realtion from the GridField managed DataObject
+	 * 
+	 * @return string 
+	 */
+	function getDefaultRecordImageField()
+	{
+		$recordClass = $this->gridField->list->dataClass;
+		$recordHasOneFields = Config::inst()->get($recordClass, 'has_one', Config::UNINHERITED);
+		
+		$imageField = null;
+		foreach( $recordHasOneFields as $field => $type )
+		{
+			if ( $type == 'Image' ) {
+				$imageField = $field . 'ID';
+				break;
+			}
+		}
+		
+		return $imageField;
+	}
+	
+	/**
+	 * Return a list of the GridField managed DataObject (HTML)Text, (HTML)Varchar and Enum fields
+	 * 
+	 * @return array 
+	 */
+	function getDefaultRecordEditableFields()
+	{
+		$recordClass = $this->gridField->list->dataClass;
+		$recordDbFields = Config::inst()->get($recordClass, 'db', Config::UNINHERITED);
+		
+		$editableFields = array();
+		foreach ( $recordDbFields as $field => $type )
+		{
+			if ( preg_match( '/(Text|Varchar|Enum)/i', $type ) > 0 ) {
+				array_push($editableFields, $field);
+			}
+		}
+		
+		return $editableFields;
+	}
+	
+	/**
+	 * Return the CMS edit field for a given name. As set in the GridField managed DataObject getCMSFields method
+	 * @param string $fieldName
+	 * @return FormField 
+	 */
+	function getFieldEditForm($fieldName)
+	{		
+		if ( !$this->recordCMSFieldList ) {
+			$recordClass = $this->gridField->list->dataClass;
+			$this->recordCMSFieldList = singleton($recordClass)->getCMSFields();
+		}
+		
+		return $this->recordCMSFieldList->fieldByName($fieldName);
+	}
+	
 	/**
 	 * Default and main action that returns the upload form etc...
-	 * @param SS_HTTPRequest $request
 	 * @return String Form HTML ???
 	 */
-	public function index(SS_HTTPRequest $request)
-	{				
+	public function index()
+	{	
 		Requirements::javascript(FRAMEWORK_DIR . '/javascript/AssetUploadField.js');
 		Requirements::css(FRAMEWORK_DIR . '/css/AssetUploadField.css');
 				
@@ -68,13 +156,10 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		Requirements::javascript('GridFieldBulkImageUpload/javascript/GridFieldBulkImageUpload.js');	
 		Requirements::css('GridFieldBulkImageUpload/css/GridFieldBulkImageUpload.css');
 		
+		$crumbs = $this->Breadcrumbs();
+		if($crumbs && $crumbs->count()>=2) $one_level_up = $crumbs->offsetGet($crumbs->count()-2);
 		
 		$actions = new FieldList();		
-		/*
-		$actions->push(FormAction::create('update', 'Finish')
-				->setUseButtonTag(true)->addExtraClass('ss-ui-action-constructive')->addExtraClass('bulkImageUploadUpdateBtn')->setAttribute('data-icon', 'accept'));
-		*/
-		
 		
 		$html = "
 		<a id=\"bulkImageUploadUpdateBtn\" class=\"cms-panel-link action ss-ui-action-constructive ss-ui-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary\" data-icon=\"accept\" data-url=\"".$this->Link('update')."\" href=\"#\">
@@ -82,10 +167,9 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		</a>";
 		$actions->push(new LiteralField('savebutton', $html));
 		
-		$crumbs = $this->Breadcrumbs();
-		if($crumbs && $crumbs->count()>=2){
-			$one_level_up = $crumbs->offsetGet($crumbs->count()-2);
-			
+		
+		if($crumbs && $crumbs->count()>=2)
+		{			
 			$html = "
 			<a id=\"bulkImageUploadUpdateFinishBtn\" class=\"cms-panel-link action ss-ui-action-constructive ss-ui-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary\" data-icon=\"accept\" data-url=\"".$this->Link('update')."\" href=\"".$one_level_up->Link."\">
 				Save All &amp; Finish
@@ -97,8 +181,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 				Cancel &amp; Delete All
 			</a>";
 			$actions->push(new LiteralField('cancelbutton', $html));
-		}			
-		
+		}	
 
 		$uploadField = UploadField::create('BulkImageUploadField', '');
 		$uploadField->setConfig('previewMaxWidth', 40);
@@ -124,24 +207,29 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 			),
 			$actions
 		);
-		
+				
 		$form->setTemplate('LeftAndMain_EditForm');
-		$form->addExtraClass('center cms-edit-form');
+		$form->addExtraClass('center cms-edit-form cms-content');
 		$form->setAttribute('data-pjax-fragment', 'CurrentForm Content');
 		
 		if($crumbs && $crumbs->count()>=2){
 			$form->Backlink = $one_level_up->Link;
 		}
 		
-		return $form->forTemplate();
-		/*
-		$response = new SS_HTTPResponse(Convert::raw2json(array('Content' => $form->forTemplate())));
-		$response->addHeader('Content-Type', 'text/json');
+		$response = new SS_HTTPResponse($form->forTemplate());
+		$response->addHeader('Content-Type', 'text/plain');
 		$response->addHeader('X-Title', 'SilverStripe - Bulk '.$this->gridField->list->dataClass.' Image Upload');
-		return $response;	*/	
+		return $response;
 	}
 	
-	
+	/**
+	 * Process image upload and Object creation
+	 * Create new DataObject and add image relation
+	 * returns Image data and editable Fields forms
+	 * 
+	 * @param SS_HTTPRequest $request
+	 * @return \SS_HTTPResponse 
+	 */
 	public function upload(SS_HTTPRequest $request)
 	{
 		$recordClass = $this->gridField->list->dataClass;
@@ -165,10 +253,6 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 				'type' => $tmpfile['type'],
 				'error' => $tmpfile['error']
 			);
-			/*
-			$record->setField($this->component->getLabelFieldName(), $tmpfile['name']);
-			$record->write();
-			 */
 		}
 		
 		// Process the uploaded file
@@ -189,9 +273,17 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 				} else {
 					$file = $upload->getFile();
 
-					// Attach the file to the related record.
-					$record->setField($this->component->getRecordImageField(), $file->ID);
+					// Attach the file to the related record.		
+					$record->setField($this->getRecordImageField(), $file->ID);					
 					$record->write();
+					
+					
+					// collect all editable fields forms					
+					$recordEditableFieldsForms = array();
+					foreach ( $this->getRecordEditableFields() as $editableFieldName )
+					{
+						array_push($recordEditableFieldsForms, $this->parseFieldHTMLWithRecordID($this->getFieldEditForm($editableFieldName)->FieldHolder(), $record->ID) );
+					}
 					
 					// Collect all output data.
 					$return = array_merge($return, array(
@@ -204,15 +296,14 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 						//'buttons' => $file->UploadFieldFileButtons,
 						'record' => array(
 							'ID' => $record->ID,
-							'fields' => $this->component->getRecordEditableFields()
+							'fields' => $recordEditableFieldsForms
 						)
 					));
+										
 				}
 			}
 		}
-		
-		array_push($this->createdRecords, $record->ID);
-		
+				
 		$response = new SS_HTTPResponse(Convert::raw2json(array($return)));
 		$response->addHeader('Content-Type', 'text/plain');
 		return $response;		
@@ -226,38 +317,25 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	 */
 	public function update(SS_HTTPRequest $request)
 	{		
-		$data = $request->requestVars();
-		$recordID = false;
-		$recordFields = array();
-		
-		foreach( $data as $key => $val)
-		{			
-			if ( stripos($key, 'record_') !== false )
-			{
-				if ( $key == 'record_ID' )
-				{
-					$recordID = $val;
-				}else{
-					$recordFields[str_ireplace('record_', '', $key)] = $val;
-				}
-			}						
-		}
+		$data = $this->getParsedPostData($request->requestVars());
 		
 		$recordClass = $this->gridField->list->dataClass;
-		$record = DataObject::get_by_id($recordClass, $recordID);
+		$record = DataObject::get_by_id($recordClass, $data['ID']);
 				
-		foreach($recordFields as $field => $value)
+		foreach($data as $field => $value)
 		{
 			$record->setField($field, $value);
 		}
 		
 		$record->write();
 		
-		return '{done:1,recordID:'.$recordID.'}';
+		return '{done:1,recordID:'.$data['ID'].'}';
 	}
 	
 	/**
-	 *
+	 * Delete the Image Object and File as well as the DataObject
+	 * according to the ID sent from the form
+	 * 
 	 * @param SS_HTTPRequest $request
 	 * @return String JSON 
 	 */
@@ -268,8 +346,8 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		
 		$recordClass = $this->gridField->list->dataClass;
 		$record = DataObject::get_by_id($recordClass, $data['ID']);	
-		$imageField = $this->component->getRecordImageField();
 		
+		$imageField = $this->getRecordImageField();
 		$imageID = $record->$imageField;
 		$image = DataObject::get_by_id('Image', $imageID);
 		
@@ -286,50 +364,40 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	}
 
 	/**
-	 *
+	 * Simple function taht replace the 'record_XX_' off of the ID field name
+	 * prefix needed since it was taken for a pageID if sent as is as well as fixing other things
+	 * 
 	 * @param array $data
 	 * @return array 
 	 */
-	public function getParsedPostData(array $data)
+	function getParsedPostData(array $data)
 	{
 		$return = array();
-		$fields = array();
 		
 		foreach( $data as $key => $val)
 		{			
-			if ( stripos($key, 'record_') !== false )
-			{
-				if ( $key == 'record_ID' )
-				{
-					$return['ID'] = $val;
-				}else{
-					$fields[str_ireplace('record_', '', $key)] = $val;
-				}
-			}						
+			$return[ preg_replace( '/record_(\d+)_(\w+)/i', '$2', $key) ] = $val;
 		}
-		
-		$return['fields'] = $fields;
 		
 		return $return;
 	}
 	
 	/**
-	 * Traverse up nested requests until we reach the first that's not a GridFieldBulkImageUpload_Request.
-	 * The opposite of {@link Controller::curr()}, required because
-	 * Controller::$controller_stack is not directly accessible.
+	 * Add a unique prefix to sensitive HTML attributes (ID, FOR, NAME)
+	 * Fixes rendering issue (i.e. dropdown fields) and IDs being mistaken for page IDs
 	 * 
-	 * @return Controller
+	 * @param string $html
+	 * @param string/int $id
+	 * @return string 
 	 */
-	/*
-	protected function getToplevelController() {
-		$c = $this->controller;
-		while($c && $c instanceof GridFieldBulkImageUpload_Request) {
-			$c = $c->getController();
-		}
-		return $c;
+	function parseFieldHTMLWithRecordID($html, $id)
+	{
+		$prefix = 'record_'.$id.'_';
+		return str_ireplace ( array('id="', 'for="', 'name="'),
+													array('id="'.$prefix, 'for="'.$prefix, 'name="'.$prefix), 
+													$html);
 	}
-	*/
-	
+		
 	/**
 	 * CMS-specific functionality: Passes through navigation breadcrumbs
 	 * to the template, and includes the currently edited record (if any).

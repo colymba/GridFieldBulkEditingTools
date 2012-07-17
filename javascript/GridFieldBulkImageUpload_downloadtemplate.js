@@ -23,18 +23,11 @@ window.tmpl.cache['GridFieldBulkImageUpload_downloadtemplate'] = tmpl(
 			'{% if (!file.error) { %}' +
 				'<div class="ss-uploadfield-item-editform">'+
 					'<form action="update" method="post" class="bulkImageUploadUpdateForm" name="BIUUF_{%=file.record.ID%}">'+
-							'<input type="hidden" name="record_ID" value="{%=file.record.ID%}"/>'+
+							'<input type="hidden" name="record_{%=file.record.ID%}_ID" value="{%=file.record.ID%}"/>'+
 							'<img class="imgPreview" src="{%=file.preview_url%}" />'+
 							
-							'{% for (var j=0; j<file.record.fields.length; j++) { %}' +
-								
-								'<div id="record_{%=file.record.ID%}_{%=file.record.fields[j]%}" class="field text">' +
-									'<label class="left" for="BIUUF_{%=file.record.ID%}_{%=file.record.fields[j]%}">{%=file.record.fields[j]%}</label>' +
-									'<div class="middleColumn">' +
-										'<input type="text" name="record_{%=file.record.fields[j]%}" value="" class="text" id="BIUUF_{%=file.record.ID%}_{%=file.record.fields[j]%}">' +
-									'</div>' +
-								'</div>' +
-								
+							'{% for (var j=0; j<file.record.fields.length; j++) { %}' +								
+								'{%#file.record.fields[j]%}' +								
 							'{% } %}' +
 							
 					'</form>'+

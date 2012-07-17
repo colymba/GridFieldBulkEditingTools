@@ -137,7 +137,7 @@
 
 							$(this).parents('li.ss-uploadfield-item').empty().remove();
 							
-							if ( $('li.ss-uploadfield-item').lenght == 0 ) {
+							if ( $('li.ss-uploadfield-item').length == 0 ) {
 								$('.ss-uploadfield-editandorganize').css('display', 'none');
 								$('#Form_bulkImageUploadForm').removeClass('loading');
 							}

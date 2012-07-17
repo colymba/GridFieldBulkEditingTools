@@ -7,7 +7,6 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 	 * @var String 
 	 */
 	protected $recordImageFieldName;
-	//protected $labelFieldName;
 	
 	/**
 	 * Target record editablez fields
@@ -20,29 +19,45 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 	 * @param String $imageField
 	 * @param String/Array $editableFields 
 	 */
-	public function __construct($imageField, $editableFields)
+	public function __construct($imageField = null, $editableFields = null)
 	{
-		$this->imageFieldName = $imageField;
-		
-		if ( !is_array($editableFields) ) $editableFields = array($editableFields);		
-		$this->recordEditableFields = $editableFields;
+		$this->setRecordImageField($imageField);
+				
+		if ( !is_array($editableFields) && $editableFields != null ) $editableFields = array($editableFields);
+		$this->setRecordEditableFields($editableFields);
 	}
 	
-	public function setRecordImageField($field)
+	/**
+	 *
+	 * @param String $field 
+	 */
+	function setRecordImageField($field)
 	{
-		$this->imageFieldName = $field;
+		$this->recordImageFieldName = $field;
 	}
 	
-	public function setRecordEditableFields($fields)
+	/**
+	 *
+	 * @param Array $fields 
+	 */
+	function setRecordEditableFields($fields)
 	{
 		$this->recordEditableFields = $fields;
 	}
 	
+	/**
+	 *
+	 * @return type 
+	 */
 	public function getRecordImageField()
 	{
-		return $this->imageFieldName;
+		return $this->recordImageFieldName;
 	}
 	
+	/**
+	 *
+	 * @return type 
+	 */
 	public function getRecordEditableFields()
 	{
 		return $this->recordEditableFields;
