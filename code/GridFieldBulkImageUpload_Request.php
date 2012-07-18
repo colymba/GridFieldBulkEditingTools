@@ -213,6 +213,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		}
 		
 		// add these custom requirement after the UploadField is called -> depends on tmpl.js loaded with UploadField (avoid crashing) 
+		// seems to fix some styling issue as well?
 		Requirements::javascript('GridFieldBulkImageUpload/javascript/GridFieldBulkImageUpload.js');	
 		Requirements::css('GridFieldBulkImageUpload/css/GridFieldBulkImageUpload.css');
 		Requirements::javascript('GridFieldBulkImageUpload/javascript/GridFieldBulkImageUpload_downloadtemplate.js');

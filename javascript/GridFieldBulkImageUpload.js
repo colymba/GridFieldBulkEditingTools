@@ -105,6 +105,7 @@
 						});
 					})
 					
+					//@todo Fix IE, seems to go right through the prevent default and 
 					e.preventDefault();
 				}
 			});
