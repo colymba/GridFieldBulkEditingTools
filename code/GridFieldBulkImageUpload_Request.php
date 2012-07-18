@@ -150,12 +150,8 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	public function index()
 	{	
 		Requirements::javascript(FRAMEWORK_DIR . '/javascript/AssetUploadField.js');
-		Requirements::css(FRAMEWORK_DIR . '/css/AssetUploadField.css');
+		Requirements::css(FRAMEWORK_DIR . '/css/AssetUploadField.css');				
 				
-		Requirements::javascript('GridFieldBulkImageUpload/javascript/GridFieldBulkImageUpload_downloadtemplate.js');
-		Requirements::javascript('GridFieldBulkImageUpload/javascript/GridFieldBulkImageUpload.js');	
-		Requirements::css('GridFieldBulkImageUpload/css/GridFieldBulkImageUpload.css');
-		
 		$crumbs = $this->Breadcrumbs();
 		if($crumbs && $crumbs->count()>=2) $one_level_up = $crumbs->offsetGet($crumbs->count()-2);
 		
@@ -215,6 +211,11 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		if($crumbs && $crumbs->count()>=2){
 			$form->Backlink = $one_level_up->Link;
 		}
+		
+		// add these custom requirement after the UploadField is called -> depends on tmpl.js loaded with UploadField (avoid crashing) 
+		Requirements::javascript('GridFieldBulkImageUpload/javascript/GridFieldBulkImageUpload.js');	
+		Requirements::css('GridFieldBulkImageUpload/css/GridFieldBulkImageUpload.css');
+		Requirements::javascript('GridFieldBulkImageUpload/javascript/GridFieldBulkImageUpload_downloadtemplate.js');
 		
 		$response = new SS_HTTPResponse($form->forTemplate());
 		$response->addHeader('Content-Type', 'text/plain');
