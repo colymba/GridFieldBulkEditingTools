@@ -1,23 +1,27 @@
 <?php
-
-class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLHandler { /*GridField_ActionProvider,*/ 
+/**
+ *  GridField component for uploading images in bulk
+ */
+class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLHandler {
 	
 	/**
 	 * Target record Image foreign key field name
-	 * @var String 
+	 * 
+	 * @var string 
 	 */
 	protected $recordImageFieldName;
 	
 	/**
-	 * Target record editablez fields
-	 * @var Array 
+	 * Target record editable fields
+	 * 
+	 * @var array 
 	 */
 	protected $recordEditableFields;
 	
 	/**
 	 * 
-	 * @param String $imageField
-	 * @param String/Array $editableFields 
+	 * @param string $imageField
+	 * @param string/array $editableFields 
 	 */
 	public function __construct($imageField = null, $editableFields = null)
 	{
@@ -29,7 +33,7 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 	
 	/**
 	 *
-	 * @param String $field 
+	 * @param string $field 
 	 */
 	function setRecordImageField($field)
 	{
@@ -38,7 +42,7 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 	
 	/**
 	 *
-	 * @param Array $fields 
+	 * @param array $fields 
 	 */
 	function setRecordEditableFields($fields)
 	{
@@ -47,7 +51,7 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 	
 	/**
 	 *
-	 * @return type 
+	 * @return string 
 	 */
 	public function getRecordImageField()
 	{
@@ -56,7 +60,7 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 	
 	/**
 	 *
-	 * @return type 
+	 * @return string 
 	 */
 	public function getRecordEditableFields()
 	{
@@ -66,7 +70,7 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 	/**
 	 *
 	 * @param GridField $gridField
-	 * @return Array 
+	 * @return array 
 	 */
 	public function getHTMLFragments($gridField) {		
 		
@@ -83,7 +87,7 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 	/**
 	 *
 	 * @param GridField $gridField
-	 * @return Array 
+	 * @return array 
 	 */
 	public function getURLHandlers($gridField) {
 			return array(
@@ -92,10 +96,11 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 	}
 	
 	/**
-	 *
-	 * @param type $gridField
-	 * @param type $request
-	 * @return type 
+	 * Pass control over to the RequestHandler
+	 * 
+	 * @param GridField $gridField
+	 * @param SS_HTTPRequest $request
+	 * @return mixed 
 	 */
 	public function handleBulkUpload($gridField, $request)
 	{				

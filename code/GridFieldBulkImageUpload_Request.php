@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * Handles request from the GridFieldBulkImageUpload component 
+ * 
+ * Handles:
+ * * Form creation
+ * * file upload
+ * * editing and cancelling records
+ */
 class GridFieldBulkImageUpload_Request extends RequestHandler {
 	
   /**
@@ -21,7 +28,8 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	protected $controller;
 	
 	/**
-	 *
+	 * Cache the records FieldList from getCMSfields()
+	 * 
 	 * @var FieldList 
 	 */
 	protected $recordCMSFieldList;
@@ -50,8 +58,10 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	/**
 	 * Returns the URL for this RequestHandler
 	 * 
-	 * @param String $action
-	 * @return String 
+	 * @author SilverStripe
+	 * @see GridFieldDetailForm_ItemRequest
+	 * @param string $action
+	 * @return string 
 	 */
 	public function Link($action = null) {
 		return Controller::join_links($this->gridField->Link(), 'bulkimageupload', $action);
@@ -108,7 +118,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	}
 	
 	/**
-	 * Return a list of the GridField managed DataObject (HTML)Text, (HTML)Varchar and Enum fields
+	 * Return a list of the GridField managed DataObject's editable fields: (HTML)Text, (HTML)Varchar and Enum fields
 	 * 
 	 * @return array 
 	 */
@@ -130,6 +140,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	
 	/**
 	 * Return the CMS edit field for a given name. As set in the GridField managed DataObject getCMSFields method
+	 * 
 	 * @param string $fieldName
 	 * @return FormField 
 	 */
@@ -145,7 +156,8 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	
 	/**
 	 * Default and main action that returns the upload form etc...
-	 * @return String Form HTML ???
+	 * 
+	 * @return string Form's HTML
 	 */
 	public function index()
 	{	
@@ -229,8 +241,14 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	 * Create new DataObject and add image relation
 	 * returns Image data and editable Fields forms
 	 * 
+	 * Overides UploadField's upload method by Zauberfisch
+	 * Kept original file upload/processing but removed unessesary processing
+	 * and adds DataObject creation and editableFields processing
+	 * 
+	 * @author Zauberfisch original upload() method
+	 * @see UploadField->upload()
 	 * @param SS_HTTPRequest $request
-	 * @return \SS_HTTPResponse 
+	 * @return string json
 	 */
 	public function upload(SS_HTTPRequest $request)
 	{
@@ -315,7 +333,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	 * Update a record with the newly edited fields
 	 * 
 	 * @param SS_HTTPRequest $request
-	 * @return String 
+	 * @return string 
 	 */
 	public function update(SS_HTTPRequest $request)
 	{		
@@ -339,7 +357,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	 * according to the ID sent from the form
 	 * 
 	 * @param SS_HTTPRequest $request
-	 * @return String JSON 
+	 * @return string json 
 	 */
 	public function cancel(SS_HTTPRequest $request)
 	{
@@ -366,7 +384,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	}
 
 	/**
-	 * Simple function taht replace the 'record_XX_' off of the ID field name
+	 * Simple function that replace the 'record_XX_' off of the ID field name
 	 * prefix needed since it was taken for a pageID if sent as is as well as fixing other things
 	 * 
 	 * @param array $data
@@ -401,10 +419,15 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	}
 		
 	/**
+	 * Edited version of the GridFieldEditForm function
+	 * adds the 'Bulk Upload' at the end of the crums
+	 * 
 	 * CMS-specific functionality: Passes through navigation breadcrumbs
 	 * to the template, and includes the currently edited record (if any).
 	 * see {@link LeftAndMain->Breadcrumbs()} for details.
 	 * 
+	 * @author SilverStripe original Breadcrumbs() method
+	 * @see GridFieldDetailForm_ItemRequest
 	 * @param boolean $unlinked
 	 * @return ArrayData
 	 */

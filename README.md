@@ -2,7 +2,7 @@ GridFieldBulkImageUpload
 ========================
 
 SilverStripe 3 GridField component for uploading images in bulk into the managed DataObject relation, with option to edit fields on the fly.
-This component is built around the CMSFileAddController editForm, it overrides and adds some behaviors, templates and styles.
+This component takes bit and pieces around from CMSFileAddController, GridFieldDetailForm_ItemRequest, UploadField, and it overrides and adds some behaviors, templates and styles.
 
 ## Requirments
 * SilverStripe 3.0
@@ -20,8 +20,8 @@ Simplest usage, add the component to your GridField as below. The component will
 
 ## Usage 2
 Same as 1 but you can specify which Image field to use and which fields are editable
-$imageField: The name of the image field to use (should have 'ID' at the end: If your relation is set has 'MyImage' => 'Image', the parameter should be 'MyImageID')
-$editableFields: An array of db fields name that will be editable like array('myTextField', 'myVarcharField', 'myEnumField')
+$imageField: string: The name of the image field to use (should have 'ID' at the end: If your relation is set has 'MyImage' => 'Image', the parameter should be 'MyImageID')
+$editableFields: array: list of db fields name as string that will be editable like: array('myTextField', 'myVarcharField', 'myEnumField')
 		
 		:::php
 		$config->addComponent(new GridFieldBulkImageUpload( $imageField, $editableFields ));
@@ -30,5 +30,8 @@ $editableFields: An array of db fields name that will be editable like array('my
 * The HTML form fields for each editable fields are taken from the DataObject's getCMSFields() method
 * Only (HTML)Text/Varchar and Enum fields are picked up by the automatic config
 
-## TODO
+## @TODO
 * Add option to specify upload folder
+* Styles: fade back progress to blue once updated
+* Handle and display errors better for: creation, update, cancel
+* Make it work not only for images -> might need to rename this component then?
