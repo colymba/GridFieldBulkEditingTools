@@ -311,7 +311,10 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 					$recordEditableFieldsForms = array();
 					foreach ( $this->getRecordEditableFields() as $editableFieldName )
 					{
-						array_push($recordEditableFieldsForms, $this->parseFieldHTMLWithRecordID($this->getFieldEditForm($editableFieldName)->FieldHolder(), $record->ID) );
+						$formField = $this->getFieldEditForm($editableFieldName);
+						if ( $formField ) {
+							array_push($recordEditableFieldsForms, $this->parseFieldHTMLWithRecordID($formField->FieldHolder(), $record->ID) );
+						}						
 					}
 					
 					// Collect all output data.
