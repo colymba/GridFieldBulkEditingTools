@@ -28,7 +28,7 @@ $editableFields (array): list of db fields name as string that will be editable 
 
 ### Sample Files
 
-Page Model
+#### Page Model
 
 		class Page extends SiteTree {
 
@@ -52,7 +52,7 @@ Page Model
 
 		}
 
-Visual Model
+#### Visual Model
 ('Image', 'Type', 'Title' and 'Embed' Fields will be picked up automatically by the component)
 
 		class Visual extends DataObject
@@ -88,12 +88,13 @@ Visual Model
 		}
 
 ## Notes
-* The HTML form fields for each editable fields are taken from the DataObject's getCMSFields() method
-* Only (HTML)Text/Varchar and Enum fields are picked up by the automatic config
+* The HTML form fields for each editable fields are taken from the Model's getCMSFields() method
+* Only (HTML)Text/Varchar and Enum fields are picked up by the automatic config for now
 
 ## @TODO
 * Add option to specify upload folder
 * Add individual actions for each upload (update + cancel)
-* Styles: fade back progress to blue once updated, add .loading class to buttons when saving/canceling
+* Styles: fade progress bar back to blue once updated
+* Styles: add .loading class to buttons when saving/canceling
 * Handle and display errors better for: creation, update, cancel
 * Make it work not only for images -> might need to rename this component then?
