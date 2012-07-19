@@ -149,9 +149,16 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		if ( !$this->recordCMSFieldList ) {
 			$recordClass = $this->gridField->list->dataClass;
 			$this->recordCMSFieldList = singleton($recordClass)->getCMSFields();
+		}		
+		
+		$field = $this->recordCMSFieldList->fieldByName($fieldName);
+				
+		if ( !$field ) {
+			$fields = $this->recordCMSFieldList->dataFields();
+			$field = $fields[$fieldName];
 		}
 		
-		return $this->recordCMSFieldList->fieldByName($fieldName);
+		return $field;
 	}
 	
 	/**
