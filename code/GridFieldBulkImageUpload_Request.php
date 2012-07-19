@@ -224,13 +224,15 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 			$form->Backlink = $one_level_up->Link;
 		}
 		
-		// add these custom requirement after the UploadField is called -> depends on tmpl.js loaded with UploadField (avoid crashing) 
-		// seems to fix some styling issue as well?
+		// this actually fixes the JS Requirements issue.
+		// Calling forTemplate() before other requirements forces SS to add the Form's X-Include-JS before
+		$formHTML = $form->forTemplate();
+				
 		Requirements::javascript('GridFieldBulkImageUpload/javascript/GridFieldBulkImageUpload.js');	
 		Requirements::css('GridFieldBulkImageUpload/css/GridFieldBulkImageUpload.css');
-		Requirements::javascript('GridFieldBulkImageUpload/javascript/GridFieldBulkImageUpload_downloadtemplate.js');
+		Requirements::javascript('GridFieldBulkImageUpload/javascript/GridFieldBulkImageUpload_downloadtemplate.js');		
 		
-		$response = new SS_HTTPResponse($form->forTemplate());
+		$response = new SS_HTTPResponse($formHTML);
 		$response->addHeader('Content-Type', 'text/plain');
 		$response->addHeader('X-Title', 'SilverStripe - Bulk '.$this->gridField->list->dataClass.' Image Upload');
 		return $response;
