@@ -3,23 +3,14 @@
  *  GridField component for uploading images in bulk
  */
 class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLHandler {
-	
-	/**
-	 * Target record Image foreign key field name
-	 * 
-	 * @var string 
-	 */
-	protected $recordImageFieldName;
-	
-	/**
-	 * Target record editable fields
-	 * 
-	 * @var array 
-	 */
-	protected $recordEditableFields;
-	
+		
 	/**
 	 * component configuration
+	 * 
+	 * 'imageFieldName' => field name of the $has_one Model Image relation
+	 * 'editableFields' => fields editable on the Model
+	 * 'fieldsClassBlacklist' => field types that will be removed from the automatic form generation
+	 * 'fieldsNameBlacklist' => fields that will be removed from the automatic form generation
 	 * 
 	 * @var array 
 	 */
@@ -37,21 +28,25 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 	 */
 	public function __construct($imageField = null, $editableFields = null)
 	{
-		$this->setRecordImageField($imageField);
-				
-		if ( !is_array($editableFields) && $editableFields != null ) $editableFields = array($editableFields);
-		$this->setRecordEditableFields($editableFields);
+		if ( $imageField != null ) $this->setConfig ( 'imageFieldName', $imageField );
+		if ( $editableFields != null ) $this->setConfig ( 'editableFields', $editableFields );
 	}
 	
+	/**
+	 * Set a component configuration parameter
+	 * 
+	 * @param string $reference
+	 * @param mixed $value 
+	 */
 	function setConfig ( $reference, $value )
 	{
 		if ( isset( $this->config[$reference] ) )
 		{
-			if ( ($reference == 'fieldsClassBlacklist' || $reference == 'fieldsClassBlacklist') && !is_array($value) )
+			if ( ($reference == 'fieldsClassBlacklist' || $reference == 'fieldsClassBlacklist' || $reference == 'editableFields') && !is_array($value) )
 			{
 				$value = array($value);
 			}
-			$this->$config[$reference] = $value;
+			$this->config[$reference] = $value;
 		}
 	}
 	
@@ -136,25 +131,7 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 	{
 		$this->recordEditableFields = $fields;
 	}
-	
-	/**
-	 *
-	 * @return string 
-	 */
-	public function getRecordImageField()
-	{
-		return $this->recordImageFieldName;
-	}
-	
-	/**
-	 *
-	 * @return string 
-	 */
-	public function getRecordEditableFields()
-	{
-		return $this->recordEditableFields;
-	}
-	
+		
 	/**
 	 *
 	 * @param GridField $gridField
