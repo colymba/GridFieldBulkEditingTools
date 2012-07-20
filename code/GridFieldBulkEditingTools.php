@@ -22,7 +22,30 @@ class GridFieldBulkEditingTools {
 		//@todo
 	}
 	
+	public static function filterDatafieldsByClass ( $config, $dataFields )
+	{
+		//@todo
+	}
 	
+	public static function filterDataFieldsByName ( $config, $dataFields )
+	{
+		//@todo
+	}
+	
+	public static function dataFieldsToHTML ( $dataFields )
+	{
+		//@todo
+	}
+	
+	public static function escapeFormFieldsHTML ( $formFieldsHTML )
+	{
+		//@todo
+	}
+	
+	public static function unescapeFormFieldsPOSTData ( $requestVars )
+	{
+		//@todo
+	}
 	
 	
 	
