@@ -113,24 +113,6 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 			return false;
 		}
 	}
-	
-	/**
-	 *
-	 * @param string $field 
-	 */
-	function setRecordImageField($field)
-	{
-		$this->recordImageFieldName = $field;
-	}
-	
-	/**
-	 *
-	 * @param array $fields 
-	 */
-	function setRecordEditableFields($fields)
-	{
-		$this->recordEditableFields = $fields;
-	}
 		
 	/**
 	 *
