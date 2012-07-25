@@ -8,9 +8,8 @@
 class GridFieldBulkEditingTools {
 	//put your code here
 	
-	public static function getModelDataFields ( $gridfield )
+	public static function getModelDataFields ( $modelClass )
 	{
-		$modelClass = $gridfield->list->dataClass;
 		$cmsFields = singleton($modelClass)->getCMSFields();
 		$fields = $cmsFields->dataFields();
 			
