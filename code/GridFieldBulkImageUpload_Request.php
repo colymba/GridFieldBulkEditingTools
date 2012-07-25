@@ -190,13 +190,13 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 				Save All &amp; Finish
 			</a>";
 			$actions->push(new LiteralField('finishbutton', $html));
-			
-			$html = "                                       
-			<a id=\"bulkImageUploadUpdateCancelBtn\" class=\"cms-panel-link delete ss-ui-action-destructive ss-ui-button ui-button ui-widget ui-state-default ui-button-text-icon-primary\" data-icon=\"decline\" data-url=\"".$this->Link('cancel')."\" href=\"#\">
-				Cancel &amp; Delete All
-			</a>";
-			$actions->push(new LiteralField('cancelbutton', $html));
 		}	
+		
+		$html = "                                       
+		<a id=\"bulkImageUploadUpdateCancelBtn\" class=\"cms-panel-link delete ss-ui-action-destructive ss-ui-button ui-button ui-widget ui-state-default ui-button-text-icon-primary\" data-icon=\"decline\" data-url=\"".$this->Link('cancel')."\" href=\"#\">
+			Cancel &amp; Delete All
+		</a>";
+		$actions->push(new LiteralField('cancelbutton', $html));
 
 		$uploadField = UploadField::create('BulkImageUploadField', '');
 		$uploadField->setConfig('previewMaxWidth', 40);
