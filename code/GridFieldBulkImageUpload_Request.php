@@ -75,7 +75,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	 */
 	function getRecordImageField()
 	{
-		$fieldName = $this->component->getRecordImageField();
+		$fieldName = $this->component->getConfig('imageFieldName');
 		if ( $fieldName == null ) $fieldName = $this->getDefaultRecordImageField();
 		
 		return $fieldName;
@@ -89,7 +89,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	 */
 	function getRecordEditableFields()
 	{
-		$fields = $this->component->getRecordEditableFields();
+		$fields = $this->component->getConfig('editableFields');
 		if ( $fields == null ) $fields = $this->getDefaultRecordEditableFields();
 		
 		return $fields;
@@ -122,6 +122,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	 * 
 	 * @return array 
 	 */
+	/*
 	function getDefaultRecordEditableFields()
 	{
 		$recordClass = $this->gridField->list->dataClass;
@@ -137,6 +138,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		
 		return $editableFields;
 	}
+	 */
 	
 	/**
 	 * Return the CMS edit field for a given name. As set in the GridField managed DataObject getCMSFields method
@@ -144,6 +146,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	 * @param string $fieldName
 	 * @return FormField 
 	 */
+	/*
 	function getFieldEditForm($fieldName)
 	{		
 		if ( !$this->recordCMSFieldList ) {
@@ -159,6 +162,27 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		}
 		
 		return $field;
+	}
+	*/
+	
+	function getRecordHTMLFormFields( $recordID = 0 )
+	{
+		$config = $this->component->getConfig();
+		$recordCMSDataFields = GridFieldBulkEditingTools::getModelCMSDataFields( $config, $this->gridField->list->dataClass );
+		
+		//@TODO: if editableFields given use them with filterNonEditableRecordsFields()
+		// otherwise go through getModelFilteredDataFields
+		
+		
+		$recordCMSDataFields = GridFieldBulkEditingTools::filterNonEditableRecordsFields($config, $recordCMSDataFields);
+		
+		if ( $config['imageFieldName'] == null ) $config['imageFieldName'] = $this->getDefaultRecordImageField();
+		
+		$recordCMSDataFields = GridFieldBulkEditingTools::getModelFilteredDataFields($config, $recordCMSDataFields);
+		$formFieldsHTML = GridFieldBulkEditingTools::dataFieldsToHTML($recordCMSDataFields);
+		$formFieldsHTML = GridFieldBulkEditingTools::escapeFormFieldsHTML($formFieldsHTML, $recordID);
+		
+		return $formFieldsHTML;
 	}
 	
 	/**
@@ -306,8 +330,12 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 					$record->setField($this->getRecordImageField(), $file->ID);					
 					$record->write();
 					
+					//get record's CMS Fields
+					$recordEditableFormFields = $this->getRecordHTMLFormFields( $record->ID );
 					
-					// collect all editable fields forms					
+					
+					// collect all editable fields forms	
+					/*
 					$recordEditableFieldsForms = array();
 					foreach ( $this->getRecordEditableFields() as $editableFieldName )
 					{
@@ -316,6 +344,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 							array_push($recordEditableFieldsForms, $this->parseFieldHTMLWithRecordID($formField->FieldHolder(), $record->ID) );
 						}						
 					}
+					*/
 					
 					// Collect all output data.
 					$return = array_merge($return, array(
@@ -328,7 +357,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 						//'buttons' => $file->UploadFieldFileButtons,
 						'record' => array(
 							'ID' => $record->ID,
-							'fields' => $recordEditableFieldsForms
+							'fields' => $recordEditableFormFields
 						)
 					));
 										
