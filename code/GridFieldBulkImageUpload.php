@@ -1,6 +1,9 @@
 <?php
 /**
- *  GridField component for uploading images in bulk
+ * GridField component for uploading images in bulk
+ *
+ * @author colymba
+ * @package GridFieldBulkEditingTools
  */
 class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLHandler {
 		
@@ -28,7 +31,7 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 	 * @param string/array $editableFields 
 	 */
 	public function __construct($imageField = null, $editableFields = null)
-	{
+	{		
 		if ( $imageField != null ) $this->setConfig ( 'imageFieldName', $imageField );
 		if ( $editableFields != null ) $this->setConfig ( 'editableFields', $editableFields );
 	}
@@ -121,14 +124,13 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 	 * @return array 
 	 */
 	public function getHTMLFragments($gridField) {		
-		
 		$data = new ArrayData(array(
 			'NewLink' => $gridField->Link('bulkimageupload'),
 			'ButtonName' => 'Bulk Upload'
 		));	
 		
 		return array(
-			'toolbar-header-right' => $data->renderWith('GridFieldAddNewbutton')
+			'bulk-edit-tools' => $data->renderWith('GridFieldAddNewbutton')
 		);
 	}
 	

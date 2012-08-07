@@ -6,6 +6,9 @@
  * * Form creation
  * * file upload
  * * editing and cancelling records
+ *
+ * @author colymba
+ * @package GridFieldBulkEditingTools
  */
 class GridFieldBulkImageUpload_Request extends RequestHandler {
 	
@@ -168,19 +171,19 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	function getRecordHTMLFormFields( $recordID = 0 )
 	{
 		$config = $this->component->getConfig();
-		$recordCMSDataFields = GridFieldBulkEditingTools::getModelCMSDataFields( $config, $this->gridField->list->dataClass );
+		$recordCMSDataFields = GridFieldBulkEditingHelper::getModelCMSDataFields( $config, $this->gridField->list->dataClass );
 		
 		//@TODO: if editableFields given use them with filterNonEditableRecordsFields()
 		// otherwise go through getModelFilteredDataFields
 		
 		
-		$recordCMSDataFields = GridFieldBulkEditingTools::filterNonEditableRecordsFields($config, $recordCMSDataFields);
+		$recordCMSDataFields = GridFieldBulkEditingHelper::filterNonEditableRecordsFields($config, $recordCMSDataFields);
 		
 		if ( $config['imageFieldName'] == null ) $config['imageFieldName'] = $this->getDefaultRecordImageField();
 		
-		$recordCMSDataFields = GridFieldBulkEditingTools::getModelFilteredDataFields($config, $recordCMSDataFields);
-		$formFieldsHTML = GridFieldBulkEditingTools::dataFieldsToHTML($recordCMSDataFields);
-		$formFieldsHTML = GridFieldBulkEditingTools::escapeFormFieldsHTML($formFieldsHTML, $recordID);
+		$recordCMSDataFields = GridFieldBulkEditingHelper::getModelFilteredDataFields($config, $recordCMSDataFields);
+		$formFieldsHTML = GridFieldBulkEditingHelper::dataFieldsToHTML($recordCMSDataFields);
+		$formFieldsHTML = GridFieldBulkEditingHelper::escapeFormFieldsHTML($formFieldsHTML, $recordID);
 		
 		return $formFieldsHTML;
 	}
