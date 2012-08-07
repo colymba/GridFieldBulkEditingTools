@@ -18,7 +18,8 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 		'imageFieldName' => null,
 		'editableFields' => null,
 		'fieldsClassBlacklist' => array( 'GridField', 'UploadField' ),
-		'fieldsNameBlacklist' => array()
+		'fieldsNameBlacklist' => array(),
+		'folderName' => 'bulkUpload'
 	);
 
 	/**

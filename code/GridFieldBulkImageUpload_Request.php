@@ -235,7 +235,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		
 		$uploadField->setConfig('url', $this->Link('upload'));
 		
-		$uploadField->setFolderName(ASSETS_DIR);
+		//$uploadField->setFolderName(ASSETS_DIR);
 		
 		
 		$form = new Form(
@@ -314,7 +314,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 
 			// Get the uploaded file into a new file object.
 			try {
-				$upload->loadIntoFile($tmpfile, $fileObject, 'Uploads/bulk');
+				$upload->loadIntoFile($tmpfile, $fileObject, $this->component->getConfig('folderName'));
 			} catch (Exception $e) {
 				// we shouldn't get an error here, but just in case
 				$return['error'] = $e->getMessage();
