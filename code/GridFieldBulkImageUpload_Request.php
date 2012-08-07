@@ -262,9 +262,9 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		// Calling forTemplate() before other requirements forces SS to add the Form's X-Include-JS before
 		$formHTML = $form->forTemplate();
 				
-		Requirements::javascript('GridFieldBulkImageUpload/javascript/GridFieldBulkImageUpload.js');	
-		Requirements::css('GridFieldBulkImageUpload/css/GridFieldBulkImageUpload.css');
-		Requirements::javascript('GridFieldBulkImageUpload/javascript/GridFieldBulkImageUpload_downloadtemplate.js');		
+		Requirements::javascript(BULK_EDIT_TOOLS_PATH . '/javascript/GridFieldBulkImageUpload.js');	
+		Requirements::css(BULK_EDIT_TOOLS_PATH . '/css/GridFieldBulkImageUpload.css');
+		Requirements::javascript(BULK_EDIT_TOOLS_PATH . '/javascript/GridFieldBulkImageUpload_downloadtemplate.js');		
 		
 		$response = new SS_HTTPResponse($formHTML);
 		$response->addHeader('Content-Type', 'text/plain');
