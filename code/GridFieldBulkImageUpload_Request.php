@@ -41,8 +41,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	 *
 	 */
 	static $url_handlers = array(
-		'$Action!' => '$Action'/*,
-		'' => 'uploadForm'*/
+		'$Action!' => '$Action'
 	);
 	
 	/**
@@ -121,53 +120,10 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	}
 	
 	/**
-	 * Return a list of the GridField managed DataObject's editable fields: (HTML)Text, (HTML)Varchar and Enum fields
-	 * 
-	 * @return array 
+	 *
+	 * @param type $recordID
+	 * @return type 
 	 */
-	/*
-	function getDefaultRecordEditableFields()
-	{
-		$recordClass = $this->gridField->list->dataClass;
-		$recordDbFields = Config::inst()->get($recordClass, 'db', Config::UNINHERITED);
-		
-		$editableFields = array();
-		foreach ( $recordDbFields as $field => $type )
-		{
-			if ( preg_match( '/(Text|Varchar|Enum)/i', $type ) > 0 ) {
-				array_push($editableFields, $field);
-			}
-		}
-		
-		return $editableFields;
-	}
-	 */
-	
-	/**
-	 * Return the CMS edit field for a given name. As set in the GridField managed DataObject getCMSFields method
-	 * 
-	 * @param string $fieldName
-	 * @return FormField 
-	 */
-	/*
-	function getFieldEditForm($fieldName)
-	{		
-		if ( !$this->recordCMSFieldList ) {
-			$recordClass = $this->gridField->list->dataClass;
-			$this->recordCMSFieldList = singleton($recordClass)->getCMSFields();
-		}		
-		
-		$field = $this->recordCMSFieldList->fieldByName($fieldName);
-				
-		if ( !$field ) {
-			$fields = $this->recordCMSFieldList->dataFields();
-			$field = $fields[$fieldName];
-		}
-		
-		return $field;
-	}
-	*/
-	
 	function getRecordHTMLFormFields( $recordID = 0 )
 	{
 		$config = $this->component->getConfig();
@@ -335,19 +291,6 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 					
 					//get record's CMS Fields
 					$recordEditableFormFields = $this->getRecordHTMLFormFields( $record->ID );
-					
-					
-					// collect all editable fields forms	
-					/*
-					$recordEditableFieldsForms = array();
-					foreach ( $this->getRecordEditableFields() as $editableFieldName )
-					{
-						$formField = $this->getFieldEditForm($editableFieldName);
-						if ( $formField ) {
-							array_push($recordEditableFieldsForms, $this->parseFieldHTMLWithRecordID($formField->FieldHolder(), $record->ID) );
-						}						
-					}
-					*/
 					
 					// Collect all output data.
 					$return = array_merge($return, array(
