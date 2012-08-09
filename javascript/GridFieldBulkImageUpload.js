@@ -86,12 +86,7 @@
 							$(this).removeClass('hasUpdate');		
 							$(this).parents('li').find('.ss-uploadfield-item-status').html('Updated');							
 							$(this).parents('li').find('.ss-uploadfield-item-info').addClass('updated');
-							
-							var formHolder = $(this).parents('li').find('.ss-uploadfield-item-editform');
-							console.log(formHolder);
-							try{$(formHolder).toggleEditForm();}catch(e){}
-							//$(this).parents('li').find('.ss-uploadfield-item-editform').entwine('ss').toggleEditForm();
-							//this.closest('.ss-uploadfield-item').find('.ss-uploadfield-item-editform').toggleEditForm();
+							$(this).parents('li').find('.ss-uploadfield-item-editform').css('display', 'none');
 							
 							$(this).removeClass('hasUpdate');		
 							
