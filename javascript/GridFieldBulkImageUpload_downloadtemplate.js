@@ -20,20 +20,20 @@ jQuery(document).ready(function(){
 							'<div class="ss-uploadfield-item-cancel ss-uploadfield-item-cancelfailed"><button class="icon icon-16">' + ss.i18n._t('UploadField.CANCEL', 'Cancel') + '</button></div>' +
 						'</div>' +
 					'{% } %}' + 
-				'</div>' +
+				'</div>' +				
 				'{% if (!file.error) { %}' +
 					'<div class="ss-uploadfield-item-editform">'+
 						'<form action="update" method="post" class="bulkImageUploadUpdateForm" name="BIUUF_{%=file.record.ID%}">'+
 								'<input type="hidden" name="record_{%=file.record.ID%}_ID" value="{%=file.record.ID%}"/>'+
 								'<img class="imgPreview" src="{%=file.preview_url%}" />'+
 
-								'{% for (var j=0; j<file.record.fields.length; j++) { %}' +								
-									'{%#file.record.fields[j]%}' +								
+								'{% for (var key in file.record.fields) { %}' +								
+									'{%#file.record.fields[key]%}' +								
 								'{% } %}' +
 
 						'</form>'+
 					'</div>' + 
-				'{% } %}' + 
+				'{% } %}' + 				
 			'</li>' + 
 		'{% } %}'
 	);
