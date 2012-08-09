@@ -52,8 +52,7 @@ class GridFieldBulkEditingHelper {
 		{
 			if ( $config['imageFieldName'] != null )
 			{
-				//@TODO: this wont work if the fieldname has ID in it: i.e. TheIDImageID -> remove last 2 char only
-				unset( $dataFields[str_ireplace('ID', '', $config['imageFieldName']) ] );
+				unset( $dataFields[ substr($config['imageFieldName'], 0, -2) ] );
 			}
 		}
 		
