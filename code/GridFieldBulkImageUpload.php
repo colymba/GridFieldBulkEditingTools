@@ -20,10 +20,16 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 	protected $config = array(
 		'imageFieldName' => null,
 		'editableFields' => null,
-		'fieldsClassBlacklist' => array( 'GridField', 'UploadField' ),
+		'fieldsClassBlacklist' => array(),
 		'fieldsNameBlacklist' => array(),
 		'folderName' => 'bulkUpload'
 	);
+	
+	/**
+	 * Holds any class that should not be used as they break the component
+	 * These cannot be removed from the blacklist
+	 */
+	protected $forbiddenFieldsClasses = array( 'GridField', 'UploadField' );
 
 	/**
 	 * 
@@ -34,6 +40,9 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 	{		
 		if ( $imageField != null ) $this->setConfig ( 'imageFieldName', $imageField );
 		if ( $editableFields != null ) $this->setConfig ( 'editableFields', $editableFields );
+		
+		//init classes blacklist with forbidden classes
+		$this->config['fieldsClassBlacklist'] = $this->forbiddenFieldsClasses;
 	}
 	
 	/**
@@ -50,6 +59,13 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 			{
 				$value = array($value);
 			}
+			
+			//makes sure $forbiddenFieldsClasses are in no matter what
+			if ( $reference == 'fieldsClassBlacklist' )
+			{
+				$value = array_unique( array_merge($value, $this->forbiddenFieldsClasses) );
+			}
+			
 			$this->config[$reference] = $value;
 		}
 	}
@@ -111,7 +127,7 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 	 */
 	function removeClassFromBlacklist ( $className )
 	{
-		if (key_exists($className, $this->config['fieldsNameBlacklist'])) {
+		if (key_exists($className, $this->config['fieldsNameBlacklist']) && !in_array($className, $this->forbiddenFieldsClasses)) {
 			return delete( $this->config['fieldsNameBlacklist'][$className] );
 		}else{
 			return false;
