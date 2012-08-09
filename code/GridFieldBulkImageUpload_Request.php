@@ -159,28 +159,38 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		
 		$actions = new FieldList();		
 		
-		$html = "
-		<a id=\"bulkImageUploadUpdateBtn\" class=\"cms-panel-link action ss-ui-action-constructive ss-ui-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary\" data-icon=\"accept\" data-url=\"".$this->Link('update')."\" href=\"#\">
-			Save All
-		</a>";
-		$actions->push(new LiteralField('savebutton', $html));
-		
+		$actions->push(
+			FormAction::create('SaveAll', 'Save All')
+				->setAttribute('id', 'bulkImageUploadUpdateBtn')
+				->addExtraClass('ss-ui-action-constructive cms-panel-link')
+				->setAttribute('data-icon', 'accept')
+				->setAttribute('data-url', $this->Link('update'))
+				->setUseButtonTag(true)
+		);
 		
 		if($crumbs && $crumbs->count()>=2)
 		{			
-			$html = "
-			<a id=\"bulkImageUploadUpdateFinishBtn\" class=\"cms-panel-link action ss-ui-action-constructive ss-ui-button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary\" data-icon=\"accept\" data-url=\"".$this->Link('update')."\" href=\"".$one_level_up->Link."\">
-				Save All &amp; Finish
-			</a>";
-			$actions->push(new LiteralField('finishbutton', $html));
+			$actions->push(
+				FormAction::create('SaveAndFinish', 'Save All & Finish')
+					->setAttribute('id', 'bulkImageUploadUpdateFinishBtn')
+					->addExtraClass('ss-ui-action-constructive cms-panel-link')
+					->setAttribute('data-icon', 'accept')
+					->setAttribute('data-url', $this->Link('update'))
+					->setAttribute('data-return-url', $one_level_up->Link)
+					->setUseButtonTag(true)
+			);
 		}	
 		
-		$html = "                                       
-		<a id=\"bulkImageUploadUpdateCancelBtn\" class=\"cms-panel-link delete ss-ui-action-destructive ss-ui-button ui-button ui-widget ui-state-default ui-button-text-icon-primary\" data-icon=\"decline\" data-url=\"".$this->Link('cancel')."\" href=\"#\">
-			Cancel &amp; Delete All
-		</a>";
-		$actions->push(new LiteralField('cancelbutton', $html));
-
+		$actions->push(
+			FormAction::create('Cancel', 'Cancel & Delete All')
+				->setAttribute('id', 'bulkImageUploadUpdateCancelBtn')
+				->addExtraClass('ss-ui-action-destructive cms-panel-link')
+				->setAttribute('data-icon', 'decline')
+				->setAttribute('data-url', $this->Link('cancel'))
+				->setUseButtonTag(true)
+		);
+		
+		
 		$uploadField = UploadField::create('BulkImageUploadField', '');
 		$uploadField->setConfig('previewMaxWidth', 40);
 		$uploadField->setConfig('previewMaxHeight', 30);
@@ -207,7 +217,8 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		);
 				
 		$form->setTemplate('LeftAndMain_EditForm');
-		$form->addExtraClass('center cms-edit-form cms-content');
+		//$form->addExtraClass('center cms-edit-form cms-content');
+		$form->addExtraClass('center cms-content');
 		$form->setAttribute('data-pjax-fragment', 'CurrentForm Content');
 		
 		if($crumbs && $crumbs->count()>=2){
