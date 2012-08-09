@@ -56,14 +56,13 @@ class GridFieldBulkEditingHelper {
 				unset( $dataFields[str_ireplace('ID', '', $config['imageFieldName']) ] );
 			}
 		}
-				
+		
 		//if class blacklist filter
 		if ( count($config['fieldsClassBlacklist']) > 0 )
 		{
 			foreach ($dataFields as $fieldName => $field)
 			{
-				//@TODO find PHP function that return the classname
-				if ( in_array($field->ClassName, $config['fieldsClassBlacklist']) )
+				if ( in_array(get_class($field), $config['fieldsClassBlacklist']) )
 				{
 					array_push($config['fieldsNameBlacklist'], $fieldName);
 				}
