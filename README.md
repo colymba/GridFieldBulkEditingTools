@@ -11,7 +11,7 @@ The Components take bit and pieces around from CMSFileAddController, GridFieldDe
 * Run dev/build?flush=all to regenerate the manifest
 * run ?flush=all in CMS to force the templates to regenerate
 
-#Bulk Image Upload
+# 1/ Bulk Image Upload
 A component for uploading images in bulk into the managed Model relation, with option to edit fields on the fly.
 
 ## Usage
