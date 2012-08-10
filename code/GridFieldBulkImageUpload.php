@@ -139,14 +139,24 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 	 * @param GridField $gridField
 	 * @return array 
 	 */
-	public function getHTMLFragments($gridField) {		
+	public function getHTMLFragments($gridField) {	
+		
+		Requirements::css(BULK_EDIT_TOOLS_PATH . '/css/GridFieldBulkImageUpload.css');
+		
+		/*
 		$data = new ArrayData(array(
 			'NewLink' => $gridField->Link('bulkimageupload'),
 			'ButtonName' => 'Bulk Upload'
 		));	
+		*/
+		$html = '
+		<a id="bulkImageUploadGFButton" href="'.$gridField->Link('bulkimageupload').'"  class="action action-detail ss-ui-action-constructive ss-ui-button ui-button ui-widget ui-state-default ui-corner-all new new-link" data-icon="add">
+			Bulk Upload
+		</a>';
 		
 		return array(
-			'bulk-edit-tools' => $data->renderWith('GridFieldAddNewbutton')
+			//'bulk-edit-tools' => $data->renderWith('GridFieldAddNewbutton')
+			'bulk-edit-tools' => $html
 		);
 	}
 	

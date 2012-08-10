@@ -1,3 +1,17 @@
+/* ************************************************************************
+ * GRIDFIELD
+ */
+
+#bulkImageUploadGFButton
+{
+	float: right;
+	margin: 0 0 0 20px;
+}
+
+/* ************************************************************************
+ * UPLOAD
+ */
+
 .ss-assetuploadfield .ss-uploadfield-files .ss-uploadfield-item-editform
 {
 	position: relative;
