@@ -1,0 +1,31 @@
+/* ************************************************************************
+ * GRIDFIELD
+ */
+ 
+.cms table.ss-gridfield-table tbody .col-bulkSelect {
+	width: 25px;
+	padding: 0 10px;
+	text-align: center;
+}
+
+#bulkManagerOptions
+{
+	float: right;
+	margin: 0 0 0 20px;
+}
+
+#bulkActionName
+{
+	display: inline-block;
+	border: none;
+	box-shadow: none;
+}
+
+#bulkActionName #bulkActionName_chzn
+{
+	width: auto !important;
+}
+
+/* ************************************************************************
+ * EDITING
+ */
