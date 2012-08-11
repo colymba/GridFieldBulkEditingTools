@@ -28,9 +28,50 @@
 			},
 			onunmatch: function(){				
 			},
-			onclick: function(e) {		
-							
+			onclick: function(e) {
+			} 
+		});
+		
+		$('#bulkActionName').entwine({
+			onmatch: function(){
+			},
+			onunmatch: function(){				
+			},
+			onchange: function(e) {
+				var value, btn, icon;
+				value = $(this).val();
+				btn = $('#doBulkActionButton');
+				icon = $('#doBulkActionButton .ui-icon');
 				
+				switch (value) {
+					case 'Edit':
+						$(btn).removeClass('ss-ui-action-destructive');
+						$(btn).attr('data-icon', 'pencil');
+						$(icon).removeClass('btn-icon-decline btn-icon-pencil').addClass('btn-icon-pencil');
+						break;
+						
+					case 'UnLink':
+						$(btn).removeClass('ss-ui-action-destructive');
+						$(btn).attr('data-icon', 'chain--minus');
+						$(icon).removeClass('btn-icon-decline btn-icon-pencil').addClass('btn-icon-chain--minus');
+						break;
+						
+					case 'Delete':
+						$(btn).addClass('ss-ui-action-destructive');
+						$(btn).attr('data-icon', 'decline');
+						$(icon).removeClass('btn-icon-decline btn-icon-pencil').addClass('btn-icon-decline');
+						break;
+				}
+				
+			} 
+		});
+		
+		$('#doBulkActionButton').entwine({
+			onmatch: function(){
+			},
+			onunmatch: function(){				
+			},
+			onclick: function(e) {
 			} 
 		});
 		

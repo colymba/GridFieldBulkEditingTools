@@ -53,12 +53,12 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 		Requirements::javascript(BULK_EDIT_TOOLS_PATH . '/javascript/GridFieldBulkManager.js');
 		
 		$dropDownActionList = DropdownField::create('bulkActionName', '')
-			->setSource( array('Edit','UnLink','Delete') );
+			->setSource( array('Edit' => 'Edit','UnLink' => 'UnLink','Delete' => 'Delete') );
 		
 		$actionButton = FormAction::create('doBulkAction', 'GO')
 				->setAttribute('id', 'doBulkActionButton')
-				->addExtraClass('ss-ui-action-constructive cms-panel-link')
-				->setAttribute('data-icon', 'accept')
+				//->addExtraClass('cms-panel-link')
+				->setAttribute('data-icon', 'pencil')
 				->setAttribute('data-url', 'bulkEdit')
 				->setUseButtonTag(true);
 		
