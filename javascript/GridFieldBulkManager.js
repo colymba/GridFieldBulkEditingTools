@@ -32,7 +32,7 @@
 			} 
 		});
 		
-		$('#bulkActionName').entwine({
+		$('select#bulkActionName').entwine({
 			onmatch: function(){
 			},
 			onunmatch: function(){				
@@ -44,19 +44,19 @@
 				icon = $('#doBulkActionButton .ui-icon');
 				
 				switch (value) {
-					case 'Edit':
+					case 'edit':
 						$(btn).removeClass('ss-ui-action-destructive');
 						$(btn).attr('data-icon', 'pencil');
 						$(icon).removeClass('btn-icon-decline btn-icon-pencil').addClass('btn-icon-pencil');
 						break;
 						
-					case 'UnLink':
+					case 'unlink':
 						$(btn).removeClass('ss-ui-action-destructive');
 						$(btn).attr('data-icon', 'chain--minus');
 						$(icon).removeClass('btn-icon-decline btn-icon-pencil').addClass('btn-icon-chain--minus');
 						break;
 						
-					case 'Delete':
+					case 'delete':
 						$(btn).addClass('ss-ui-action-destructive');
 						$(btn).attr('data-icon', 'decline');
 						$(icon).removeClass('btn-icon-decline btn-icon-pencil').addClass('btn-icon-decline');
@@ -66,12 +66,31 @@
 			} 
 		});
 		
+		//@TODO prevent button click to call default url request
 		$('#doBulkActionButton').entwine({
 			onmatch: function(){
 			},
 			onunmatch: function(){				
 			},
 			onclick: function(e) {
+				var action, url, data = {}, ids = [], cacheBuster;
+				action = $('select#bulkActionName').val();
+				url = $(this).data('url');
+				cacheBuster = new Date().getTime();
+				
+				$('.col-bulkSelect input:checked').each(function(){
+					ids.push( parseInt( $(this).attr('name').split('_')[1] ) );
+				});				
+				data.records = ids;
+				
+				$.ajax({
+					url: url + '/' + action + '?cacheBuster=' + cacheBuster,
+					data: data,
+					type: "POST",
+					context: $(this)
+				}).done(function() {
+					//@TODO refresh GridField
+				});
 			} 
 		});
 		
