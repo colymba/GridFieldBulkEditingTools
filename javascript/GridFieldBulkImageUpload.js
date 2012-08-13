@@ -73,16 +73,18 @@
 				onunmatch: function(){					
 				},
 				onclick: function(e){
+					var formsWithUpadtes, url, data, cacheBuster;
 					
-					var formsWithUpadtes = $('form.bulkImageUploadUpdateForm.hasUpdate');
+					formsWithUpadtes = $('form.bulkImageUploadUpdateForm.hasUpdate');
 					$(this).data('formsToUpdate', $(formsWithUpadtes).length);
-					var url = $(this).data('url');
-					var cacheBuster = new Date().getTime();
+					url = $(this).data('url');
 					
 					if ( $(formsWithUpadtes).length > 0 ) $(this).addClass('loading');
 					
+					//@TODO execute 'doFinish' even when no form have been changed					
 					$(formsWithUpadtes).each(function(){
-						var data = $(this).serialize();
+						cacheBuster = new Date().getTime() + '_' + $(this).attr('name');
+						data = $(this).serialize();
 						$.ajax({
 							url: url + '?cacheBuster=' + cacheBuster,
 							data: data,
