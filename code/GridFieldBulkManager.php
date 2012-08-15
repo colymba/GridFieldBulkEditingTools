@@ -37,7 +37,9 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	
 	function getColumnMetadata($gridField, $columnName)
 	{
-		return array('title' => null);
+		if($columnName == 'BulkSelect') {
+			return array('title' => 'Select');
+		}
 	}
 		
 	/* // GridField_ColumnProvider */
