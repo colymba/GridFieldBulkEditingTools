@@ -3,17 +3,32 @@
  * Generic helper class for the various bulk editing component
  * contains common functions
  *
+ * @todo clean up functions names: makes them consistent and more explicit
+ * 
  * @author colymba
  * @package GridFieldBulkEditingTools
  */
 class GridFieldBulkEditingHelper {
 	//put your code here
 	
-	public static function getModelCMSDataFields ( $config, $modelClass )
+	public static function getModelCMSDataFields ( $config, $modelClass, $recordID = null )
 	{
-		$cmsFields = singleton($modelClass)->getCMSFields();
+		if ( $recordID == null ) $cmsFields = singleton($modelClass)->getCMSFields();
+		else $cmsFields = DataObject::get_by_id($modelClass, $recordID)->getCMSFields();
+				
 		$cmsDataFields = $cmsFields->dataFields();		
 		$cmsDataFields = GridFieldBulkEditingHelper::filterNonEditableRecordsFields($config, $cmsDataFields);
+		
+		// populate fields with record's values -> must some easier way to do this
+		// @TODO: can we handle has_one/has_many/many_many relations
+		if ( $recordID != null )
+		{
+			$record = DataObject::get_by_id($modelClass, $recordID);
+			foreach ( $cmsDataFields as $name => $f )
+			{
+				$cmsDataFields[$name]->setValue( $record->getField($name) );
+			}
+		}
 		
 		return $cmsDataFields;
 	}
@@ -101,6 +116,19 @@ class GridFieldBulkEditingHelper {
 		}
 		
 		return $fieldsHTML;
+	}
+	
+	public static function escapeFormFieldsName ( $formFields, $unique )
+	{
+		$prefix = 'record_'.$unique.'_';
+		
+		foreach ( $formFields as $name => $f )
+		{
+			$f->Name = $prefix . $f->Name;
+			$formFields[$name] = $f;
+		}
+		
+		return $formFields;
 	}
 	
 	public static function escapeFormFieldsHTML ( $formFieldsHTML, $unique )
