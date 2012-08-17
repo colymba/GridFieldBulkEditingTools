@@ -13,26 +13,24 @@ class GridFieldBulkEditingHelper {
 	
 	public static function getModelCMSDataFields ( $config, $modelClass, $recordID = null )
 	{
-		if ( $recordID == null ) $cmsFields = singleton($modelClass)->getCMSFields();
-		else $cmsFields = DataObject::get_by_id($modelClass, $recordID)->getCMSFields();
+		$cmsFields = singleton($modelClass)->getCMSFields();
 				
 		$cmsDataFields = $cmsFields->dataFields();		
 		$cmsDataFields = GridFieldBulkEditingHelper::filterNonEditableRecordsFields($config, $cmsDataFields);
 		
-		// populate fields with record's values -> must some easier way to do this
-		// @TODO: can we handle has_one/has_many/many_many relations
-		if ( $recordID != null )
-		{
-			$record = DataObject::get_by_id($modelClass, $recordID);
-			foreach ( $cmsDataFields as $name => $f )
-			{
-				$cmsDataFields[$name]->setValue( $record->getField($name) );
-			}
-		}
-		
 		return $cmsDataFields;
 	}
 	
+	public static function populateCMSDataFields ( $cmsDataFields, $modelClass, $recordID )
+	{
+		// @TODO: can we handle has_one/has_many/many_many relations
+		$record = DataObject::get_by_id($modelClass, $recordID);
+		foreach ( $cmsDataFields as $name => $f )
+		{
+			$cmsDataFields[$name]->setValue( $record->getField($name) );
+		}
+		return $cmsDataFields;
+	}
 	
 	public static function filterNonEditableRecordsFields ( $config, $dataFields )
 	{
