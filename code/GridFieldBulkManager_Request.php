@@ -223,7 +223,7 @@ class GridFieldBulkManager_Request extends RequestHandler {
 
 		$items = $this->controller->Breadcrumbs($unlinked);
 		$items->push(new ArrayData(array(
-				'Title' => 'Bulk Upload',
+				'Title' => 'Bulk Editing',
 				'Link' => false
 			)));
 		return $items;
