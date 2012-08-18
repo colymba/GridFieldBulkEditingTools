@@ -21,14 +21,68 @@ class GridFieldBulkEditingHelper {
 		return $cmsDataFields;
 	}
 	
+	/**
+	 * @TODO: UploadField get populated OK, however, file recovery and controllers URL are all wrong and should be updated manually
+	 * UploadField url should point to GridFieldBulkManager_Request appropriate method
+	 * 
+	 * @param type $cmsDataFields
+	 * @param type $modelClass
+	 * @param type $recordID
+	 * @return type 
+	 */
 	public static function populateCMSDataFields ( $cmsDataFields, $modelClass, $recordID )
 	{
-		// @TODO: can we handle has_one/has_many/many_many relations
 		$record = DataObject::get_by_id($modelClass, $recordID);
+				
+		$recordComponents = array(
+			'one' => $record->has_one(),
+			'many' => $record->has_many(),
+			'manymany' => $record->many_many()
+		);
+		
 		foreach ( $cmsDataFields as $name => $f )
-		{
-			$cmsDataFields[$name]->setValue( $record->getField($name) );
+		{			
+			if ( array_key_exists($name, $recordComponents['one']) )
+			{
+				$obj = $record->{$name}();				
+				switch ( get_class($f) )
+				{
+					case 'UploadField':											
+						$cmsDataFields[$name]->setRecord($record);
+						$cmsDataFields[$name]->setItems( DataList::create($obj->ClassName)->byID($obj->ID) );
+						print_r($cmsDataFields[$name]);
+						break;
+					
+					default:
+						$cmsDataFields[$name]->setValue( $obj->ID );
+						break;
+				}
+				
+			}
+			else if ( array_key_exists($name, $recordComponents['many']) || array_key_exists($name, $recordComponents['manymany']) )
+			{				
+				$list = $record->{$name}();				
+				switch ( get_class($f) )
+				{
+					case 'UploadField':
+						$cmsDataFields[$name]->setRecord($record);
+						$cmsDataFields[$name]->setItems($list);
+						break;
+					
+					case 'DropdownField':
+					case 'ListboxField':
+						$cmsDataFields[$name]->setValue( array_values($list->getIDList()) );
+						break;
+					
+					default:
+						break;
+				}
+				
+			}else{
+				$cmsDataFields[$name]->setValue( $record->getField($name) );
+			}
 		}
+		
 		return $cmsDataFields;
 	}
 	
