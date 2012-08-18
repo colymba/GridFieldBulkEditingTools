@@ -9,9 +9,16 @@
  * @package GridFieldBulkEditingTools
  */
 class GridFieldBulkEditingHelper {
-	//put your code here
 	
-	public static function getModelCMSDataFields ( $config, $modelClass, $recordID = null )
+	/**
+	 * Returns all or allowed Form Fields for editing
+	 * 
+	 * @param type $config
+	 * @param type $modelClass
+	 * @param type $recordID
+	 * @return type 
+	 */
+	public static function getModelCMSDataFields ( $config, $modelClass )
 	{
 		$cmsFields = singleton($modelClass)->getCMSFields();
 				
@@ -22,6 +29,8 @@ class GridFieldBulkEditingHelper {
 	}
 	
 	/**
+	 * Populate the FomFields with a given record's value
+	 * 
 	 * @TODO: UploadField get populated OK, however, file recovery and controllers URL are all wrong and should be updated manually
 	 * UploadField url should point to GridFieldBulkManager_Request appropriate method
 	 * 
@@ -86,6 +95,13 @@ class GridFieldBulkEditingHelper {
 		return $cmsDataFields;
 	}
 	
+	/**
+	 * Remove all the fields that were not explicitly specified as editable via the $config
+	 * 
+	 * @param type $config
+	 * @param type $dataFields
+	 * @return type 
+	 */
 	public static function filterNonEditableRecordsFields ( $config, $dataFields )
 	{
 		if ( isset($config['editableFields']) )
@@ -157,6 +173,12 @@ class GridFieldBulkEditingHelper {
 		//@todo
 	}
 	
+	/**
+	 * Convert a list of DataFields into a list of their repective HTML
+	 * 
+	 * @param type $dataFields
+	 * @return type 
+	 */
 	public static function dataFieldsToHTML ( $dataFields )
 	{
 		$fieldsHTML = array();
@@ -170,6 +192,14 @@ class GridFieldBulkEditingHelper {
 		return $fieldsHTML;
 	}
 	
+	/**
+	 * Escape form fields name with a $unique token
+	 * avoid having an ID URLParams sent through and cought as a pageID
+	 * 
+	 * @param type $formFields
+	 * @param type $unique
+	 * @return type 
+	 */
 	public static function escapeFormFieldsName ( $formFields, $unique )
 	{
 		$prefix = 'record_'.$unique.'_';
@@ -183,6 +213,14 @@ class GridFieldBulkEditingHelper {
 		return $formFields;
 	}
 	
+	/**
+	 * Escape HTML form node names with a $unique token
+	 * avoid having an ID URLParams sent through and cought as a pageID
+	 * 
+	 * @param type $formFieldsHTML
+	 * @param type $unique
+	 * @return type 
+	 */
 	public static function escapeFormFieldsHTML ( $formFieldsHTML, $unique )
 	{
 		$prefix = 'record_'.$unique.'_';
@@ -201,8 +239,6 @@ class GridFieldBulkEditingHelper {
 	{
 		//@todo
 	}
-	
-	
 	
 	
 }
