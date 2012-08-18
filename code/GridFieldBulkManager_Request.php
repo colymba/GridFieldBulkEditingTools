@@ -54,7 +54,7 @@ class GridFieldBulkManager_Request extends RequestHandler {
 	 * @return string 
 	 */
 	public function Link($action = null) {
-		return Controller::join_links($this->gridField->Link(), 'bulkimageupload', $action);
+		return Controller::join_links($this->gridField->Link(), 'bulkediting', $action);
 	}
 	
 	
@@ -113,7 +113,7 @@ class GridFieldBulkManager_Request extends RequestHandler {
 			
 			$recordCMSDataFields = GridFieldBulkEditingHelper::escapeFormFieldsName( $recordCMSDataFields, $id );
 			$editedRecordList->push(
-				ToggleCompositeField::create('GFBM_'.$id, '#'.$id,
+				ToggleCompositeField::create('GFBM_'.$id, '#'.$id.' > '.DataObject::get_by_id($this->gridField->list->dataClass, $id)->getTitle(),
 						array_values($recordCMSDataFields)
 					)->setHeadingLevel(4)
 			);
