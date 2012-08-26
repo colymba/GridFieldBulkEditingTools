@@ -69,7 +69,7 @@ class GridFieldBulkManager_Request extends RequestHandler {
 		
 		$actions->push(
 			FormAction::create('SaveAll', 'Save All')
-				->setAttribute('id', 'bulkImageUploadUpdateBtn')
+				->setAttribute('id', 'bulkEditingUpdateBtn')
 				->addExtraClass('ss-ui-action-constructive cms-panel-link')
 				->setAttribute('data-icon', 'accept')
 				->setAttribute('data-url', $this->Link('update'))
@@ -80,7 +80,7 @@ class GridFieldBulkManager_Request extends RequestHandler {
 		{			
 			$actions->push(
 				FormAction::create('SaveAndFinish', 'Save All & Finish')
-					->setAttribute('id', 'bulkImageUploadUpdateFinishBtn')
+					->setAttribute('id', 'bulkEditingUpdateFinishBtn')
 					->addExtraClass('ss-ui-action-constructive cms-panel-link')
 					->setAttribute('data-icon', 'accept')
 					->setAttribute('data-url', $this->Link('update'))
@@ -91,7 +91,7 @@ class GridFieldBulkManager_Request extends RequestHandler {
 		
 		$actions->push(
 			FormAction::create('Cancel', 'Cancel & Delete All')
-				->setAttribute('id', 'bulkImageUploadUpdateCancelBtn')
+				->setAttribute('id', 'bulkEditingUpdateCancelBtn')
 				->addExtraClass('ss-ui-action-destructive cms-panel-link')
 				->setAttribute('data-icon', 'decline')
 				->setAttribute('data-url', $this->Link('cancel'))
@@ -111,11 +111,16 @@ class GridFieldBulkManager_Request extends RequestHandler {
 			$recordCMSDataFields = GridFieldBulkEditingHelper::getModelFilteredDataFields($config, $recordCMSDataFields);
 			$recordCMSDataFields = GridFieldBulkEditingHelper::populateCMSDataFields( $recordCMSDataFields, $this->gridField->list->dataClass, $id );
 			
+			$recordCMSDataFields['ID'] = new HiddenField('ID', '', $id);			
 			$recordCMSDataFields = GridFieldBulkEditingHelper::escapeFormFieldsName( $recordCMSDataFields, $id );
+			
 			$editedRecordList->push(
-				ToggleCompositeField::create('GFBM_'.$id, '#'.$id.' > '.DataObject::get_by_id($this->gridField->list->dataClass, $id)->getTitle(),
-						array_values($recordCMSDataFields)
-					)->setHeadingLevel(4)
+				ToggleCompositeField::create(
+					'GFBM_'.$id,
+					'#'.$id.': '.DataObject::get_by_id($this->gridField->list->dataClass, $id)->getTitle(),					
+					array_values($recordCMSDataFields)
+				)->setHeadingLevel(4)
+				->addExtraClass('bulkEditingFieldHolder')
 			);
 		}
 		
@@ -147,6 +152,31 @@ class GridFieldBulkManager_Request extends RequestHandler {
 		$response->addHeader('Content-Type', 'text/plain');
 		$response->addHeader('X-Title', 'SilverStripe - Bulk '.$this->gridField->list->dataClass.' Editing');
 		return $response;
+	}
+	
+	/**
+	 * Saves the changes made in the bulk edit into the dataObject
+	 * 
+	 * @param SS_HTTPRequest $request
+	 * @return JSON 
+	 */
+	public function update(SS_HTTPRequest $request)
+	{		
+		$data = $this->getParsedPostData($request->requestVars());
+		$record = DataObject::get_by_id($this->gridField->list->dataClass, $data['ID']);
+				
+		foreach($data as $field => $value)
+		{						
+			if ( $record->hasMethod($field) ) {				
+				$list = $record->$field();
+				$list->setByIDList( $value );
+			}else{
+				$record->setCastedField($field, $value);
+			}
+		}		
+		$record->write();
+		
+		return '{done:1,recordID:'.$data['ID'].'}';
 	}
 	
 	/**
@@ -204,6 +234,27 @@ class GridFieldBulkManager_Request extends RequestHandler {
 		return $recordList['records'];		 
 	}
 	
+	/**
+	 * Simple function that replace the 'record_XX_' off of the ID field name
+	 * prefix needed since it was taken for a pageID if sent as is as well as fixing other things
+	 * 
+	 * @param array $data
+	 * @return array 
+	 */
+	function getParsedPostData(array $data)
+	{
+		$return = array();
+		
+		foreach( $data as $key => $val)
+		{			
+			$return[ preg_replace( '/record_(\d+)_(\w+)/i', '$2', $key) ] = $val;
+		}
+		
+		if ( isset($return['url']) ) unset($return['url']);
+		if ( isset($return['cacheBuster']) ) unset($return['cacheBuster']);
+		
+		return $return;
+	}
 	
 	/**
 	 * Edited version of the GridFieldEditForm function

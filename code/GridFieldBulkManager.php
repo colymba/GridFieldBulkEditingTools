@@ -180,7 +180,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 				->setUseButtonTag(true);
 		*/
 		$actionButtonHTML = '
-		<a id="doBulkActionButton" href="'.$gridField->Link('bulkEdit').'/edit'.'" data-url="'.$gridField->Link('bulkEdit').'"  class="action ss-ui-button cms-panel-link" data-icon="pencil">
+		<a id="doBulkActionButton" href="'.$gridField->Link('bulkediting').'/edit'.'" data-url="'.$gridField->Link('bulkediting').'"  class="action ss-ui-button cms-panel-link" data-icon="pencil">
 			GO
 		</a>';
 		
@@ -202,7 +202,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	 */
 	public function getURLHandlers($gridField) {
 			return array(
-				'bulkEdit' => 'handlebulkEdit'
+				'bulkediting' => 'handlebulkEdit'
 			);
 	}
 	
