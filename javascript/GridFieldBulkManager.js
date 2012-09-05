@@ -48,6 +48,17 @@
 			}*/
 		});
 		
+    $('#toggleSelectAll').entwine({
+      onmatch: function(){
+			},
+			onunmatch: function(){				
+			},
+      onclick: function(){
+        var state = $(this).prop('checked');
+        $('td.col-bulkSelect input').each(function(){ $(this).prop('checked', state); });
+      }
+    });
+    
 		$('select#bulkActionName').entwine({
 			onmatch: function(){
 			},
