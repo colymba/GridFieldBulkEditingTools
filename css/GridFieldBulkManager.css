@@ -26,6 +26,19 @@
 	width: auto !important;
 }
 
+.cms table.ss-gridfield-table tbody td a.tempDisabledEditLink
+{
+  background: url('../../framework/admin/images/btn-icon/document--pencil.png') no-repeat 2px 0px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-indent: 119988px;
+  overflow: hidden;
+  vertical-align: middle;
+  background-position: 2px 0px;
+  background-repeat: no-repeat no-repeat;
+}
+
 /* ************************************************************************
  * EDITING
  */
