@@ -1,7 +1,6 @@
 GridField Bulk Editing Tools
 ============================
 SilverStripe 3 GridField component set to facilitate bulk editing, adding and deletion of records.
-The Components take bit and pieces around from CMSFileAddController, GridFieldDetailForm_ItemRequest, UploadField, overrides and adds some behaviors, templates and styles...
 
 ## Requirments
 * SilverStripe 3.0
@@ -17,7 +16,7 @@ A component for uploading images in bulk into the managed Model relation, with o
 ## Usage
 
 ### Usage 1
-Simplest usage, add the component to your GridField as below. The component will find the first Image has_one relation on the managed Model and it's editable CMS fields
+Simplest usage, add the component to your GridField as below. The component will find the first Image has_one relation on the managed Model and the record's editable CMS fields
 		
 		$config->addComponent(new GridFieldBulkEditingTools());
 		$config->addComponent(new GridFieldBulkImageUpload());
@@ -31,7 +30,9 @@ $editableFields (array): list of db fields name as string that will be editable 
 		$config->addComponent(new GridFieldBulkImageUpload( $imageField, $editableFields ));
 
 ### Configuration
-The component's option can be configurated individually or in bulk through the 'config' functions
+The component's option can be configurated individually or in bulk through the 'config' functions like this:
+
+    $config->getComponentByType('GridFieldBulkImageUpload')->setConfig( $reference, $value );
 		
 #### $config overview
 The available configuration options are:
@@ -110,15 +111,42 @@ In addition, some configuration option can be set more specifically via individu
 			}
 		}
 
-## Notes
+# 2/ Bulk Manager
+A component for Editing, deleting and unlinking records on the fly
+
+## Usage
+Add GridFieldBulkEditingTools component if not done already and simply add GridFieldBulkImageUpload
+		
+		$config->addComponent(new GridFieldBulkEditingTools());
+		$config->addComponent(new GridFieldBulkManager());
+		
+## Configuration
+The component's option can be configurated individually or in bulk through the 'config' functions like this:
+
+    $config->getComponentByType('GridFieldBulkManager')->setConfig( $reference, $value );
+		
+### $config overview
+The available configuration options are:
+* 'editableFields' : array of string referencing specific CMS fields available for editing
+* 'fieldsClassBlacklist' : array of string referencing types (ClassName) of fields that wont be available for editing
+* 'fieldsNameBlacklist' : array of string referencing the names of fields that wont be available for editing
+
+# Notes
 * The HTML form fields for each editable fields are taken from the Model's getCMSFields() method
+* This is still pretty experimental and probably needs a bit more in depth testing
+* The code could probably be written better and/or cleaned up
+* The Components take bit and pieces around from CMSFileAddController, GridFieldDetailForm_ItemRequest, UploadField, overrides and adds some behaviors, templates and styles...
 
 # @TODO
 
-## Bulk Editing Tools
-* Create the rest of the Components...
+## Common bug
+* When editing fields, if the last field of the edit form is a drop down or similar, the drop down menu is cropped off
 
 ## Bulk Image Upload
 * Add individual actions for each upload (update + cancel)
 * Handle and display errors better for: creation, update, cancel
 * Make it work not only for images -> might need to rename this component then? -> should be handled by another component
+
+## Bulk Manager
+* Refresh GridField after record(s) are deleted or unlinked
+* Make 'select all' menu prettier
