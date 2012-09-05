@@ -72,7 +72,8 @@
 				},
 				onunmatch: function(){					
 				},
-				onclick: function(e){
+				onclick: function(e){		
+          
 					var formsWithUpadtes, url, data, cacheBuster;
 					
 					formsWithUpadtes = $('form.bulkImageUploadUpdateForm.hasUpdate');
@@ -90,7 +91,7 @@
 							data: data,
 							type: "POST",
 							context: $(this)
-						}).done(function() { 
+						}).done(function() { 					 
 							
 							var btn = $('#bulkImageUploadUpdateBtn');
 							var totalForms = parseInt( $(btn).data('formsToUpdate') );				
