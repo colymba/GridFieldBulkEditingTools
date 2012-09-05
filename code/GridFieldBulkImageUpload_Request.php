@@ -334,17 +334,19 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	 * @return string 
 	 */
 	public function update(SS_HTTPRequest $request)
-	{		
-		$data = $this->getParsedPostData($request->requestVars());
-		
-		$recordClass = $this->gridField->list->dataClass;
-		$record = DataObject::get_by_id($recordClass, $data['ID']);
+	{
+    $data = $this->getParsedPostData($request->requestVars());
+		$record = DataObject::get_by_id($this->gridField->list->dataClass, $data['ID']);
 				
 		foreach($data as $field => $value)
-		{
-			$record->setField($field, $value);
-		}
-		
+		{						
+			if ( $record->hasMethod($field) ) {				
+				$list = $record->$field();
+				$list->setByIDList( $value );
+			}else{
+				$record->setCastedField($field, $value);
+			}
+		}		
 		$record->write();
 		
 		return '{done:1,recordID:'.$data['ID'].'}';
