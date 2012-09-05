@@ -382,22 +382,6 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		$response->addHeader('Content-Type', 'text/plain');
 		return $response;		
 	}
-	
-	/**
-	 * Add a unique prefix to sensitive HTML attributes (ID, FOR, NAME)
-	 * Fixes rendering issue (i.e. dropdown fields) and IDs being mistaken for page IDs
-	 * 
-	 * @param string $html
-	 * @param string/int $id
-	 * @return string 
-	 */
-	function parseFieldHTMLWithRecordID($html, $id)
-	{
-		$prefix = 'record_'.$id.'_';
-		return str_ireplace ( array('id="', 'for="', 'name="'),
-													array('id="'.$prefix, 'for="'.$prefix, 'name="'.$prefix), 
-													$html);
-	}
 		
 	/**
 	 * Edited version of the GridFieldEditForm function
