@@ -235,9 +235,26 @@ class GridFieldBulkEditingHelper {
 		return $formFieldsHTML;
 	}
 	
+  /**
+	 * Simple function that replace the 'record_XX_' off of the ID field name
+	 * prefix needed since it was taken for a pageID if sent as is as well as fixing other things
+	 * 
+	 * @param array $data
+	 * @return array 
+	 */
 	public static function unescapeFormFieldsPOSTData ( $requestVars )
 	{
-		//@todo
+		$return = array();
+		
+		foreach( $requestVars as $key => $val)
+		{			
+			$return[ preg_replace( '/record_(\d+)_(\w+)/i', '$2', $key) ] = $val;
+		}
+		
+		if ( isset($return['url']) ) unset($return['url']);
+		if ( isset($return['cacheBuster']) ) unset($return['cacheBuster']);
+		
+		return $return;
 	}
 	
 	

@@ -335,7 +335,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	 */
 	public function update(SS_HTTPRequest $request)
 	{
-    $data = $this->getParsedPostData($request->requestVars());
+    $data = GridFieldBulkEditingHelper::unescapeFormFieldsPOSTData($request->requestVars());
 		$record = DataObject::get_by_id($this->gridField->list->dataClass, $data['ID']);
 				
 		foreach($data as $field => $value)
@@ -361,7 +361,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	 */
 	public function cancel(SS_HTTPRequest $request)
 	{
-		$data = $this->getParsedPostData($request->requestVars());
+		$data = GridFieldBulkEditingHelper::unescapeFormFieldsPOSTData($request->requestVars());
 		$return = array();
 		
 		$recordClass = $this->gridField->list->dataClass;
@@ -381,25 +381,6 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		$response = new SS_HTTPResponse(Convert::raw2json($return));
 		$response->addHeader('Content-Type', 'text/plain');
 		return $response;		
-	}
-
-	/**
-	 * Simple function that replace the 'record_XX_' off of the ID field name
-	 * prefix needed since it was taken for a pageID if sent as is as well as fixing other things
-	 * 
-	 * @param array $data
-	 * @return array 
-	 */
-	function getParsedPostData(array $data)
-	{
-		$return = array();
-		
-		foreach( $data as $key => $val)
-		{			
-			$return[ preg_replace( '/record_(\d+)_(\w+)/i', '$2', $key) ] = $val;
-		}
-		
-		return $return;
 	}
 	
 	/**

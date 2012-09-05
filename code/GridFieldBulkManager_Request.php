@@ -162,7 +162,7 @@ class GridFieldBulkManager_Request extends RequestHandler {
 	 */
 	public function update(SS_HTTPRequest $request)
 	{		
-		$data = $this->getParsedPostData($request->requestVars());
+		$data = GridFieldBulkEditingHelper::unescapeFormFieldsPOSTData($request->requestVars());
 		$record = DataObject::get_by_id($this->gridField->list->dataClass, $data['ID']);
 				
 		foreach($data as $field => $value)
@@ -232,28 +232,6 @@ class GridFieldBulkManager_Request extends RequestHandler {
 	{
 		$recordList = $request->requestVars();
 		return $recordList['records'];		 
-	}
-	
-	/**
-	 * Simple function that replace the 'record_XX_' off of the ID field name
-	 * prefix needed since it was taken for a pageID if sent as is as well as fixing other things
-	 * 
-	 * @param array $data
-	 * @return array 
-	 */
-	function getParsedPostData(array $data)
-	{
-		$return = array();
-		
-		foreach( $data as $key => $val)
-		{			
-			$return[ preg_replace( '/record_(\d+)_(\w+)/i', '$2', $key) ] = $val;
-		}
-		
-		if ( isset($return['url']) ) unset($return['url']);
-		if ( isset($return['cacheBuster']) ) unset($return['cacheBuster']);
-		
-		return $return;
 	}
 	
 	/**
