@@ -1,6 +1,11 @@
 GridField Bulk Editing Tools
 ============================
-SilverStripe 3 GridField component set to facilitate bulk editing, adding and deletion of records.
+SilverStripe 3 GridField component set to facilitate bulk image upload, bulk record editing, unlinking and deleting.
+Included are:
+* [Bulk Image Upload](#bulk-image-upload): Bulk images upload and on the fly fields editing
+* [Bulk Manager](#bulk-manager): Delete and unlink multiple records at once as well as editing records in bulk
+
+Take a look at the [Notes](#notes) and [TODOs](#todo).
 
 ## Requirments
 * SilverStripe 3.0
@@ -10,10 +15,8 @@ SilverStripe 3 GridField component set to facilitate bulk editing, adding and de
 * Run dev/build?flush=all to regenerate the manifest
 * run ?flush=all in CMS to force the templates to regenerate
 
-# 1/ Bulk Image Upload
+## Bulk Image Upload
 A component for uploading images in bulk into the managed Model relation, with option to edit fields on the fly.
-
-## Usage
 
 ### Usage 1
 Simplest usage, add the component to your GridField as below. The component will find the first Image has_one relation on the managed Model and the record's editable CMS fields
@@ -111,42 +114,42 @@ In addition, some configuration option can be set more specifically via individu
 			}
 		}
 
-# 2/ Bulk Manager
+## Bulk Manager
 A component for Editing, deleting and unlinking records on the fly
 
-## Usage
+### Usage
 Add GridFieldBulkEditingTools component if not done already and simply add GridFieldBulkImageUpload
 		
 		$config->addComponent(new GridFieldBulkEditingTools());
 		$config->addComponent(new GridFieldBulkManager());
 		
-## Configuration
+### Configuration
 The component's option can be configurated individually or in bulk through the 'config' functions like this:
 
     $config->getComponentByType('GridFieldBulkManager')->setConfig( $reference, $value );
 		
-### $config overview
+#### $config overview
 The available configuration options are:
 * 'editableFields' : array of string referencing specific CMS fields available for editing
 * 'fieldsClassBlacklist' : array of string referencing types (ClassName) of fields that wont be available for editing
 * 'fieldsNameBlacklist' : array of string referencing the names of fields that wont be available for editing
 
-# Notes
+## Notes
 * The HTML form fields for each editable fields are taken from the Model's getCMSFields() method
 * This is still pretty experimental and probably needs a bit more in depth testing
 * The code could probably be written better and/or cleaned up
 * The Components take bit and pieces around from CMSFileAddController, GridFieldDetailForm_ItemRequest, UploadField, overrides and adds some behaviors, templates and styles...
 
-# @TODO
+## @TODO
 
-## Common bug
+### Common bug
 * When editing fields, if the last field of the edit form is a drop down or similar, the drop down menu is cropped off
+* Some 'minor' things just don't work
 
-## Bulk Image Upload
+### Bulk Image Upload
 * Add individual actions for each upload (update + cancel)
 * Handle and display errors better for: creation, update, cancel
 * Make it work not only for images -> might need to rename this component then? -> should be handled by another component
 
-## Bulk Manager
-* Refresh GridField after record(s) are deleted or unlinked
+### Bulk Manager
 * Make 'select all' menu prettier
