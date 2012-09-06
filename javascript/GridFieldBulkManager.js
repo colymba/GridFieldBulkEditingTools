@@ -1,6 +1,5 @@
 (function($) {
 	
-  
 	$.entwine('colymba', function($) {
 		    
 		$('td.col-bulkSelect').entwine({
@@ -55,7 +54,7 @@
 			},
       onclick: function(){
         var state = $(this).prop('checked');
-        $('td.col-bulkSelect input').each(function(){ $(this).prop('checked', state); });
+        $('td.col-bulkSelect input').each(function(){$(this).prop('checked', state);});
       }
     });
     
@@ -122,7 +121,7 @@
 				{				
 					url = $(this).data('url');
 					cacheBuster = new Date().getTime();
-
+          
 					$('.col-bulkSelect input:checked').each(function(){
 						ids.push( parseInt( $(this).attr('name').split('_')[1] ) );
 					});				
@@ -134,7 +133,7 @@
 						type: "POST",
 						context: $(this)
 					}).done(function() {
-						//@TODO refresh GridField
+            $(this).parents('.ss-gridfield').entwine('.').entwine('ss').reload();
 					});
 				}
 				
