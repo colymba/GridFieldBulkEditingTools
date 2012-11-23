@@ -53,21 +53,22 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 	 */
 	function setConfig ( $reference, $value )
 	{
-		if ( isset( $this->config[$reference] ) )
-		{
-			if ( ($reference == 'fieldsClassBlacklist' || $reference == 'fieldsClassBlacklist' || $reference == 'editableFields') && !is_array($value) )
-			{
-				$value = array($value);
-			}
-			
-			//makes sure $forbiddenFieldsClasses are in no matter what
-			if ( $reference == 'fieldsClassBlacklist' )
-			{
-				$value = array_unique( array_merge($value, $this->forbiddenFieldsClasses) );
-			}
-			
-			$this->config[$reference] = $value;
+		if (!key_exists($reference, $this->config) ) {
+			user_error("Unknown option reference: $reference", E_USER_ERROR);
 		}
+		
+		if ( ($reference == 'fieldsClassBlacklist' || $reference == 'fieldsClassBlacklist' || $reference == 'editableFields') && !is_array($value) )
+		{
+			$value = array($value);
+		}
+
+		//makes sure $forbiddenFieldsClasses are in no matter what
+		if ( $reference == 'fieldsClassBlacklist' )
+		{
+			$value = array_unique( array_merge($value, $this->forbiddenFieldsClasses) );
+		}
+
+		$this->config[$reference] = $value;
 	}
 	
 	/**
