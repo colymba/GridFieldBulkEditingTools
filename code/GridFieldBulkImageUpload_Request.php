@@ -105,7 +105,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	function getDefaultRecordImageField()
 	{
 		$recordClass = $this->gridField->list->dataClass;
-		$recordHasOneFields = Config::inst()->get($recordClass, 'has_one', Config::UNINHERITED);
+		$recordHasOneFields = Config::inst()->get($recordClass, 'has_one', Config::INHERITED);
 		
 		$imageField = null;
 		foreach( $recordHasOneFields as $field => $type )
