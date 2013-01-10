@@ -22,7 +22,8 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 		'editableFields' => null,
 		'fieldsClassBlacklist' => array(),
 		'fieldsNameBlacklist' => array(),
-		'folderName' => 'bulkUpload'
+		'folderName' => 'bulkUpload',
+    'sequentialUploads' => false
 	);
 	
 	/**
@@ -66,6 +67,12 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 		if ( $reference == 'fieldsClassBlacklist' )
 		{
 			$value = array_unique( array_merge($value, $this->forbiddenFieldsClasses) );
+		}
+    
+    //sequentialUploads true/false
+    if ( $reference == 'sequentialUploads' && !is_bool($value) )
+		{
+      $value = false;
 		}
 
 		$this->config[$reference] = $value;

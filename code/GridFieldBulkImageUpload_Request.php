@@ -199,7 +199,8 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		$uploadField->removeExtraClass('ss-uploadfield');
 		
 		$uploadField->setTemplate('AssetUploadField');
-		$uploadField->setConfig('downloadTemplateName','GridFieldBulkImageUpload_downloadtemplate');
+		$uploadField->setConfig('downloadTemplateName','GridFieldBulkImageUpload_downloadtemplate');   
+    $uploadField->setConfig('sequentialUploads', $this->component->getConfig('sequentialUploads'));
 				
 		
 		$uploadField->setConfig('url', $this->Link('upload'));
