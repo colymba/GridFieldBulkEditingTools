@@ -85,9 +85,13 @@
 					//@TODO execute 'doFinish' even when no form have been changed					
 					$(formsWithUpadtes).each(function(){
 						cacheBuster = new Date().getTime() + '_' + $(this).attr('name');
-						data = $(this).serialize();
+            if ( url.indexOf('?') !== -1 ) cacheBuster = '&cacheBuster=' + cacheBuster;
+            else cacheBuster = '?cacheBuster=' + cacheBuster;
+            
+            data = $(this).serialize();
+
 						$.ajax({
-							url: url + '?cacheBuster=' + cacheBuster,
+							url: url + cacheBuster,
 							data: data,
 							type: "POST",
 							context: $(this)
