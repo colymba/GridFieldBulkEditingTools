@@ -167,7 +167,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 				->setAttribute('data-url', $this->Link('update'))
 				->setUseButtonTag(true)
 		);
-		
+		/*
 		if($crumbs && $crumbs->count()>=2)
 		{			
 			$actions->push(
@@ -180,7 +180,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 					->setUseButtonTag(true)
 			);
 		}	
-		
+		*/
 		$actions->push(
 			FormAction::create('Cancel', 'Cancel & Delete All')
 				->setAttribute('id', 'bulkImageUploadUpdateCancelBtn')
