@@ -14,7 +14,7 @@
 			onmatch: function(){
 				if( !$(this).hasClass('opened') ){					
 					$(this).addClass('opened');
-				}
+				}        
 			},
 			onunmatch: function(){
 				
@@ -63,10 +63,11 @@
 					if ( !$(itemInfo).hasClass('dirty') ) $(itemInfo).addClass('dirty');
 					
 					$('#bulkImageUploadUpdateFinishBtn').addClass('dirty');
+          $('#bulkImageUploadUpdateBtn').removeClass('ui-state-disabled');
 				}
 			});
 
-			$('#bulkImageUploadUpdateBtn').entwine({
+			$('#bulkImageUploadUpdateBtn:not(.ui-state-disabled)').entwine({
 				onmatch: function(){
 					$(this).data('completedForms', 0);
 				},
@@ -114,10 +115,11 @@
 								$('#bulkImageUploadUpdateFinishBtn').removeClass('dirty');
 								$('#bulkImageUploadUpdateBtn').data('completedForms', 0);
 								$('#bulkImageUploadUpdateBtn').removeClass('loading');
+                $('#bulkImageUploadUpdateBtn').addClass('ui-state-disabled');
 								if ( $('#bulkImageUploadUpdateBtn').hasClass('doFinish') ) {
 									//@TODO find a way to pass this as CMS navigation through AJAX
 									window.location = $('#bulkImageUploadUpdateFinishBtn').data('return-url');
-								}								
+								}		
 							}
 							
 						});
@@ -135,7 +137,16 @@
 				}				
 			});	
 			
-			$('#bulkImageUploadUpdateCancelBtn').entwine({
+      $('.ss-uploadfield-item-editform').entwine({
+        onmatch: function(e){
+          console.log(this);
+          $('#bulkImageUploadUpdateCancelBtn').removeClass('ui-state-disabled');
+        },
+				onunmatch: function(){					
+				}
+      });
+      
+			$('#bulkImageUploadUpdateCancelBtn:not(.ui-state-disabled)').entwine({
 				onclick: function(e){
 					
 					var url = $(this).data('url');
@@ -156,6 +167,7 @@
 							if ( $('li.ss-uploadfield-item').length == 0 ) {
 								$('.ss-uploadfield-editandorganize').css('display', 'none');
 								$('#Form_bulkImageUploadForm').removeClass('loading');
+                $('#bulkImageUploadUpdateCancelBtn').addClass('ui-state-disabled');
 							}
 
 						});
