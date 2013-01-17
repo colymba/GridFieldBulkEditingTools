@@ -151,12 +151,14 @@
 					
 					var url = $(this).data('url');
 					var cacheBuster = new Date().getTime();
+          if ( url.indexOf('?') !== -1 ) cacheBuster = '&cacheBuster=' + cacheBuster;
+          else cacheBuster = '?cacheBuster=' + cacheBuster;
 					
 					$('form.bulkImageUploadUpdateForm').each(function(){
 						var data = $(this).serialize();
 						
 						$.ajax({
-							url: url + '?cacheBuster=' + cacheBuster,
+							url: url + cacheBuster,
 							data: data,
 							type: "POST",
 							context: $(this)
