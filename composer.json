@@ -1,0 +1,20 @@
+{
+	"name": "gridFieldBulkEditingTools",
+	"type": "silverstripe-module",
+	"description": "SilverStripe 3 GridField component to upload images and edit records in bulk",
+	"homepage": "https://github.com/colymba/GridFieldBulkEditingTools",
+	"keywords": ["silverstripe", "bulk upload", "image upload", "gridfield bulk upload"],
+	"authors": [{
+			"name": "Thierry Francois",
+			"homepage": "http://colymba.com"
+    },{
+      "name": "GitHub contributors"
+  }],
+  "repositories": [{
+    "type": "vcs",
+    "url": "git@github.com:colymba/GridFieldBulkEditingTools.git"
+  }],
+	"require": {
+    "silverstripe/cms": "3.*"
+	}
+}
