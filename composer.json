@@ -1,5 +1,5 @@
 {
-	"name": "colymba/gridFieldBulkEditingTools",
+	"name": "colymba/gridfield-bulk-editing-tools",
 	"type": "silverstripe-module",
 	"description": "SilverStripe 3 GridField component to upload images and edit records in bulk",
 	"homepage": "https://github.com/colymba/GridFieldBulkEditingTools",
