@@ -89,6 +89,7 @@
             if ( url.indexOf('?') !== -1 ) cacheBuster = '&cacheBuster=' + cacheBuster;
             else cacheBuster = '?cacheBuster=' + cacheBuster;
             
+            $(this).trigger('beforesubmitform');
             data = $(this).serialize();
 
 						$.ajax({
