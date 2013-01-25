@@ -45,17 +45,20 @@
 		// start add-on behaviours
 		
 		$.entwine('colymba', function($) {		
-						
-			$('.bulkImageUploadUpdateForm input.text, .bulkImageUploadUpdateForm input.checkbox, .bulkImageUploadUpdateForm select, .bulkImageUploadUpdateForm textarea').entwine({
-				onchange: function(){
-					var form, itemInfo, itemStatus;
+		
+      $('.bulkImageUploadUpdateForm').entwine({
+        onmatch: function(){          
+        },
+				onunmatch: function(){					
+				},
+        haschanged: function(){
+          var itemInfo, itemStatus;
 					
-					form = this.closest('.bulkImageUploadUpdateForm');
-					itemStatus = (this).parents('li').find('.ss-uploadfield-item-status');					
+					itemStatus = $(this).parents('li').find('.ss-uploadfield-item-status');					
 					itemInfo = $(this).parents('li').find('.ss-uploadfield-item-info');
 					
-					if ( !$(form).hasClass('hasUpdate') ) {
-						$(form).addClass('hasUpdate');
+					if ( !$(this).hasClass('hasUpdate') ) {
+						$(this).addClass('hasUpdate');
 					}
 					
 					$(itemStatus).removeClass('updated').addClass('dirty').html('Changed');
@@ -64,9 +67,25 @@
 					
 					$('#bulkImageUploadUpdateFinishBtn').addClass('dirty');
           $('#bulkImageUploadUpdateBtn').removeClass('ui-state-disabled');
+        }
+      });
+     
+			$('.bulkImageUploadUpdateForm input.text, .bulkImageUploadUpdateForm input.checkbox, .bulkImageUploadUpdateForm select, .bulkImageUploadUpdateForm textarea').entwine({
+				onchange: function(){
+					this.closest('.bulkImageUploadUpdateForm').haschanged();
 				}
 			});
-
+    
+      //textarea node is being removed from the DOM when the HTMLEditorFieldChanges, not the best but works
+      $('.field.htmleditor textarea').entwine({
+        onmatch: function(){          
+        },
+				onunmatch: function(){	
+          //note sure why querying straight from the texarea doesn't work... maybe because it is already removed from DOM?
+          $('input[type="hidden"][name="'+$(this).attr('name')+'"]').parents('.bulkImageUploadUpdateForm').haschanged();
+				}
+      });
+      
 			$('#bulkImageUploadUpdateBtn:not(.ui-state-disabled)').entwine({
 				onmatch: function(){
 					$(this).data('completedForms', 0);
