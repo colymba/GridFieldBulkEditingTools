@@ -187,17 +187,22 @@ class GridFieldBulkManager_Request extends RequestHandler {
 	public function unlink(SS_HTTPRequest $request)
 	{
 		$recordList = $this->getPOSTRecordList($request);
-		$recordClass = $this->gridField->list->dataClass;
-		$recordForeignKey = $this->gridField->list->foreignKey;
-		//$recordForeignID = $this->gridField->list->foreignID;
 		$result = array();
-		
-		foreach ( $recordList as $id )
-		{			
-			$record = DataObject::get_by_id($recordClass, $id);
-			$res = $record->setField($recordForeignKey, 0);
-			$record->write();
-			array_push($result, array($id => $res));
+
+		if($this->gridField->list instanceof HasManyList) {
+			$recordClass = $this->gridField->list->dataClass;
+			$recordForeignKey = $this->gridField->list->foreignKey;
+			//$recordForeignID = $this->gridField->list->foreignID;
+
+			foreach ( $recordList as $id ) {
+				$record = DataObject::get_by_id($recordClass, $id);
+				$res = $record->setField($recordForeignKey, 0);
+				$record->write();
+				array_push($result, array($id => $res));
+			}
+		} else {
+			$result = $recordList;
+			$this->gridField->list->removeMany($recordList);
 		}
 		
 		$response = new SS_HTTPResponse(Convert::raw2json(array($result)));

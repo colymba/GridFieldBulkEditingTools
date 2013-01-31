@@ -261,12 +261,22 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		$recordClass = $this->gridField->list->dataClass;
 		$recordForeignKey = $this->gridField->list->foreignKey;
 		$recordForeignID = $this->gridField->list->foreignID;
+
+		$isManyMany = ($this->gridField->list instanceof ManyManyList);
 		
 		$record = Object::create($recordClass);
-		$record->setField($recordForeignKey, $recordForeignID);
+
+		if(!$isManyMany) {
+			$record->setField($recordForeignKey, $recordForeignID);
+		}
+
 		$record->write();
+
+		if($isManyMany) {
+			$this->gridField->list->add($record->ID);
+		}
 		
-		$upload = new Upload();		
+		$upload = new Upload();
 		$tmpfile = $request->postVar('BulkImageUploadField');
 		
 		// Check if the file has been uploaded into the temporary storage.
