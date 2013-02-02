@@ -127,8 +127,11 @@
 					});				
 					data.records = ids;
 
+					if ( url.indexOf('?') !== -1 ) cacheBuster = '&cacheBuster=' + cacheBuster;
+					else cacheBuster = '?cacheBuster=' + cacheBuster;
+
 					$.ajax({
-						url: url + '/' + action + '?cacheBuster=' + cacheBuster,
+						url: url + '/' + action + cacheBuster,
 						data: data,
 						type: "POST",
 						context: $(this)
@@ -183,8 +186,12 @@
 					$(formsWithUpadtes).each(function(){
 						cacheBuster = new Date().getTime() + '_' + $(this).attr('name');
 						data = $(this).serialize();
+						
+						if ( url.indexOf('?') !== -1 ) cacheBuster = '&cacheBuster=' + cacheBuster;
+						else cacheBuster = '?cacheBuster=' + cacheBuster;
+
 						$.ajax({
-							url: url + '?cacheBuster=' + cacheBuster,
+							url: url + '/' + action + cacheBuster,
 							data: data,
 							type: "POST",
 							context: $(this)
