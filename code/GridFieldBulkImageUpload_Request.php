@@ -264,6 +264,9 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		
 		$record = Object::create($recordClass);
 		$record->setField($recordForeignKey, $recordForeignID);
+		// passes the current gridfield-instance to a call-back method on the new object
+		$record->extend("onBulkImageUpload", $this->gridField);
+		
 		$record->write();
 		
 		$upload = new Upload();		
