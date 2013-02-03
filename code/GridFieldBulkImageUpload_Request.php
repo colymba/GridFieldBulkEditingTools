@@ -120,15 +120,23 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	}
 
 	/**
-	 * Returns the classname of the first has_one image-relation of the managed DataObject
+	 * Returns the classname of the first has_one image-relation of the managed DataObject or the
+	 * classname of the given fieldname
 	 *
 	 * @return string
 	 */
-	private function getDefaultRecordImageClass()
+	private function getRecordImageClass()
 	{
 		$recordClass        = $this->gridField->list->dataClass;
 		$recordHasOneFields = Config::inst()->get($recordClass, 'has_one', Config::INHERITED);
 
+		$fieldName = $this->component->getConfig('imageFieldName');
+		if($fieldName != null)
+		{
+			// filter out ID at the end:
+			$fieldName = substr($fieldName, 0, -2);
+			return $recordHasOneFields[$fieldName];
+		}
 		foreach($recordHasOneFields as $field => $type)
 		{
 			if($type == 'Image' || is_subclass_of($type, 'Image'))
@@ -306,7 +314,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		
 		// Process the uploaded file
 		if (!$return['error']) {
-			$fileObject = Object::create($this->getDefaultRecordImageClass());
+			$fileObject = Object::create($this->getRecordImageClass());
 
 			// Get the uploaded file into a new file object.
 			try {
