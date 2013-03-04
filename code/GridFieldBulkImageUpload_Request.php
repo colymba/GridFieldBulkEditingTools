@@ -196,20 +196,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 				->setUseButtonTag(true)
         //->setDisabled(true)
 		);
-		/*
-		if($crumbs && $crumbs->count()>=2)
-		{			
-			$actions->push(
-				FormAction::create('SaveAndFinish', 'Save All & Finish')
-					->setAttribute('id', 'bulkImageUploadUpdateFinishBtn')
-					->addExtraClass('ss-ui-action-constructive cms-panel-link')
-					->setAttribute('data-icon', 'accept')
-					->setAttribute('data-url', $this->Link('update'))
-					->setAttribute('data-return-url', $one_level_up->Link)
-					->setUseButtonTag(true)
-			);
-		}	
-		*/
+		
 		$actions->push(
 			FormAction::create('Cancel', 'Cancel & Delete All')
 				->setAttribute('id', 'bulkImageUploadUpdateCancelBtn')

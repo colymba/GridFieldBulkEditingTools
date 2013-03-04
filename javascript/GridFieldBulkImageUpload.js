@@ -73,8 +73,6 @@
 					$(itemStatus).removeClass('updated').addClass('dirty').html('Changed');
 					if ( $(itemInfo).hasClass('updated') ) $(itemInfo).removeClass('updated');
 					if ( !$(itemInfo).hasClass('dirty') ) $(itemInfo).addClass('dirty');
-					
-					$('#bulkImageUploadUpdateFinishBtn').addClass('dirty');
 
           $('#bulkImageUploadUpdateBtn').removeClass('ui-state-disabled ssui-button-disabled');
           $('#bulkImageUploadUpdateBtn').attr('aria-disabled', 'false');
@@ -143,14 +141,9 @@
 							$(this).removeClass('hasUpdate');
 							
 							if ( counter == totalForms ) {
-								$('#bulkImageUploadUpdateFinishBtn').removeClass('dirty');
 								$('#bulkImageUploadUpdateBtn').data('completedForms', 0);
 								$('#bulkImageUploadUpdateBtn').removeClass('loading');
                 $('#bulkImageUploadUpdateBtn').addClass('ui-state-disabled');
-								if ( $('#bulkImageUploadUpdateBtn').hasClass('doFinish') ) {
-									//@TODO find a way to pass this as CMS navigation through AJAX
-									window.location = $('#bulkImageUploadUpdateFinishBtn').data('return-url');
-								}		
 							}
 							
 						});
@@ -158,15 +151,6 @@
 					
 				}
 			});
-			
-			$('#bulkImageUploadUpdateFinishBtn').entwine({
-				onclick: function(e){										
-					if ( $(this).hasClass('dirty') ) {
-						$('#bulkImageUploadUpdateBtn').addClass('doFinish');
-						$('#bulkImageUploadUpdateBtn').click();
-					}					
-				}				
-			});	
 			
       $('.ss-uploadfield-item-editform').entwine({
         onmatch: function(e){     
