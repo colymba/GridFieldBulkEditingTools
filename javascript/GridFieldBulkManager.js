@@ -163,7 +163,7 @@
 					$(form).addClass('hasUpdate');
 				}
 
-				$('#bulkEditingUpdateFinishBtn').addClass('dirty');
+				//$('#bulkEditingUpdateFinishBtn').addClass('dirty');
 			}
 		});		
 		
@@ -206,13 +206,14 @@
 							$(this).removeClass('hasUpdate');		
 														
 							if ( counter == totalForms ) {
-								$('#bulkEditingUpdateFinishBtn').removeClass('dirty');
+								//$('#bulkEditingUpdateFinishBtn').removeClass('dirty');
 								$('#bulkEditingUpdateBtn').data('completedForms', 0);
 								$('#bulkEditingUpdateBtn').removeClass('loading');
+								/*
 								if ( $('#bulkEditingUpdateBtn').hasClass('doFinish') ) {
 									//@TODO find a way to pass this as CMS navigation through AJAX
 									window.location = $('#bulkEditingUpdateFinishBtn').data('return-url');
-								}								
+								}		*/						
 							}
 							
 						});
@@ -220,7 +221,7 @@
 					
 				}
 			});
-			
+			/*
 			$('#bulkEditingUpdateFinishBtn').entwine({
 				onclick: function(e){										
 					if ( $(this).hasClass('dirty') ) {
@@ -229,7 +230,7 @@
 					}					
 				}				
 			});	
-		
+			*/
 		
 	});
 	

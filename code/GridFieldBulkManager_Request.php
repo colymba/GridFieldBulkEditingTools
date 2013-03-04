@@ -75,7 +75,7 @@ class GridFieldBulkManager_Request extends RequestHandler {
 				->setAttribute('data-url', $this->Link('update'))
 				->setUseButtonTag(true)
 		);
-		
+		/*
 		if($crumbs && $crumbs->count()>=2)
 		{			
 			$actions->push(
@@ -87,7 +87,7 @@ class GridFieldBulkManager_Request extends RequestHandler {
 					->setAttribute('data-return-url', $one_level_up->Link)
 					->setUseButtonTag(true)
 			);
-		}	
+		}	*/
 		
 		$actions->push(
 			FormAction::create('Cancel', 'Cancel & Delete All')
