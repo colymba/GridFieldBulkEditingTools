@@ -40,6 +40,15 @@
 				}
 			}
 		});
+
+		$('#bulkImageUploadUpdateBtn,#bulkImageUploadUpdateCancelBtn').entwine({
+			onmatch: function(){
+				$(this).addClass('ui-state-disabled ssui-button-disabled');
+        $(this).attr('aria-disabled', 'true');
+        $(this).attr('disabled', 'true');
+			},
+			onunmatch: function(){}
+		});
 		
 		// end SS overhides
 		// start add-on behaviours
@@ -66,7 +75,10 @@
 					if ( !$(itemInfo).hasClass('dirty') ) $(itemInfo).addClass('dirty');
 					
 					$('#bulkImageUploadUpdateFinishBtn').addClass('dirty');
-          $('#bulkImageUploadUpdateBtn').removeClass('ui-state-disabled');
+
+          $('#bulkImageUploadUpdateBtn').removeClass('ui-state-disabled ssui-button-disabled');
+          $('#bulkImageUploadUpdateBtn').attr('aria-disabled', 'false');
+          $('#bulkImageUploadUpdateBtn').removeAttr('disabled');
         }
       });
      
@@ -157,9 +169,10 @@
 			});	
 			
       $('.ss-uploadfield-item-editform').entwine({
-        onmatch: function(e){
-          console.log(this);
-          $('#bulkImageUploadUpdateCancelBtn').removeClass('ui-state-disabled');
+        onmatch: function(e){     
+          $('#bulkImageUploadUpdateCancelBtn').removeClass('ui-state-disabled ssui-button-disabled');
+          $('#bulkImageUploadUpdateCancelBtn').attr('aria-disabled', 'false');
+          $('#bulkImageUploadUpdateCancelBtn').removeAttr('disabled');
         },
 				onunmatch: function(){					
 				}

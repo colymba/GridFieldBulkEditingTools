@@ -194,7 +194,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 				->setAttribute('data-icon', 'accept')
 				->setAttribute('data-url', $this->Link('update'))
 				->setUseButtonTag(true)
-        ->setDisabled(true)
+        //->setDisabled(true)
 		);
 		/*
 		if($crumbs && $crumbs->count()>=2)
@@ -217,7 +217,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 				->setAttribute('data-icon', 'decline')
 				->setAttribute('data-url', $this->Link('cancel'))
 				->setUseButtonTag(true)
-        ->setDisabled(true)
+        //->setDisabled(true)
 		);
 		
 		
