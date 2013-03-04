@@ -273,16 +273,14 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	 */
 	public function upload(SS_HTTPRequest $request)
 	{
-		$recordClass = $this->gridField->list->dataClass;
-		$recordForeignKey = $this->gridField->list->foreignKey;
-		$recordForeignID = $this->gridField->list->foreignID;
-		
+		$recordClass = $this->gridField->list->dataClass;		
 		$record = Object::create($recordClass);
-		$record->setField($recordForeignKey, $recordForeignID);
+
 		// passes the current gridfield-instance to a call-back method on the new object
 		$record->extend("onBulkImageUpload", $this->gridField);
 		
 		$record->write();
+		$this->gridField->list->add($record->ID);
 		
 		$upload = new Upload();		
 		$tmpfile = $request->postVar('BulkImageUploadField');
