@@ -219,6 +219,11 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		$uploadField->setConfig('downloadTemplateName','GridFieldBulkImageUpload_downloadtemplate');   
     $uploadField->setConfig('sequentialUploads', $this->component->getConfig('sequentialUploads'));
 				
+		$maxFileSize = $this->component->getConfig('maxFileSize');
+		if ( $maxFileSize !== null ) 
+		{
+			$uploadField->getValidator()->setAllowedMaxFileSize( $maxFileSize );
+		}
 		
 		$uploadField->setConfig('url', $this->Link('upload'));
 		

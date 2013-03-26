@@ -23,6 +23,7 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 		'fieldsClassBlacklist' => array(),
 		'fieldsNameBlacklist' => array(),
 		'folderName' => 'bulkUpload',
+		'maxFileSize' => null,
     'sequentialUploads' => false
 	);
 	
@@ -67,6 +68,13 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 		if ( $reference == 'fieldsClassBlacklist' )
 		{
 			$value = array_unique( array_merge($value, $this->forbiddenFieldsClasses) );
+		}
+
+		//makes sure maxFileSize is INT
+		if ( $reference == 'maxFileSize' && !is_int($value) )
+		{
+			user_warning("maxFileSize should be an Integer. Setting it to Auto.", E_USER_ERROR);
+			$value = null;
 		}
     
     //sequentialUploads true/false

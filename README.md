@@ -45,7 +45,8 @@ The available configuration options are:
 * 'fieldsNameBlacklist' : array of string referencing the names of fields that wont be available for editing
 * 'folderName' : name of the folder where the images should be uploaded
 * 'sequentialUploads' : boolean, if true files will be uploaded one by one
-		
+* 'maxFileSize' : integer, maximum upload file size in bytes 
+
 Each option can be set through the component's method setConfig( $reference, $value )
 In addition, some configuration option can be set more specifically via individual methods:
 * addFieldNameToBlacklist( $fieldName )
