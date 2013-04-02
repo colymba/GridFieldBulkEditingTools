@@ -40,7 +40,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	/**
 	 *
 	 */
-	static $url_handlers = array(
+	private static $url_handlers = array(
 		'$Action!' => '$Action'
 	);
 	
