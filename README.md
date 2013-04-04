@@ -8,7 +8,7 @@ Included are:
 Take a look at the [Notes](#notes) and [TODOs](#todo).
 
 ## Requirments
-* SilverStripe 3.0
+* SilverStripe 3.1
 
 ## Installation
 * Download and copy module in SilverStripe root directory and name it whatever you want
