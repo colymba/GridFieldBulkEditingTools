@@ -9,6 +9,7 @@ Take a look at the [Notes](#notes) and [TODOs](#todo).
 
 ## Requirments
 * SilverStripe 3.1
+
 For a SilverStripe 3.0 compatible version see branch [ss-3.0](https://github.com/colymba/GridFieldBulkEditingTools/tree/ss-3.0)
 
 ## Installation
