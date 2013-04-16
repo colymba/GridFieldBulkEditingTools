@@ -191,7 +191,7 @@
 						else cacheBuster = '?cacheBuster=' + cacheBuster;
 
 						$.ajax({
-							url: url + '/' + action + cacheBuster,
+							url: url + '/' + cacheBuster,
 							data: data,
 							type: "POST",
 							context: $(this)
