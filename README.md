@@ -7,10 +7,9 @@ Included are:
 
 Take a look at the [Notes](#notes) and [TODOs](#todo).
 
-## Requirments
-* SilverStripe 3.1
-
-For a SilverStripe 3.0 compatible version see branch [ss-3.0](https://github.com/colymba/GridFieldBulkEditingTools/tree/ss-3.0)
+## Requirements
+* SilverStripe 3.1 (version 1.+)
+* Silverstripe 3.0 (version [0.5](https://github.com/colymba/GridFieldBulkEditingTools/tree/0.5))
 
 ## Installation
 * Download and copy module in SilverStripe root directory and name it whatever you want
