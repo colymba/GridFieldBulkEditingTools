@@ -171,33 +171,23 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 		
 		$dropDownActionList = DropdownField::create('bulkActionName', '')
 			->setSource( array('edit' => 'Edit','unlink' => 'UnLink','delete' => 'Delete') );
-		/*
-		$actionButton = FormAction::create('doBulkAction', 'GO')
-				->setAttribute('id', 'doBulkActionButton')
-				//->addExtraClass('cms-panel-link')
-				->setAttribute('data-icon', 'pencil')
-				->setAttribute('data-url', $gridField->Link('bulkEdit'))
-				->setAttribute('href', $gridField->Link('bulkEdit').'/edit')
-				->setUseButtonTag(true);
-		*/
-		$actionButtonHTML = '
-		<a id="doBulkActionButton" href="'.$gridField->Link('bulkediting').'/edit'.'" data-url="'.$gridField->Link('bulkediting').'"  class="action ss-ui-button cms-panel-link" data-icon="pencil">
-			GO
-		</a>';
-    
-    $toggleSelectAllHTML = '
-      <span>Select all <input id="toggleSelectAll" type="checkbox" title="select all" name="toggleSelectAll" /></span>
-    ';
+
+    $templateData = new ArrayData(array(
+    	'Menu' => $dropDownActionList->FieldHolder(),
+    	'Button' => array(
+    		'Label' => 'Go',
+    		'Link' => $gridField->Link('bulkediting').'/edit',
+    		'DataURL' => $gridField->Link('bulkediting')
+    	),
+    	'Select' => array(
+    		'Label' => 'Select all'
+    	)
+    ));
 		
-		$html = '<div id="bulkManagerOptions">'.
-								$dropDownActionList->FieldHolder().
-								//$actionButton->Field().
-								$actionButtonHTML.
-                $toggleSelectAllHTML.
-						'</div>';
-		
+		$args = array('Colspan' => count($gridField->getColumns())-1);
+
 		return array(
-			'bulk-edit-tools' => $html
+			'header' => $templateData->renderWith('BulkManagerButtons', $args)
 		);
 	}
 	

@@ -10,8 +10,13 @@
 
 #bulkManagerOptions
 {
-	float: right;
-	margin: 0 0 0 20px;
+	/*float: right;
+	margin: 0 0 0 20px;*/
+}
+
+#bulkManagerOptions th.bulkmanagerselect
+{
+	text-align: center;
 }
 
 #bulkActionName
@@ -19,11 +24,21 @@
 	display: inline-block;
 	border: none;
 	box-shadow: none;
+
+	padding: 0;
+	margin: 0;
+
+	color: #000;
 }
 
 #bulkActionName #bulkActionName_chzn
 {
 	width: auto !important;
+}
+
+#bulkActionName .chzn-drop
+{
+	width: 95% !important;
 }
 
 .cms table.ss-gridfield-table tbody td a.tempDisabledEditLink
