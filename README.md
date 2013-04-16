@@ -11,6 +11,10 @@ Take a look at the [Notes](#notes) and [TODOs](#todo).
 * SilverStripe 3.1 (version 1.+)
 * Silverstripe 3.0 (version [0.5](https://github.com/colymba/GridFieldBulkEditingTools/tree/0.5))
 
+## Preview
+![preview](screenshots/preview.png)
+[More screenshots here.](screenshots)
+
 ## Installation
 * Download and copy module in SilverStripe root directory and name it whatever you want
 * Run dev/build?flush=all to regenerate the manifest
