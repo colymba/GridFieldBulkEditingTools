@@ -107,7 +107,7 @@
 				action = $('select#bulkActionName').val();
 				if ( action == 'edit' )
 				{
-					$('.col-bulkSelect input:checked').each(function(){
+					$(this).parents('.ss-gridfield-table').find('td.col-bulkSelect input:checked').each(function(){
 						ids.push( parseInt( $(this).attr('name').split('_')[1] ) );
 					});
 					if(ids.length > 0) $(this).attr('href', $(this).data('url')+'/'+action+'?records[]='+ids.join('&records[]=') );
@@ -122,7 +122,7 @@
 					url = $(this).data('url');
 					cacheBuster = new Date().getTime();
           
-					$('.col-bulkSelect input:checked').each(function(){
+					$(this).parents('.ss-gridfield-table').find('td.col-bulkSelect input:checked').each(function(){
 						ids.push( parseInt( $(this).attr('name').split('_')[1] ) );
 					});				
 					data.records = ids;
