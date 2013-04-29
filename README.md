@@ -26,7 +26,6 @@ A component for uploading images in bulk into the managed Model relation, with o
 ### Usage 1
 Simplest usage, add the component to your GridField as below. The component will find the first Image has_one relation on the managed Model and the record's editable CMS fields
 		
-		$config->addComponent(new GridFieldBulkEditingTools());
 		$config->addComponent(new GridFieldBulkImageUpload());
 
 ### Usage 2
@@ -34,7 +33,6 @@ You can specify which Image field to use and which fields are editable from the 
 $imageField (string): The name of the image field to use (should have 'ID' at the end: If your relation is set has 'MyImage' => 'Image', the parameter should be 'MyImageID')
 $editableFields (array): list of db fields name as string that will be editable like: array('myTextField', 'myVarcharField', 'myEnumField')
 		
-		$config->addComponent(new GridFieldBulkEditingTools());
 		$config->addComponent(new GridFieldBulkImageUpload( $imageField, $editableFields ));
 
 ### Configuration
@@ -76,7 +74,6 @@ In addition, some configuration option can be set more specifically via individu
 				$fields = parent::getCMSFields();
 
 				$config = GridFieldConfig_RelationEditor::create();	
-				$config->addComponent(new GridFieldBulkEditingTools());
 				$config->addComponent(new GridFieldBulkImageUpload());		
 				$f = new GridField('Visuals', 'Case Study Visuals', $this->Visuals(), $config);
 				$fields->addFieldToTab('Root.Visuals', $f);
@@ -127,7 +124,6 @@ A component for Editing, deleting and unlinking records on the fly
 ### Usage
 Add GridFieldBulkEditingTools component if not done already and simply add GridFieldBulkImageUpload
 		
-		$config->addComponent(new GridFieldBulkEditingTools());
 		$config->addComponent(new GridFieldBulkManager());
 		
 ### Configuration
@@ -157,6 +153,3 @@ The available configuration options are:
 * Add individual actions for each upload (update + cancel)
 * Handle and display errors better for: creation, update, cancel
 * Make it work not only for images -> might need to rename this component then? -> should be handled by another component
-
-### Bulk Manager
-* Make 'select all' menu prettier
