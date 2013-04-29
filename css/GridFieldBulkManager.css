@@ -8,18 +8,18 @@
 	text-align: center;
 }
 
-#bulkManagerOptions
+.bulkManagerOptions
 {
 	/*float: right;
 	margin: 0 0 0 20px;*/
 }
 
-#bulkManagerOptions th.bulkmanagerselect
+.bulkManagerOptions th.bulkmanagerselect
 {
 	text-align: center;
 }
 
-#bulkActionName
+.bulkManagerOptions .dropdown 
 {
 	display: inline-block;
 	border: none;
@@ -29,16 +29,6 @@
 	margin: 0;
 
 	color: #000;
-}
-
-#bulkActionName #bulkActionName_chzn
-{
-	width: auto !important;
-}
-
-#bulkActionName .chzn-drop
-{
-	width: 95% !important;
 }
 
 .cms table.ss-gridfield-table tbody td a.tempDisabledEditLink

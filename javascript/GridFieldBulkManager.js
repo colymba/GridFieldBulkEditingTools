@@ -47,7 +47,7 @@
 			}*/
 		});
 		
-    $('#toggleSelectAll').entwine({
+    $('.toggleSelectAll').entwine({
       onmatch: function(){
 			},
 			onunmatch: function(){				
@@ -58,7 +58,7 @@
       }
     });
     
-		$('select#bulkActionName').entwine({
+		$('select.bulkActionName').entwine({
 			onmatch: function(){
 			},
 			onunmatch: function(){				
@@ -66,8 +66,8 @@
 			onchange: function(e) {
 				var value, btn, icon;
 				value = $(this).val();
-				btn = $('#doBulkActionButton');
-				icon = $('#doBulkActionButton .ui-icon');
+				btn = $(this).parents('.bulkManagerOptions').find('.doBulkActionButton');
+				icon = $(this).parents('.bulkManagerOptions').find('.doBulkActionButton .ui-icon');
 				
 				switch (value) {
 					case 'edit':
@@ -97,14 +97,14 @@
 		});
 		
 		//@TODO prevent button click to call default url request
-		$('#doBulkActionButton').entwine({
+		$('.doBulkActionButton').entwine({
 			onmatch: function(){
 			},
 			onunmatch: function(){				
 			},
 			onmouseover: function(){
 				var action, ids = [];
-				action = $('select#bulkActionName').val();
+				action = $(this).parents('.bulkManagerOptions').find('select.bulkActionName').val();
 				if ( action == 'edit' )
 				{
 					$(this).parents('.ss-gridfield-table').find('td.col-bulkSelect input:checked').each(function(){
@@ -115,7 +115,7 @@
 			},			
 			onclick: function(e) {
 				var action, url, data = {}, ids = [], cacheBuster;
-				action = $('select#bulkActionName').val();
+				action = $(this).parents('.bulkManagerOptions').find('select.bulkActionName').val();
 				
 				if ( action != 'edit' )
 				{				
