@@ -54,7 +54,7 @@
 			},
       onclick: function(){
         var state = $(this).prop('checked');
-        $('td.col-bulkSelect input').each(function(){$(this).prop('checked', state);});
+        $(this).parents('.ss-gridfield-table').find('td.col-bulkSelect input').each(function(){$(this).prop('checked', state);});
       }
     });
     
