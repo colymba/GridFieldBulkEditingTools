@@ -29,22 +29,7 @@
 			onunmatch: function(){				
 			},
 			onclick: function(e) {
-        //e.preventDefault();
-        //return false;
-			}/*,
-			onchange: function(){
-				var idList, id;
-				
-				idList = $('#doBulkActionButton').data('selection');
-				if ( !idList ) idList = '';
-				
-				id = $(this).attr('name').split('_')[1];
-				
-				if ( !$(this).prop('checked') ) idList.replace( '#' + id, '');
-				else idList = idList + '#' + id;
-				
-				$('#doBulkActionButton').data('selection', idList); 
-			}*/
+			}
 		});
 		
     $('.toggleSelectAll').entwine({
@@ -142,6 +127,9 @@
 				
 			} 
 		});
+
+		/* **************************************************************************************
+		 * EDITING */
 		
 		$('.bulkEditingFieldHolder').entwine({
 			onmatch: function(){
@@ -162,8 +150,6 @@
 				if ( !$(form).hasClass('hasUpdate') ) {
 					$(form).addClass('hasUpdate');
 				}
-
-				//$('#bulkEditingUpdateFinishBtn').addClass('dirty');
 			}
 		});		
 		
@@ -181,8 +167,7 @@
 					url = $(this).data('url');
 					
 					if ( $(formsWithUpadtes).length > 0 ) $(this).addClass('loading');
-					
-					//@TODO execute 'doFinish' even when no form have been changed					
+														
 					$(formsWithUpadtes).each(function(){
 						cacheBuster = new Date().getTime() + '_' + $(this).attr('name');
 						data = $(this).serialize();
@@ -206,14 +191,8 @@
 							$(this).removeClass('hasUpdate');		
 														
 							if ( counter == totalForms ) {
-								//$('#bulkEditingUpdateFinishBtn').removeClass('dirty');
 								$('#bulkEditingUpdateBtn').data('completedForms', 0);
 								$('#bulkEditingUpdateBtn').removeClass('loading');
-								/*
-								if ( $('#bulkEditingUpdateBtn').hasClass('doFinish') ) {
-									//@TODO find a way to pass this as CMS navigation through AJAX
-									window.location = $('#bulkEditingUpdateFinishBtn').data('return-url');
-								}		*/						
 							}
 							
 						});
@@ -221,16 +200,6 @@
 					
 				}
 			});
-			/*
-			$('#bulkEditingUpdateFinishBtn').entwine({
-				onclick: function(e){										
-					if ( $(this).hasClass('dirty') ) {
-						$('#bulkEditingUpdateBtn').addClass('doFinish');
-						$('#bulkEditingUpdateBtn').click();
-					}					
-				}				
-			});	
-			*/
 		
 	});
 	

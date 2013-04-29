@@ -10,8 +10,6 @@
 
 .bulkManagerOptions
 {
-	/*float: right;
-	margin: 0 0 0 20px;*/
 }
 
 .bulkManagerOptions th.bulkmanagerselect
@@ -43,7 +41,3 @@
   background-position: 2px 0px;
   background-repeat: no-repeat no-repeat;
 }
-
-/* ************************************************************************
- * EDITING
- */
