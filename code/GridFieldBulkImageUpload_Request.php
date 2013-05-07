@@ -178,7 +178,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	 * 
 	 * @return string Form's HTML
 	 */
-	public function index()
+	public function index($request)
 	{	
 		Requirements::javascript(FRAMEWORK_DIR . '/javascript/AssetUploadField.js');
 		Requirements::css(FRAMEWORK_DIR . '/css/AssetUploadField.css');				
@@ -260,7 +260,30 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		$response = new SS_HTTPResponse($formHTML);
 		$response->addHeader('Content-Type', 'text/plain');
 		$response->addHeader('X-Title', 'SilverStripe - Bulk '.$this->gridField->list->dataClass.' Image Upload');
-		return $response;
+		if($request->isAjax()) {
+			return $response;
+		} else {
+			$controller = $this->getToplevelController();
+			// If not requested by ajax, we need to render it within the controller context+template
+			return $controller->customise(array(
+				'Content' => $response->getBody(),
+			));	
+		}
+	}
+	
+	/**
+	 * Traverse up nested requests until we reach the first that's not a GridFieldDetailForm or GridFieldDetailForm_ItemRequest.
+	 * The opposite of {@link Controller::curr()}, required because
+	 * Controller::$controller_stack is not directly accessible.
+	 * 
+	 * @return Controller
+	 */
+	protected function getToplevelController() {
+		$c = $this->controller;
+		while($c && ($c instanceof GridFieldDetailForm_ItemRequest || $c instanceof GridFieldDetailForm)) {
+			$c = $c->getController();
+		}
+		return $c;
 	}
 	
 	/**
