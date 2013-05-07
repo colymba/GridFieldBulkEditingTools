@@ -166,6 +166,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		if ( $config['imageFieldName'] == null ) $config['imageFieldName'] = $this->getDefaultRecordImageField();
 		
 		$recordCMSDataFields = GridFieldBulkEditingHelper::getModelFilteredDataFields($config, $recordCMSDataFields);
+		$recordCMSDataFields = GridFieldBulkEditingHelper::populateCMSDataFields($recordCMSDataFields, $this->gridField->list->dataClass, $recordID);
 		$formFieldsHTML = GridFieldBulkEditingHelper::dataFieldsToHTML($recordCMSDataFields);
 		$formFieldsHTML = GridFieldBulkEditingHelper::escapeFormFieldsHTML($formFieldsHTML, $recordID);
 		
