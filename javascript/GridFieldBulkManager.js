@@ -140,6 +140,12 @@
 			onunmatch: function(){					
 			}
 		});
+
+		$('.bulkEditingForm').entwine({
+			onsubmit: function(){
+				return false;
+			}
+		});
 		
 		$('.bulkEditingForm input, .bulkEditingForm select, .bulkEditingForm textarea').entwine({
 			onchange: function(){

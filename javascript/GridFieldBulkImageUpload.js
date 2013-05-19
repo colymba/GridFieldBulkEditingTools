@@ -41,6 +41,12 @@
 			}
 		});
 
+		$('div.ss-upload .ss-uploadfield-item-editform form').entwine({
+			onsubmit: function(e) {
+				return false;
+			}
+		});
+
 		$('#bulkImageUploadUpdateBtn,#bulkImageUploadUpdateCancelBtn').entwine({
 			onmatch: function(){
 				$(this).addClass('ui-state-disabled ssui-button-disabled');

@@ -23,7 +23,7 @@ jQuery(document).ready(function(){
 				'</div>' +				
 				'{% if (!file.error) { %}' +
 					'<div class="ss-uploadfield-item-editform">'+
-						'<form action="update" method="post" class="bulkImageUploadUpdateForm" name="BIUUF_{%=file.record.ID%}">'+
+						'<form action="" method="post" class="bulkImageUploadUpdateForm" name="BIUUF_{%=file.record.ID%}">'+
 								'<input type="hidden" name="record_{%=file.record.ID%}_ID" value="{%=file.record.ID%}"/>'+
 								'<img class="imgPreview" src="{%=file.preview_url%}" />'+
 
