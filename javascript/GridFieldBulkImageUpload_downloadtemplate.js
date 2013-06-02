@@ -1,13 +1,17 @@
 jQuery(document).ready(function(){
-	window.tmpl.cache['GridFieldBulkImageUpload_downloadtemplate'] = tmpl(
+	window.tmpl.cache['colymba-gfbiu-uploadfield-downloadtemplate'] = tmpl(
 		'{% for (var i=0, files=o.files, l=files.length, file=files[0]; i<l; file=files[++i]) { %}' +
 			'<li class="ss-uploadfield-item template-download{% if (file.error) { %} ui-state-error{% } %}" data-fileid="{%=file.id%}">' + 
 				'<div class="ss-uploadfield-item-preview preview"><span>' +
 					'<img src="{%=file.thumbnail_url%}" alt="" />' +
 				'</span></div>' +
 				'<div class="ss-uploadfield-item-info">' +
+					'{% if (!file.error) { %}' +
+						'<input type="hidden" name="{%=file.fieldname%}[Files][]" value="{%=file.id%}" />' + 
+					'{% } %}' + 
 					'<label class="ss-uploadfield-item-name">' + 
 						'<span class="name" title="{%=file.name%}">{%=file.name%}</span> ' + 
+						'<span class="size">{%=o.formatFileSize(file.size)%}</span>' +
 						'{% if (!file.error) { %}' +
 							'<div class="ss-uploadfield-item-status ui-state-success-text" title="'+ss.i18n._t('UploadField.Uploaded', 'Uploaded')+'">'+ss.i18n._t('UploadField.Uploaded', 'Uploaded')+'</div>' +						
 						'{% } else {  %}' +
@@ -17,11 +21,14 @@ jQuery(document).ready(function(){
 					'</label>' +
 					'{% if (file.error) { %}' +
 						'<div class="ss-uploadfield-item-actions">' + 
-							'<div class="ss-uploadfield-item-cancel ss-uploadfield-item-cancelfailed"><button class="icon icon-16">' + ss.i18n._t('UploadField.CANCEL', 'Cancel') + '</button></div>' +
+							'<div class="ss-uploadfield-item-cancel ss-uploadfield-item-cancelfailed delete"><button class="icon icon-16" data-icon="delete" title="' + ss.i18n._t('UploadField.CANCELREMOVE', 'Cancel/Remove') + '">' + ss.i18n._t('UploadField.CANCELREMOVE', 'Cancel/Remove') + '</button></div>' +
 						'</div>' +
+					'{% } else { %}' +
+						//'<div class="ss-uploadfield-item-actions">{% print(file.buttons, true); %}</div>' +
 					'{% } %}' + 
-				'</div>' +				
-				'{% if (!file.error) { %}' +
+				'</div>' +
+				'{% if (!file.error) { %}' +				
+
 					'<div class="ss-uploadfield-item-editform">'+
 						'<form action="" method="post" class="bulkImageUploadUpdateForm" name="BIUUF_{%=file.record.ID%}">'+
 								'<input type="hidden" name="record_{%=file.record.ID%}_ID" value="{%=file.record.ID%}"/>'+
@@ -32,9 +39,11 @@ jQuery(document).ready(function(){
 								'{% } %}' +
 
 						'</form>'+
-					'</div>' + 
-				'{% } %}' + 				
+					'</div>' +
+					
+				'{% } %}' + 
 			'</li>' + 
 		'{% } %}'
 	);
 });
+//'<div class="ss-uploadfield-item-editform loading"><iframe frameborder="0" src="{%=file.edit_url%}"></iframe></div>' + 

@@ -10,7 +10,7 @@
 
 /* ************************************************************************
  * UPLOAD
- */
+ */ 
 
 .ss-assetuploadfield .ss-uploadfield-files .ss-uploadfield-item-editform
 {
@@ -31,7 +31,7 @@ li.ss-uploadfield-item.template-download .imgPreview
 	right: 10px;
 }
 
-#BulkImageUploadField .ss-uploadfield-item-info.updated
+#BulkUploadField .ss-uploadfield-item-info.updated
 {
 	background-color: #a4ca3a;
 	
@@ -43,7 +43,7 @@ li.ss-uploadfield-item.template-download .imgPreview
 	background-image: linear-gradient(top, #a4ca3a 0%, #59781D 100%);
 }
 
-#BulkImageUploadField .ss-uploadfield-item-info.dirty
+#BulkUploadField .ss-uploadfield-item-info.dirty
 {
 	background-color: #f2ba11;
 	
@@ -55,11 +55,11 @@ li.ss-uploadfield-item.template-download .imgPreview
 	background-image: linear-gradient(top, #f2ba11 0%, #df6e00 100%);
 }
 
-#BulkImageUploadField .ss-uploadfield-item-status.updated
+#BulkUploadField .ss-uploadfield-item-status.updated
 {
 	color: #3b8716;
 }
-#BulkImageUploadField .ss-uploadfield-item-status.dirty
+#BulkUploadField .ss-uploadfield-item-status.dirty
 {
 	color: #f25000;
 }
