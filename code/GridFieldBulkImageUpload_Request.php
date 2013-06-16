@@ -262,10 +262,6 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 			$form->Backlink = $one_level_up->Link;
 		}
 
-		$form->setTemplate('LeftAndMain_EditForm');
-		$form->addExtraClass('cms-content center'); //not using cms-edit-form to avoid btn being hooked with default handlers
-		$form->setAttribute('data-pjax-fragment', 'Content');
-
 		return $form;
 	}
 	
@@ -284,11 +280,21 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		Requirements::javascript(BULK_EDIT_TOOLS_PATH . '/javascript/GridFieldBulkImageUpload_downloadtemplate.js');
 
 		$form = $this->uploadForm();
+		$form->setTemplate('LeftAndMain_EditForm');
+		$form->addExtraClass('cms-content center LeftAndMain'); //not using cms-edit-form to avoid btn being hooked with default handlers
+		$form->setAttribute('data-pjax-fragment', 'Content');
 
 		if($request->isAjax())
 		{			
-			$response = new SS_HTTPResponse($form->forAjaxTemplate()->getValue());
+			$response = new SS_HTTPResponse(
+				Convert::raw2json( 
+					array(
+						'Content' => $form->forTemplate()->getValue()//$form->forAjaxTemplate()->getValue()
+					)
+				)
+			);
 			$response->addHeader('X-Pjax', 'Content');
+			$response->addHeader('Content-Type', 'text/json');
 			$response->addHeader('X-Title', 'SilverStripe - Bulk '.$this->gridField->list->dataClass.' Image Upload');
 			return $response;
 		}
