@@ -206,7 +206,8 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		/* *
 		 * UploadField
 		 */
-		$uploadField = GFBIUploadField::create('BulkUploadField', '');
+		$imageRealtionName = $this->getRecordImageClass();
+		$uploadField = UploadField::create($imageRealtionName, '');
 		$uploadField->setConfig('previewMaxWidth', 40);
 		$uploadField->setConfig('previewMaxHeight', 30);		
 		$uploadField->addExtraClass('ss-assetuploadfield');
@@ -315,89 +316,48 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	}
 	
 	/**
-	 * Process image upload and Object creation
-	 * Create new DataObject and add image relation
-	 * returns Image data and editable Fields forms
-	 * 
-	 * Overides UploadField's upload method by Zauberfisch
-	 * Kept original file upload/processing but removed unessesary processing
-	 * and adds DataObject creation and editableFields processing
-	 * 
-	 * @author Zauberfisch original upload() method
-	 * @see UploadField->upload()
+	 * Process upload through UploadField,
+	 * creates new record and link newly uploaded file
+	 * adds record to GrifField relation list
+	 * and return image/file data and record edit form
+	 *
 	 * @param SS_HTTPRequest $request
 	 * @return string json
 	 */
 	public function upload(SS_HTTPRequest $request)
 	{
-		// Protect against CSRF on destructive action
-		$token = $this->uploadForm()->getSecurityToken();
-		if(!$token->checkRequest($request)) return $this->httpError(400);
-
-		//create DataObject
+		//create record
 		$recordClass = $this->gridField->list->dataClass;		
 		$record = Object::create($recordClass);
+		$record->write();
 
 		// passes the current gridfield-instance to a call-back method on the new object
 		$record->extend("onBulkImageUpload", $this->gridField);
-		
-		//Write + add DO to gridField relation list
+
+		//get uploadField and process upload
+		$imageRelationName = $this->getRecordImageClass();
+		$uploadField = $this->uploadForm()->Fields()->fieldByName($imageRelationName);
+		$uploadField->setRecord($record);
+		$uploadResponse = $uploadField->upload( $request );
+
+		//get uploaded File
+		$uploadResponse = Convert::json2array( $uploadResponse->getBody() );
+		$uploadResponse = array_shift( $uploadResponse );
+		$uploadedFile = DataObject::get_by_id( $imageRelationName, $uploadResponse['id'] );
+
+		// Attach the file to record.				
+		$record->{"{$imageRelationName}ID"} = $uploadedFile->ID;					
 		$record->write();
+
+		// attached record to gridField relation
 		$this->gridField->list->add($record->ID);
-
-		//process upload and file attachement
-		$error = null;
-		$return = array();
-
-		// Get field details
-		$uploadField = $this->uploadForm()->Fields()->fieldByName('BulkUploadField');
-		//$fileRecordName = $this->getRecordImageField();
-		//$fileRecordName = substr( $fileRecordName, 0, strlen($fileRecordName)-2 );
-		//$uploadField->setName($fileRecordName); //File/Image obj where to save the upload
-		//$uploadField->setRecord($record); //record containing the File/Image obj
-
-		$postVars = $request->postVar('BulkUploadField');
-
-		//$uploadedFiles = $uploadField->extractUploadedFileData($postVars);
-		$uploadedFiles = $uploadField->extractFileData($postVars);
-		$tmpFile = reset($uploadedFiles);
-		//$file = $uploadField->saveTemporaryFile($tmpFile, $error);
-		//$file = $uploadField->saveTempFile($tmpFile, $error);		
-		/*
-		if(empty($file)) {
-			$return = array('error' => $error);
-		} else {
-			//$return = $uploadField->encodeFileAttributes($file);
-			$return = $uploadField->encodeFileAttr($file);
-		}*/
-
-		$file = Object::create($this->getRecordImageClass());
-
-		// Get the uploaded file into a new file object.
-		try {
-			$upload = new Upload();	
-			$upload->loadIntoFile($tmpFile, $file, $this->component->getConfig('folderName'));
-		} catch (Exception $e) {
-			// we shouldn't get an error here, but just in case
-			$return['error'] = $e->getMessage();
-		}
-
-		// Attach the file to the related record.
-		$record->setField($this->getRecordImageField(), $file->ID);					
-		$record->write();
 
 		//get record's CMS Fields
 		$recordEditableFormFields = $this->getRecordHTMLFormFields( $record->ID );
 		
 		// Collect all output data.
-		$return = array_merge($return, array(
-			'id' => $file->ID,
-			'name' => $file->getTitle() . '.' . $file->getExtension(),
-			'url' => $file->getURL(),
-			'preview_url' => $file->setHeight(55)->Link(),
-			'thumbnail_url' => $file->SetRatioSize(40,30)->getURL(),
-			'size' => $file->getAbsoluteSize(),
-			//'buttons' => $file->UploadFieldFileButtons,
+		$return = array_merge($uploadResponse, array(
+			'preview_url' => $uploadedFile->setHeight(55)->Link(),
 			'record' => array(
 				'ID' => $record->ID,
 				'fields' => $recordEditableFormFields
