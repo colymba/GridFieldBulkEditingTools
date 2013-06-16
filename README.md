@@ -5,11 +5,12 @@ Included are:
 * [Bulk Image Upload](#bulk-image-upload): Bulk images upload and on the fly fields editing
 * [Bulk Manager](#bulk-manager): Delete and unlink multiple records at once as well as editing records in bulk
 
-Take a look at the [Notes](#notes) and [TODOs](#todo).
-
 ## Requirements
 * SilverStripe 3.1 (version master / 1.+)
 * Silverstripe 3.0 (version [0.5](https://github.com/colymba/GridFieldBulkEditingTools/tree/0.5))
+
+## Development notes
+The master branch will try to be compatible with the latest SilverStripe release/pre-release. Please submit pull request against the master branch. Older branches are kept for compatibility but may not be maintained.
 
 ## Preview
 ![preview](screenshots/preview.png)
@@ -57,67 +58,6 @@ In addition, some configuration option can be set more specifically via individu
 * removeFieldNameFromBlacklist( $fieldName )
 * removeClassFromBlacklist( $className )
 
-### Sample Files
-
-#### Page Model
-
-		class Page extends SiteTree {
-
-			public static $db = array(
-			);
-
-			public static $has_many = array(
-					'Visuals' => 'Visual'
-			);
-
-			public function getCMSFields() {
-				$fields = parent::getCMSFields();
-
-				$config = GridFieldConfig_RelationEditor::create();	
-				$config->addComponent(new GridFieldBulkImageUpload());		
-				$f = new GridField('Visuals', 'Case Study Visuals', $this->Visuals(), $config);
-				$fields->addFieldToTab('Root.Visuals', $f);
-
-				return $fields;
-			}
-
-		}
-
-#### Visual Model
-('Image', 'Type', 'Title' and 'Embed' Fields will be picked up automatically by the component)
-
-		class Visual extends DataObject
-		{
-			public static $db = array(
-					'Type' => "Enum('Image,Embed','Image')",
-					'Title' => 'Text',
-					'Embed' => 'HTMLText'
-			);
-
-			public static $has_one = array(
-					'Page' => 'Page',
-					'Image' => 'Image'
-			);
-
-			public function getCMSFields() {
-				$fields = new FieldList();
-
-				$fields->push( new DropdownField(
-					'Type',
-					'Type of visual',
-					singleton('Visual')->dbObject('Type')->enumValues()
-				));
-
-				$fields->push( new TextField('Title', 'Title and Caption for images (useful for SEO)') );
-				$fields->push( new TextareaField('Embed', 'HTML Embed code') );		
-
-				$f = new UploadField('Image', 'Image file');				
-				$fields->push($f);
-
-				return $fields;
-			}
-		}
-
 ## Bulk Manager
 A component for Editing, deleting and unlinking records on the fly
 
@@ -138,18 +78,14 @@ The available configuration options are:
 * 'fieldsNameBlacklist' : array of string referencing the names of fields that wont be available for editing
 
 ## Notes
-* The HTML form fields for each editable fields are taken from the Model's getCMSFields() method
-* This is still pretty experimental and probably needs a bit more in depth testing
-* The code could probably be written better and/or cleaned up
-* The Components take bit and pieces around from CMSFileAddController, GridFieldDetailForm_ItemRequest, UploadField, overrides and adds some behaviors, templates and styles...
+* The Record edit form uses the Model's getCMSFields()
 
-## @TODO
+### @TODO
 
-### Common bug
+### Known bug
 * When editing fields, if the last field of the edit form is a drop down or similar, the drop down menu is cropped off
-* Some 'minor' things just don't work
 
 ### Bulk Image Upload
 * Add individual actions for each upload (update + cancel)
 * Handle and display errors better for: creation, update, cancel
-* Make it work not only for images -> might need to rename this component then? -> should be handled by another component
+* Make it work not only for images but Files too
