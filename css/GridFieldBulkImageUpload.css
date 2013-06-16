@@ -31,7 +31,7 @@ li.ss-uploadfield-item.template-download .imgPreview
 	right: 10px;
 }
 
-#BulkUploadField .ss-uploadfield-item-info.updated
+#Form_uploadForm .ss-uploadfield-item-info.updated
 {
 	background-color: #a4ca3a;
 	
@@ -43,7 +43,7 @@ li.ss-uploadfield-item.template-download .imgPreview
 	background-image: linear-gradient(top, #a4ca3a 0%, #59781D 100%);
 }
 
-#BulkUploadField .ss-uploadfield-item-info.dirty
+#Form_uploadForm .ss-uploadfield-item-info.dirty
 {
 	background-color: #f2ba11;
 	
@@ -55,11 +55,11 @@ li.ss-uploadfield-item.template-download .imgPreview
 	background-image: linear-gradient(top, #f2ba11 0%, #df6e00 100%);
 }
 
-#BulkUploadField .ss-uploadfield-item-status.updated
+#Form_uploadForm .ss-uploadfield-item-status.updated
 {
 	color: #3b8716;
 }
-#BulkUploadField .ss-uploadfield-item-status.dirty
+#Form_uploadForm .ss-uploadfield-item-status.dirty
 {
 	color: #f25000;
 }
