@@ -27,6 +27,7 @@
 	margin: 0;
 
 	color: #000;
+	vertical-align: top;
 }
 
 .cms table.ss-gridfield-table tbody td a.tempDisabledEditLink
