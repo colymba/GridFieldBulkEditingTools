@@ -68,7 +68,7 @@ class GridFieldBulkManager_Request extends RequestHandler {
 		$actions = new FieldList();		
 		
 		$actions->push(
-			FormAction::create('SaveAll', 'Save All')
+			FormAction::create('SaveAll', _t('GridFieldBulkTools.SAVE_BTN_LABEL', 'Save All'))
 				->setAttribute('id', 'bulkEditingUpdateBtn')
 				->addExtraClass('ss-ui-action-constructive cms-panel-link')
 				->setAttribute('data-icon', 'accept')
@@ -90,7 +90,7 @@ class GridFieldBulkManager_Request extends RequestHandler {
 		}	*/
 		
 		$actions->push(
-			FormAction::create('Cancel', 'Cancel & Delete All')
+			FormAction::create('Cancel', _t('GridFieldBulkTools.CANCEL_BTN_LABEL', 'Cancel & Delete All'))
 				->setAttribute('id', 'bulkEditingUpdateCancelBtn')
 				->addExtraClass('ss-ui-action-destructive cms-panel-link')
 				->setAttribute('data-icon', 'decline')

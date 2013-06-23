@@ -170,19 +170,23 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 		Requirements::javascript(BULK_EDIT_TOOLS_PATH . '/javascript/GridFieldBulkManager.js');
 		
 		$dropDownActionList = DropdownField::create('bulkActionName', '')
-			->setSource( array('edit' => 'Edit','unlink' => 'UnLink','delete' => 'Delete') )
+			->setSource( array(
+				'edit' => _t('GridFieldBulkTools.EDIT_SELECT_LABEL', 'Edit'),
+				'unlink' => _t('GridFieldBulkTools.UNLINK_SELECT_LABEL', 'UnLink'),
+				'delete' => _t('GridFieldBulkTools.DELETE_SELECT_LABEL', 'Delete')
+			))
 			->setAttribute('class', 'bulkActionName')
 			->setAttribute('id', '');
 
     $templateData = new ArrayData(array(
     	'Menu' => $dropDownActionList->FieldHolder(),
     	'Button' => array(
-    		'Label' => 'Go',
+    		'Label' => _t('GridFieldBulkTools.ACTION_BTN_LABEL', 'Go'),
     		'Link' => $gridField->Link('bulkediting').'/edit',
     		'DataURL' => $gridField->Link('bulkediting')
     	),
     	'Select' => array(
-    		'Label' => 'Select all'
+    		'Label' => _t('GridFieldBulkTools.SELECT_ALL_LABEL', 'Select all')
     	)
     ));
 		

@@ -190,7 +190,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		$actions = new FieldList();
 
 		$actions->push(
-			FormAction::create('Finish', 'Finish')
+			FormAction::create('Finish', _t('GridFieldBulkTools.FINISH_BTN_LABEL', 'Finish'))
 				->setAttribute('id', 'bulkImageUploadFinishBtn')				
 				->addExtraClass('cms-panel-link')
 				->setAttribute('data-icon', 'accept')
@@ -200,7 +200,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		);
 		
 		$actions->push(
-			FormAction::create('SaveAll', 'Save All')
+			FormAction::create('SaveAll', _t('GridFieldBulkTools.SAVE_BTN_LABEL', 'Save All'))
 				->setAttribute('id', 'bulkImageUploadUpdateBtn')
 				->addExtraClass('ss-ui-action-constructive')
 				->setAttribute('data-icon', 'accept')
@@ -210,7 +210,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		);
 		
 		$actions->push(
-			FormAction::create('Cancel', 'Cancel & Delete All')
+			FormAction::create('Cancel', _t('GridFieldBulkTools.CANCEL_BTN_LABEL', 'Cancel & Delete All'))
 				->setAttribute('id', 'bulkImageUploadUpdateCancelBtn')
 				->addExtraClass('ss-ui-action-destructive')
 				->setAttribute('data-icon', 'decline')
@@ -297,6 +297,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		Requirements::javascript(BULK_EDIT_TOOLS_PATH . '/javascript/GridFieldBulkImageUpload.js');	
 		Requirements::css(BULK_EDIT_TOOLS_PATH . '/css/GridFieldBulkImageUpload.css');
 		Requirements::javascript(BULK_EDIT_TOOLS_PATH . '/javascript/GridFieldBulkImageUpload_downloadtemplate.js');
+		Requirements::add_i18n_javascript(BULK_EDIT_TOOLS_PATH . '/javascript/lang');
 
 		if($request->isAjax())
 		{			

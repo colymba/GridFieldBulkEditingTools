@@ -95,10 +95,7 @@
 
 				if ( formsWithUpadtes > 0 )
 				{
-					confirmed = confirm(
-  					"You have unsaved changes. Continuing will loose all unsaved data.\n\n" + 
-  					"Do your really want to continue?"
-  				);  				
+					confirmed = confirm( ss.i18n._t('GridFieldBulkTools.FINISH_CONFIRM') );  				
 				}
 
 				if (confirmed)
@@ -139,7 +136,7 @@
 						$(this).addClass('hasUpdate');
 					}
 					
-					$(itemStatus).removeClass('updated').addClass('dirty').html('Changed');
+					$(itemStatus).removeClass('updated').addClass('dirty').html(ss.i18n._t('GridFieldBulkTools.EDIT_CHANGED'));
 					if ( $(itemInfo).hasClass('updated') ) $(itemInfo).removeClass('updated');
 					if ( !$(itemInfo).hasClass('dirty') ) $(itemInfo).addClass('dirty');
 
@@ -228,7 +225,7 @@
 							$(btn).data('completedForms', counter);
 							
 							$(this).removeClass('hasUpdate');		
-							$(this).parents('li').find('.ss-uploadfield-item-status').removeClass('dirty').addClass('updated').html('Updated');							
+							$(this).parents('li').find('.ss-uploadfield-item-status').removeClass('dirty').addClass('updated').html(ss.i18n._t('GridFieldBulkTools.EDIT_UPDATED'));														
 							$(this).parents('li').find('.ss-uploadfield-item-info').removeClass('dirty').addClass('updated');
 							$(this).parents('li').find('.ss-uploadfield-item-editform').css('display', 'none');
 							

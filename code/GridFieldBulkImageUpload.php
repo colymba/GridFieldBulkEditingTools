@@ -166,8 +166,7 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 		}
 
 		$bulkUploadBtn = new ArrayData(array(
-			'Link' => $gridField->Link('bulkimageupload'),
-			'Label' => 'Bulk Upload',
+			'Link' => $gridField->Link('bulkimageupload')
 		));
 		
 		return array(

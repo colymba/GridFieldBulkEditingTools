@@ -1,0 +1,11 @@
+fr:
+  GridFieldBulkTools:
+    BULK_UPLOAD_BTN_LABEL: Upload groupé
+    FINISH_BTN_LABEL: Terminer
+    SAVE_BTN_LABEL: Enregistrer tout
+    CANCEL_BTN_LABEL: Annuler & supprimer tout
+    EDIT_SELECT_LABEL: Editer
+    UNLINK_SELECT_LABEL: Retirer
+    DELETE_SELECT_LABEL: Supprimer
+    ACTION_BTN_LABEL: Go
+    SELECT_ALL_LABEL: Sélectionner tout
