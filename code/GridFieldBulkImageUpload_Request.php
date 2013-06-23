@@ -259,9 +259,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		//sequential upload
 		$uploadField->setConfig('sequentialUploads', $this->component->getConfig('sequentialUploads'));
 		
-		/* *
-		 * Create form
-		 */
+		//Create form
 		$form = new Form(
 			$this,
 			'uploadForm',
