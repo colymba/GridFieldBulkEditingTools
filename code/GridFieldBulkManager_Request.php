@@ -146,7 +146,8 @@ class GridFieldBulkManager_Request extends RequestHandler {
 		$formHTML = $form->forTemplate();
 				
 		Requirements::javascript(BULK_EDIT_TOOLS_PATH . '/javascript/GridFieldBulkManager.js');	
-		Requirements::css(BULK_EDIT_TOOLS_PATH . '/css/GridFieldBulkManager.css');		
+		Requirements::css(BULK_EDIT_TOOLS_PATH . '/css/GridFieldBulkManager.css');	
+		Requirements::add_i18n_javascript(BULK_EDIT_TOOLS_PATH . '/javascript/lang');	
 		
 		$response = new SS_HTTPResponse($formHTML);
 		$response->addHeader('Content-Type', 'text/plain');
