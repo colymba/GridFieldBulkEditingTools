@@ -273,25 +273,23 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	public function index($request)
 	{	
 		Requirements::javascript(FRAMEWORK_DIR . '/javascript/AssetUploadField.js');
-		Requirements::css(FRAMEWORK_DIR . '/css/AssetUploadField.css');				
-
-		Requirements::javascript(BULK_EDIT_TOOLS_PATH . '/javascript/GridFieldBulkImageUpload.js');	
-		Requirements::css(BULK_EDIT_TOOLS_PATH . '/css/GridFieldBulkImageUpload.css');
-		Requirements::javascript(BULK_EDIT_TOOLS_PATH . '/javascript/GridFieldBulkImageUpload_downloadtemplate.js');
+		Requirements::css(FRAMEWORK_DIR . '/css/AssetUploadField.css');
 
 		$form = $this->uploadForm();
 		$form->setTemplate('LeftAndMain_EditForm');
 		$form->addExtraClass('cms-content center LeftAndMain'); //not using cms-edit-form to avoid btn being hooked with default handlers
 		$form->setAttribute('data-pjax-fragment', 'Content');
 
+		Requirements::javascript(THIRDPARTY_DIR . '/javascript-templates/tmpl.js'); 
+
+		Requirements::javascript(BULK_EDIT_TOOLS_PATH . '/javascript/GridFieldBulkImageUpload.js');	
+		Requirements::css(BULK_EDIT_TOOLS_PATH . '/css/GridFieldBulkImageUpload.css');
+		Requirements::javascript(BULK_EDIT_TOOLS_PATH . '/javascript/GridFieldBulkImageUpload_downloadtemplate.js');
+
 		if($request->isAjax())
 		{			
 			$response = new SS_HTTPResponse(
-				Convert::raw2json( 
-					array(
-						'Content' => $form->forTemplate()->getValue()//$form->forAjaxTemplate()->getValue()
-					)
-				)
+				Convert::raw2json(array( 'Content' => $form->forAjaxTemplate()->getValue() ))
 			);
 			$response->addHeader('X-Pjax', 'Content');
 			$response->addHeader('Content-Type', 'text/json');
@@ -300,9 +298,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		}
 		else {
 			$controller = $this->getToplevelController();
-			return $controller->customise(array(
-				'Content' => $form
-			));
+			return $controller->customise(array( 'Content' => $form ));
 		}
 	}
 	
