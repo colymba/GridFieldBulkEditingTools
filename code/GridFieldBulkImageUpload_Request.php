@@ -180,7 +180,24 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	 */
 	public function uploadForm($id = null, $fields = null)
 	{
-		$actions = new FieldList();		
+		$crumbs = $this->Breadcrumbs();
+		if($crumbs && $crumbs->count()>=2)
+		{
+			$one_level_up = $crumbs->offsetGet($crumbs->count()-2);
+			$one_level_up = $one_level_up->Link;			
+		}
+
+		$actions = new FieldList();
+
+		$actions->push(
+			FormAction::create('Finish', 'Finish')
+				->setAttribute('id', 'bulkImageUploadFinishBtn')				
+				->addExtraClass('cms-panel-link')
+				->setAttribute('data-icon', 'accept')
+				->setAttribute('href', $one_level_up)
+				->setUseButtonTag(true)
+				->setAttribute('src', '')//changes type to image so isn't hooked by default actions handlers
+		);
 		
 		$actions->push(
 			FormAction::create('SaveAll', 'Save All')
@@ -254,12 +271,9 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 			$actions
 		);
 		
-
-		$crumbs = $this->Breadcrumbs();
-		if($crumbs && $crumbs->count()>=2)
+		if($one_level_up)
 		{
-			$one_level_up = $crumbs->offsetGet($crumbs->count()-2);
-			$form->Backlink = $one_level_up->Link;
+			$form->Backlink = $one_level_up;
 		}
 
 		return $form;

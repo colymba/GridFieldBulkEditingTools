@@ -41,7 +41,7 @@
 			}
 		});
 
-		$('div.ss-upload .ss-uploadfield-item-editform form').entwine({
+		$('#Form_uploadForm, div.ss-upload .ss-uploadfield-item-editform form').entwine({
 			onsubmit: function(e) {
 				return false;
 			}
@@ -54,6 +54,28 @@
         $(this).attr('disabled', 'true');
 			},
 			onunmatch: function(){}
+		});
+
+		$('#bulkImageUploadFinishBtn').entwine({
+			onmatch: function(){},
+			onunmatch: function(){},
+			onclick: function(e){
+				var formsWithUpadtes = $('form.bulkImageUploadUpdateForm.hasUpdate').length,
+						confirmed = true;
+
+				if ( formsWithUpadtes > 0 )
+				{
+					confirmed = confirm(
+  					"You have unsaved changes. Continuing will loose all unsaved data.\n\n" + 
+  					"Do your really want to continue?"
+  				);  				
+				}
+
+				if (confirmed)
+				{
+					$('.cms-container').loadPanel(this.attr('href'), null, {});
+				}
+			}
 		});
 		
 		// end SS overhides
@@ -203,7 +225,6 @@
 					
 				}				
 			});	
-			
 			// 
 		
 		});
