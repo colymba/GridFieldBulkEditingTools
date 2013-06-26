@@ -107,7 +107,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	 */
 	function getFileRelationName()
 	{
-		$fieldName = $this->component->getConfig('imageFieldName');
+		$fieldName = $this->component->getConfig('fileRelationName');
 		if ( $fieldName == null ) $fieldName = $this->getDefaultFileRelationName();
 		
 		return $fieldName;
@@ -165,7 +165,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		
 		$recordCMSDataFields = GridFieldBulkEditingHelper::filterNonEditableRecordsFields($config, $recordCMSDataFields);
 		
-		if ( $config['imageFieldName'] == null ) $config['imageFieldName'] = $this->getDefaultFileRelationName();
+		if ( $config['fileRelationName'] == null ) $config['fileRelationName'] = $this->getDefaultFileRelationName();
 		
 		$recordCMSDataFields = GridFieldBulkEditingHelper::getModelFilteredDataFields($config, $recordCMSDataFields);
 		$recordCMSDataFields = GridFieldBulkEditingHelper::populateCMSDataFields($recordCMSDataFields, $this->gridField->list->dataClass, $recordID);
