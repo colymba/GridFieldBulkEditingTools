@@ -77,17 +77,62 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	}
 	
 	/**
+	 * Get the first has_one Image relation from the GridField managed DataObject
+	 * i.e. 'MyImage' => 'Image' will return 'MyImage'
+	 * 
+	 * @return string Name of the $has_one relation
+	 */
+	function getDefaultFileRelationName()
+	{
+		$recordClass = $this->gridField->list->dataClass;
+		$recordHasOneFields = Config::inst()->get($recordClass, 'has_one', Config::INHERITED);
+		
+		$imageField = null;
+		foreach( $recordHasOneFields as $field => $type )
+		{
+			if($type == 'Image' || is_subclass_of($type, 'Image')) {
+				$imageField = $field;// . 'ID';
+				break;
+			}
+		}
+		
+		return $imageField;
+	}	
+
+	/**
 	 * Returns the name of the Image field name from the managed record
 	 * Either as set in the component config or the default one
 	 * 
 	 * @return string 
 	 */
-	function getRecordImageField()
+	function getFileRelationName()
 	{
 		$fieldName = $this->component->getConfig('imageFieldName');
-		if ( $fieldName == null ) $fieldName = $this->getDefaultRecordImageField();
+		if ( $fieldName == null ) $fieldName = $this->getDefaultFileRelationName();
 		
 		return $fieldName;
+	}
+
+	/**
+	 * Return the ClassName of the fileRelation
+	 * i.e. 'MyImage' => 'Image' will return 'Image'
+	 * i.e. 'MyImage' => 'File' will return 'File'
+	 *
+	 * @return string file relation className
+	 */
+	private function getFileRelationClassName()
+	{
+		$recordClass        = $this->gridField->list->dataClass;
+		$recordHasOneFields = Config::inst()->get($recordClass, 'has_one', Config::INHERITED);
+
+		$fieldName = $this->getFileRelationName();
+		if($fieldName != null)
+		{
+			return $recordHasOneFields[$fieldName];
+		}
+		else{
+			return 'File';
+		}		
 	}
 	
 	/**
@@ -102,56 +147,6 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		if ( $fields == null ) $fields = $this->getDefaultRecordEditableFields();
 		
 		return $fields;
-	}
-	
-	/**
-	 * Get the first has_one Image realtion from the GridField managed DataObject
-	 * 
-	 * @return string 
-	 */
-	function getDefaultRecordImageField()
-	{
-		$recordClass = $this->gridField->list->dataClass;
-		$recordHasOneFields = Config::inst()->get($recordClass, 'has_one', Config::INHERITED);
-		
-		$imageField = null;
-		foreach( $recordHasOneFields as $field => $type )
-		{
-			if($type == 'Image' || is_subclass_of($type, 'Image')) {
-				$imageField = $field . 'ID';
-				break;
-			}
-		}
-		
-		return $imageField;
-	}
-
-	/**
-	 * Returns the classname of the first has_one image-relation of the managed DataObject or the
-	 * classname of the given fieldname
-	 *
-	 * @return string
-	 */
-	private function getRecordImageClass()
-	{
-		$recordClass        = $this->gridField->list->dataClass;
-		$recordHasOneFields = Config::inst()->get($recordClass, 'has_one', Config::INHERITED);
-
-		$fieldName = $this->component->getConfig('imageFieldName');
-		if($fieldName != null)
-		{
-			// filter out ID at the end:
-			$fieldName = substr($fieldName, 0, -2);
-			return $recordHasOneFields[$fieldName];
-		}
-		foreach($recordHasOneFields as $field => $type)
-		{
-			if($type == 'Image' || is_subclass_of($type, 'Image'))
-			{
-				return $type;
-			}
-		}
-		return null;
 	}
 
 	/**
@@ -170,7 +165,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		
 		$recordCMSDataFields = GridFieldBulkEditingHelper::filterNonEditableRecordsFields($config, $recordCMSDataFields);
 		
-		if ( $config['imageFieldName'] == null ) $config['imageFieldName'] = $this->getDefaultRecordImageField();
+		if ( $config['imageFieldName'] == null ) $config['imageFieldName'] = $this->getDefaultFileRelationName();
 		
 		$recordCMSDataFields = GridFieldBulkEditingHelper::getModelFilteredDataFields($config, $recordCMSDataFields);
 		$recordCMSDataFields = GridFieldBulkEditingHelper::populateCMSDataFields($recordCMSDataFields, $this->gridField->list->dataClass, $recordID);
@@ -230,8 +225,8 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		/* *
 		 * UploadField
 		 */
-		$imageRealtionName = $this->getRecordImageClass();
-		$uploadField = UploadField::create($imageRealtionName, '');
+		$fileRelationName = $this->getFileRelationName();
+		$uploadField = UploadField::create($fileRelationName, '');
 		$uploadField->setConfig('previewMaxWidth', 40);
 		$uploadField->setConfig('previewMaxHeight', 30);		
 		$uploadField->addExtraClass('ss-assetuploadfield');
@@ -357,18 +352,18 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		$record->extend("onBulkImageUpload", $this->gridField);
 
 		//get uploadField and process upload
-		$imageRelationName = $this->getRecordImageClass();
-		$uploadField = $this->uploadForm()->Fields()->fieldByName($imageRelationName);
+		$fileRelationName = $this->getFileRelationName();
+		$uploadField = $this->uploadForm()->Fields()->fieldByName($fileRelationName);
 		$uploadField->setRecord($record);
 		$uploadResponse = $uploadField->upload( $request );
 
 		//get uploaded File
 		$uploadResponse = Convert::json2array( $uploadResponse->getBody() );
 		$uploadResponse = array_shift( $uploadResponse );
-		$uploadedFile = DataObject::get_by_id( $imageRelationName, $uploadResponse['id'] );
+		$uploadedFile = DataObject::get_by_id( $this->getFileRelationClassName(), $uploadResponse['id'] );
 
 		// Attach the file to record.				
-		$record->{"{$imageRelationName}ID"} = $uploadedFile->ID;					
+		$record->{"{$fileRelationName}ID"} = $uploadedFile->ID;					
 		$record->write();
 
 		// attached record to gridField relation
@@ -431,8 +426,8 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		$recordClass = $this->gridField->list->dataClass;
 		$record = DataObject::get_by_id($recordClass, $data['ID']);	
 		
-		$imageField = $this->getRecordImageField();
-		$imageID = $record->$imageField;
+		$imageField = $this->getFileRelationName();
+		$imageID = $record->$imageField.'ID';
 		$image = DataObject::get_by_id('Image', $imageID);
 		
 		$return[$data['ID']]['imageID'] = $imageID;			

@@ -10,7 +10,7 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 	/**
 	 * component configuration
 	 * 
-	 * 'imageFieldName' => field name of the $has_one Model Image relation
+	 * 'fileRelationName' => field name of the $has_one File/Image relation
 	 * 'editableFields' => fields editable on the Model
 	 * 'fieldsClassBlacklist' => field types that will be removed from the automatic form generation
 	 * 'fieldsNameBlacklist' => fields that will be removed from the automatic form generation
@@ -18,7 +18,7 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 	 * @var array 
 	 */
 	protected $config = array(
-		'imageFieldName' => null,
+		'fileRelationName' => null,
 		'editableFields' => null,
 		'fieldsClassBlacklist' => array(),
 		'fieldsNameBlacklist' => array(),
@@ -35,12 +35,12 @@ class GridFieldBulkImageUpload implements GridField_HTMLProvider, GridField_URLH
 
 	/**
 	 * 
-	 * @param string $imageField
+	 * @param string $fileRelationName
 	 * @param string/array $editableFields 
 	 */
-	public function __construct($imageField = null, $editableFields = null)
+	public function __construct($fileRelationName = null, $editableFields = null)
 	{		
-		if ( $imageField != null ) $this->setConfig ( 'imageFieldName', $imageField );
+		if ( $fileRelationName != null ) $this->setConfig ( 'fileRelationName', $fileRelationName );
 		if ( $editableFields != null ) $this->setConfig ( 'editableFields', $editableFields );
 		
 		//init classes blacklist with forbidden classes

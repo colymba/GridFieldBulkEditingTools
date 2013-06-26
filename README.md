@@ -31,10 +31,10 @@ Simplest usage, add the component to your GridField as below. The component will
 
 ### Usage 2
 You can specify which Image field to use and which fields are editable from the managed Model
-$imageField (string): The name of the image field to use (should have 'ID' at the end: If your relation is set has 'MyImage' => 'Image', the parameter should be 'MyImageID')
+$fileRelationName (string): The name of the File/Image field to use (If your relation is set has 'MyImage' => 'Image', the parameter should be 'MyImage')
 $editableFields (array): list of db fields name as string that will be editable like: array('myTextField', 'myVarcharField', 'myEnumField')
 		
-		$config->addComponent(new GridFieldBulkImageUpload( $imageField, $editableFields ));
+		$config->addComponent(new GridFieldBulkImageUpload( $fileRelationName, $editableFields ));
 
 ### Configuration
 The component's option can be configurated individually or in bulk through the 'config' functions like this:
@@ -43,7 +43,7 @@ The component's option can be configurated individually or in bulk through the '
 		
 #### $config overview
 The available configuration options are:
-* 'imageFieldName' : sets the name of the Image field of the managed Model (i.e. 'MyImageID')
+* 'fileRelationName' : sets the name of the File/Image field of the managed Model (i.e. 'MyImage')
 * 'editableFields' : array of string referencing specific CMS fields available for editing
 * 'fieldsClassBlacklist' : array of string referencing types (ClassName) of fields that wont be available for editing
 * 'fieldsNameBlacklist' : array of string referencing the names of fields that wont be available for editing
