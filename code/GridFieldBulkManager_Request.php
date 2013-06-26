@@ -24,7 +24,13 @@ class GridFieldBulkManager_Request extends RequestHandler {
 	 */
 	protected $controller;
 	
-	
+	/**
+	 *
+	 */
+	private static $allowed_actions = array(
+		'edit', 'update', 'unlink', 'delete'
+	);
+
 	/**
 	 *
 	 */

@@ -40,6 +40,13 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 	/**
 	 *
 	 */
+	private static $allowed_actions = array(
+		'index', 'upload', 'update', 'cancel'
+	);
+
+	/**
+	 *
+	 */
 	private static $url_handlers = array(
 		'$Action!' => '$Action'
 	);
