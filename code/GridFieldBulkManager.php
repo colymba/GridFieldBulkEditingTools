@@ -28,6 +28,11 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	 * These cannot be removed from the blacklist
 	 */
 	protected $forbiddenFieldsClasses = array( 'GridField', 'UploadField' );
+
+	/**
+	 * @var String
+	 */
+	protected $bulkEditRequestClass;
 	
 	
 	public function __construct($editableFields = null)
@@ -220,8 +225,30 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	public function handlebulkEdit($gridField, $request)
 	{				
 		$controller = $gridField->getForm()->Controller();
-		$handler = new GridFieldBulkManager_Request($gridField, $this, $controller);
+		$class = $this->getBulkEditRequestClass();
+		$handler = Object::create($class, $gridField, $this, $controller);
 		
 		return $handler->handleRequest($request, DataModel::inst());		
+	}
+
+	/**
+	 * @param String
+	 */
+	public function setBulkEditRequestClass($class) {
+		$this->bulkEditRequestClass = $class;
+		return $this;
+	}
+
+	/**
+	 * @return String
+	 */
+	public function getBulkEditRequestClass() {
+		if($this->bulkEditRequestClass) {
+			return $this->bulkEditRequestClass;
+		} else if(ClassInfo::exists(get_class($this) . "_ItemRequest")) {
+			return get_class($this) . "_ItemRequest";
+		} else {
+			return 'GridFieldBulkManager_Request';
+		}
 	}
 }
