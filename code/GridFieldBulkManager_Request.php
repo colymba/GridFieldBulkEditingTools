@@ -253,7 +253,7 @@ class GridFieldBulkManager_Request extends RequestHandler {
 	public function getPOSTRecordList(SS_HTTPRequest $request)
 	{
 		$recordList = $request->requestVars();
-		return $recordList['records'];		 
+		return isset($recordList['records']) ? $recordList['records'] : array();
 	}
 	
 	/**
