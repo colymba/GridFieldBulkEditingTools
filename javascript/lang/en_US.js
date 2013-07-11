@@ -4,6 +4,7 @@ if(typeof(ss) == 'undefined' || typeof(ss.i18n) == 'undefined') {
 	ss.i18n.addDictionary('en_US', {
 		'GridFieldBulkTools.FINISH_CONFIRM': "You have unsaved changes. Continuing will loose all unsaved data.\n\nDo your really want to continue?",
 		'GridFieldBulkTools.EDIT_CHANGED': 'Modified',
-		'GridFieldBulkTools.EDIT_UPDATED': 'Saved'
+		'GridFieldBulkTools.EDIT_UPDATED': 'Saved',
+		'GridFieldBulkTools.ACTION_CONFIRM': 'Are you sure you want to %s %s items?'
 	});
 }

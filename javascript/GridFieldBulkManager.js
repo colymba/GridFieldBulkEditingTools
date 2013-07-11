@@ -126,6 +126,11 @@
 					});				
 					data.records = ids;
 
+					if(!confirm(ss.i18n.sprintf(ss.i18n._t('GridFieldBulkTools.ACTION_CONFIRM', 'Are you sure you want to %s %s items?'), action, ids.length))) {
+						e.preventDefault();
+						return false;
+					}
+
 					if ( url.indexOf('?') !== -1 ) cacheBuster = '&cacheBuster=' + cacheBuster;
 					else cacheBuster = '?cacheBuster=' + cacheBuster;
 
