@@ -135,15 +135,10 @@
 						type: "POST",
 						context: $(this)
 					}).done(function(r) {
-							// A bit hacky, but it checks if the response is json
-							try {
-								$.parseJSON(r);
-
-								if(r.message) {
-									var msgType = r.messageType ? r.messageType : 'good';
-									statusMessage(decodeURIComponent(r.message), msgType);
-								}
-							} catch(e) { }
+							if(xhr.getResponseHeader('content-type').indexOf('json') >= 0 && r.message) {
+								var msgType = r.messageType ? r.messageType : 'good';
+								statusMessage(decodeURIComponent(r.message), msgType);
+							}
 
 							$(this).parents('.ss-gridfield').entwine('.').entwine('ss').reload();
 						});
