@@ -25,26 +25,32 @@ class VersionedGridFieldBulkManager_Request extends GridFieldBulkManager_Request
 
 	public function publish(SS_HTTPRequest $request) {
 		$recordList = $this->getPOSTRecordList($request);
-		$records = $this->gridField->List->byIDs($recordList);
 
-		foreach($records as $record) {
-			if(!$this->doPublish($record))
-				unset($recordList[$record->ID]);
+		if($recordList && count($recordList)) {
+			$records = $this->gridField->List->byIDs($recordList);
+
+			foreach($records as $record) {
+				if(!$this->doPublish($record))
+					unset($recordList[$record->ID]);
+			}
 		}
 
-		$this->completeAction($recordList);
+		return $this->completeAction($recordList);
 	}
 
 	public function unpublish(SS_HTTPRequest $request) {
 		$recordList = $this->getPOSTRecordList($request);
-		$records = $this->gridField->List->byIDs($recordList);
 
-		foreach($records as $record) {
-			if(!$this->doUnpublish($record))
-				unset($recordList[$record->ID]);
+		if($recordList && count($recordList)) {
+			$records = $this->gridField->List->byIDs($recordList);
+
+			foreach($records as $record) {
+				if(!$this->doUnpublish($record))
+					unset($recordList[$record->ID]);
+			}
 		}
 
-		$this->completeAction($recordList);
+		return $this->completeAction($recordList);
 	}
 
 	protected function doPublish($record)	{
