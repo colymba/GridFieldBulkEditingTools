@@ -6,6 +6,8 @@
  * Adding extra bulk edit actions specifically for versioned objects,
  * just like the Multi-selection action dropdown in the Pages section
  *
+ * @todo Extend the bulk edit action to allow publish and unpublish records from that interface
+ *
  * @package GridFieldBulkEditingTools
  * @author Mellisa Hankins
  * @author colymba
