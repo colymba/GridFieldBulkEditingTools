@@ -34,6 +34,12 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	{				
 		if ( $editableFields != null ) $this->setConfig ( 'editableFields', $editableFields );
 		$this->config['fieldsClassBlacklist'] = $this->forbiddenFieldsClasses;
+
+		$this->config['actions'] = array(
+			'edit' => _t('GridFieldBulkTools.EDIT_SELECT_LABEL', 'Edit'),
+			'unlink' => _t('GridFieldBulkTools.UNLINK_SELECT_LABEL', 'UnLink'),
+			'delete' => _t('GridFieldBulkTools.DELETE_SELECT_LABEL', 'Delete')
+		);
 	}
 	
 	/**
@@ -170,11 +176,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 		Requirements::javascript(BULK_EDIT_TOOLS_PATH . '/javascript/GridFieldBulkManager.js');
 		
 		$dropDownActionList = DropdownField::create('bulkActionName', '')
-			->setSource( array(
-				'edit' => _t('GridFieldBulkTools.EDIT_SELECT_LABEL', 'Edit'),
-				'unlink' => _t('GridFieldBulkTools.UNLINK_SELECT_LABEL', 'UnLink'),
-				'delete' => _t('GridFieldBulkTools.DELETE_SELECT_LABEL', 'Delete')
-			))
+			->setSource($this->config['actions'])
 			->setAttribute('class', 'bulkActionName')
 			->setAttribute('id', '');
 
