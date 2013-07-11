@@ -9,6 +9,6 @@
 
 	</th>
 	<th class="extra bulkmanagerselect">
-		<input class="toggleSelectAll" type="checkbox" title="$Select.Label" name="toggleSelectAll" />
+		<input class="toggleSelectAll no-change-track" type="checkbox" title="$Select.Label" name="toggleSelectAll" />
 	</th>
 </tr>

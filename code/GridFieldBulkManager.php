@@ -178,7 +178,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	function getColumnContent($gridField, $record, $columnName)
 	{
 		$cb = CheckboxField::create('bulkSelect_'.$record->ID)
-			->addExtraClass('bulkSelect');
+			->addExtraClass('bulkSelect no-change-track');
 		return $cb->Field();
 	}
 	
@@ -208,7 +208,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 		
 		$dropDownActionList = DropdownField::create('bulkActionName', '')
 			->setSource($this->config['actions'])
-			->setAttribute('class', 'bulkActionName')
+			->setAttribute('class', 'bulkActionName no-change-track')
 			->setAttribute('id', '');
 
     $templateData = new ArrayData(array(
