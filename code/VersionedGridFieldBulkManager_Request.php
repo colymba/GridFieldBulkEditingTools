@@ -35,7 +35,7 @@ class VersionedGridFieldBulkManager_Request extends GridFieldBulkManager_Request
 			}
 		}
 
-		return $this->completeAction($recordList);
+		return $this->completeAction($recordList, 'Published {count} items');
 	}
 
 	public function unpublish(SS_HTTPRequest $request) {
@@ -50,7 +50,7 @@ class VersionedGridFieldBulkManager_Request extends GridFieldBulkManager_Request
 			}
 		}
 
-		return $this->completeAction($recordList);
+		return $this->completeAction($recordList, 'Unpublished {count} items');
 	}
 
 	protected function doPublish($record)	{
@@ -85,11 +85,5 @@ class VersionedGridFieldBulkManager_Request extends GridFieldBulkManager_Request
 		}
 
 		return true;
-	}
-
-	private function completeAction($recordList = null) {
-		$response = new SS_HTTPResponse(Convert::raw2json(array($recordList)));
-		$response->addHeader('Content-Type', 'text/plain');
-		return $response;
 	}
 }
