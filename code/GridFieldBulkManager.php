@@ -136,6 +136,32 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 			return false;
 		}
 	}
+
+	/**
+	 * Add an action to the dropdown
+	 *
+	 * @param string $className
+	 * @return GridFieldBulkManager
+	 */
+	function addDropdownAction ( $action, $label = '' )
+	{
+		if(!$label) $label = $action;
+		$this->config['actions'][$action] = $label;
+		return $this;
+	}
+
+	/**
+	 * Remove an action from the dropdown
+	 *
+	 * @param string $className
+	 * @return GridFieldBulkManager
+	 */
+	function removeDropdownAction ( $action )
+	{
+		if(isset($this->config['actions'][$action]))
+			unset($this->config['actions'][$action]);
+		return $this;
+	}
 	
 	/* GridField_ColumnProvider */
 	
@@ -250,5 +276,14 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 		} else {
 			return 'GridFieldBulkManager_Request';
 		}
+	}
+
+	/**
+	 * Allow the manager to use actions applicable to versioned dataobjects
+	 */
+	public function applyVersioned() {
+		$this->addDropdownAction('publish', _t('GridFieldBulkTools.PUBLISH_SELECT_LABEL', 'Publish'));
+		$this->addDropdownAction('unpublish', _t('GridFieldBulkTools.UNPUBLISH_SELECT_LABEL', 'Unpublish'));
+		$this->setBulkEditRequestClass('VersionedGridFieldBulkManager_Request');
 	}
 }
