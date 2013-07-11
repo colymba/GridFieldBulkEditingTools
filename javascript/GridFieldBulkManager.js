@@ -58,22 +58,36 @@
 					case 'edit':
 						$(btn).removeClass('ss-ui-action-destructive');
 						$(btn).attr('data-icon', 'pencil');
-						$(icon).removeClass('btn-icon-decline btn-icon-pencil').addClass('btn-icon-pencil');
-						
+						$(icon).removeClass('btn-icon-decline btn-icon-pencil btn-icon-unpublish btn-icon-accept').addClass('btn-icon-pencil');
+
 						$(btn).attr('href', $(btn).data('url')+'/edit');
 						break;
-						
+
 					case 'unlink':
 						$(btn).removeClass('ss-ui-action-destructive');
 						$(btn).attr('data-icon', 'chain--minus');
-						$(icon).removeClass('btn-icon-decline btn-icon-pencil').addClass('btn-icon-chain--minus');
+						$(icon).removeClass('btn-icon-decline btn-icon-pencil btn-icon-unpublish btn-icon-accept').addClass('btn-icon-chain--minus');
 						$(btn).removeAttr('href');
 						break;
-						
+
 					case 'delete':
 						$(btn).addClass('ss-ui-action-destructive');
 						$(btn).attr('data-icon', 'decline');
-						$(icon).removeClass('btn-icon-decline btn-icon-pencil').addClass('btn-icon-decline');
+						$(icon).removeClass('btn-icon-decline btn-icon-pencil btn-icon-unpublish btn-icon-accept').addClass('btn-icon-decline');
+						$(btn).removeAttr('href');
+						break;
+
+					case 'publish':
+						$(btn).removeClass('ss-ui-action-destructive');
+						$(btn).attr('data-icon', 'accept');
+						$(icon).removeClass('btn-icon-decline btn-icon-pencil btn-icon-unpublish btn-icon-chain--minus').addClass('btn-icon-accept');
+						$(btn).removeAttr('href');
+						break;
+
+					case 'unpublish':
+						$(btn).removeClass('ss-ui-action-destructive');
+						$(btn).attr('data-icon', 'unpublish');
+						$(icon).removeClass('btn-icon-decline btn-icon-pencil btn-icon-accept').addClass('btn-icon-unpublish');
 						$(btn).removeAttr('href');
 						break;
 				}
