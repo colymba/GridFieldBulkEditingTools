@@ -28,12 +28,23 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	 * These cannot be removed from the blacklist
 	 */
 	protected $forbiddenFieldsClasses = array( 'GridField', 'UploadField' );
+
+	/**
+	 * @var String
+	 */
+	protected $bulkEditRequestClass;
 	
 	
 	public function __construct($editableFields = null)
 	{				
 		if ( $editableFields != null ) $this->setConfig ( 'editableFields', $editableFields );
 		$this->config['fieldsClassBlacklist'] = $this->forbiddenFieldsClasses;
+
+		$this->config['actions'] = array(
+			'edit' => _t('GridFieldBulkTools.EDIT_SELECT_LABEL', 'Edit'),
+			'unlink' => _t('GridFieldBulkTools.UNLINK_SELECT_LABEL', 'UnLink'),
+			'delete' => _t('GridFieldBulkTools.DELETE_SELECT_LABEL', 'Delete')
+		);
 	}
 	
 	/**
@@ -125,6 +136,32 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 			return false;
 		}
 	}
+
+	/**
+	 * Add an action to the dropdown
+	 *
+	 * @param string $className
+	 * @return GridFieldBulkManager
+	 */
+	function addDropdownAction ( $action, $label = '' )
+	{
+		if(!$label) $label = $action;
+		$this->config['actions'][$action] = $label;
+		return $this;
+	}
+
+	/**
+	 * Remove an action from the dropdown
+	 *
+	 * @param string $className
+	 * @return GridFieldBulkManager
+	 */
+	function removeDropdownAction ( $action )
+	{
+		if(isset($this->config['actions'][$action]))
+			unset($this->config['actions'][$action]);
+		return $this;
+	}
 	
 	/* GridField_ColumnProvider */
 	
@@ -141,7 +178,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	function getColumnContent($gridField, $record, $columnName)
 	{
 		$cb = CheckboxField::create('bulkSelect_'.$record->ID)
-			->addExtraClass('bulkSelect');
+			->addExtraClass('bulkSelect no-change-track');
 		return $cb->Field();
 	}
 	
@@ -170,12 +207,8 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 		Requirements::javascript(BULK_EDIT_TOOLS_PATH . '/javascript/GridFieldBulkManager.js');
 		
 		$dropDownActionList = DropdownField::create('bulkActionName', '')
-			->setSource( array(
-				'edit' => _t('GridFieldBulkTools.EDIT_SELECT_LABEL', 'Edit'),
-				'unlink' => _t('GridFieldBulkTools.UNLINK_SELECT_LABEL', 'UnLink'),
-				'delete' => _t('GridFieldBulkTools.DELETE_SELECT_LABEL', 'Delete')
-			))
-			->setAttribute('class', 'bulkActionName')
+			->setSource($this->config['actions'])
+			->setAttribute('class', 'bulkActionName no-change-track')
 			->setAttribute('id', '');
 
     $templateData = new ArrayData(array(
@@ -218,8 +251,39 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	public function handlebulkEdit($gridField, $request)
 	{				
 		$controller = $gridField->getForm()->Controller();
-		$handler = new GridFieldBulkManager_Request($gridField, $this, $controller);
+		$class = $this->getBulkEditRequestClass();
+		$handler = Object::create($class, $gridField, $this, $controller);
 		
 		return $handler->handleRequest($request, DataModel::inst());		
+	}
+
+	/**
+	 * @param String
+	 */
+	public function setBulkEditRequestClass($class) {
+		$this->bulkEditRequestClass = $class;
+		return $this;
+	}
+
+	/**
+	 * @return String
+	 */
+	public function getBulkEditRequestClass() {
+		if($this->bulkEditRequestClass) {
+			return $this->bulkEditRequestClass;
+		} else if(ClassInfo::exists(get_class($this) . "_ItemRequest")) {
+			return get_class($this) . "_ItemRequest";
+		} else {
+			return 'GridFieldBulkManager_Request';
+		}
+	}
+
+	/**
+	 * Allow the manager to use actions applicable to versioned dataobjects
+	 */
+	public function applyVersioned() {
+		$this->addDropdownAction('publish', _t('GridFieldBulkTools.PUBLISH_SELECT_LABEL', 'Publish'));
+		$this->addDropdownAction('unpublish', _t('GridFieldBulkTools.UNPUBLISH_SELECT_LABEL', 'Unpublish'));
+		$this->setBulkEditRequestClass('VersionedGridFieldBulkManager_Request');
 	}
 }

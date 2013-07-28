@@ -58,22 +58,36 @@
 					case 'edit':
 						$(btn).removeClass('ss-ui-action-destructive');
 						$(btn).attr('data-icon', 'pencil');
-						$(icon).removeClass('btn-icon-decline btn-icon-pencil').addClass('btn-icon-pencil');
-						
+						$(icon).removeClass('btn-icon-decline btn-icon-pencil btn-icon-unpublish btn-icon-accept').addClass('btn-icon-pencil');
+
 						$(btn).attr('href', $(btn).data('url')+'/edit');
 						break;
-						
+
 					case 'unlink':
 						$(btn).removeClass('ss-ui-action-destructive');
 						$(btn).attr('data-icon', 'chain--minus');
-						$(icon).removeClass('btn-icon-decline btn-icon-pencil').addClass('btn-icon-chain--minus');
+						$(icon).removeClass('btn-icon-decline btn-icon-pencil btn-icon-unpublish btn-icon-accept').addClass('btn-icon-chain--minus');
 						$(btn).removeAttr('href');
 						break;
-						
+
 					case 'delete':
 						$(btn).addClass('ss-ui-action-destructive');
 						$(btn).attr('data-icon', 'decline');
-						$(icon).removeClass('btn-icon-decline btn-icon-pencil').addClass('btn-icon-decline');
+						$(icon).removeClass('btn-icon-decline btn-icon-pencil btn-icon-unpublish btn-icon-accept').addClass('btn-icon-decline');
+						$(btn).removeAttr('href');
+						break;
+
+					case 'publish':
+						$(btn).removeClass('ss-ui-action-destructive');
+						$(btn).attr('data-icon', 'accept');
+						$(icon).removeClass('btn-icon-decline btn-icon-pencil btn-icon-unpublish btn-icon-chain--minus').addClass('btn-icon-accept');
+						$(btn).removeAttr('href');
+						break;
+
+					case 'unpublish':
+						$(btn).removeClass('ss-ui-action-destructive');
+						$(btn).attr('data-icon', 'unpublish');
+						$(icon).removeClass('btn-icon-decline btn-icon-pencil btn-icon-accept').addClass('btn-icon-unpublish');
 						$(btn).removeAttr('href');
 						break;
 				}
@@ -112,6 +126,11 @@
 					});				
 					data.records = ids;
 
+					if(!confirm(ss.i18n.sprintf(ss.i18n._t('GridFieldBulkTools.ACTION_CONFIRM', 'Are you sure you want to %s %s items?'), action, ids.length))) {
+						e.preventDefault();
+						return false;
+					}
+
 					if ( url.indexOf('?') !== -1 ) cacheBuster = '&cacheBuster=' + cacheBuster;
 					else cacheBuster = '?cacheBuster=' + cacheBuster;
 
@@ -120,9 +139,14 @@
 						data: data,
 						type: "POST",
 						context: $(this)
-					}).done(function() {
-            $(this).parents('.ss-gridfield').entwine('.').entwine('ss').reload();
-					});
+					}).done(function(r) {
+							if(xhr.getResponseHeader('content-type').indexOf('json') >= 0 && r.message) {
+								var msgType = r.messageType ? r.messageType : 'good';
+								statusMessage(decodeURIComponent(r.message), msgType);
+							}
+
+							$(this).parents('.ss-gridfield').entwine('.').entwine('ss').reload();
+						});
 				}
 				
 			} 

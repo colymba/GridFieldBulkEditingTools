@@ -220,11 +220,13 @@ class GridFieldBulkManager_Request extends RequestHandler {
 	public function unlink(SS_HTTPRequest $request)
 	{
 		$recordList = $this->getPOSTRecordList($request);
+		$original = $this->gridField->list->count();
+
 		$this->gridField->list->removeMany($recordList);
-		
-		$response = new SS_HTTPResponse(Convert::raw2json(array($recordList)));
-		$response->addHeader('Content-Type', 'text/plain');
-		return $response;
+
+		$count = count($recordList) - ($original - $this->gridField->list->count());
+
+		return $this->completeAction($recordList, 'Unlinked {count} items', $count);
 	}
 	
 	/**
@@ -243,17 +245,15 @@ class GridFieldBulkManager_Request extends RequestHandler {
 			$res = DataObject::delete_by_id($recordClass, $id);
 			array_push($result, array($id => $res));
 		}
-		
-		$response = new SS_HTTPResponse(Convert::raw2json(array($result)));
-		$response->addHeader('Content-Type', 'text/plain');
-		return $response;	
+
+		return $this->completeAction($result, 'Deleted {count} items');
 	}
 	
 	
 	public function getPOSTRecordList(SS_HTTPRequest $request)
 	{
 		$recordList = $request->requestVars();
-		return $recordList['records'];		 
+		return isset($recordList['records']) ? $recordList['records'] : array();
 	}
 	
 	/**
@@ -278,5 +278,18 @@ class GridFieldBulkManager_Request extends RequestHandler {
 				'Link' => false
 			)));
 		return $items;
+	}
+
+	protected function completeAction($recordList = null, $text = 'No changes', $count = null) {
+		if($recordList && (count($recordList) || $count)) {
+			if(!$count) $count = count($recordList);
+			$text = _t('GridFieldBulkManager.' . strtoupper(str_replace(array('{count}', ' '), '_', $text)), $text, array('count' => $count));
+		}
+		else
+			$text = _t('GridFieldBulkManager.NO_CHANGES', 'No changes');
+
+		$response = new SS_HTTPResponse(json_encode(array('records' => $recordList, 'message' => $text)));
+		$response->addHeader('Content-Type', 'text/json');
+		return $response;
 	}
 }
