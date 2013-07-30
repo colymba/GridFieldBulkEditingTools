@@ -361,7 +361,8 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		$uploadResponse = Convert::json2array( $uploadResponse->getBody() );
 		$uploadResponse = array_shift( $uploadResponse );
 		$uploadedFile = DataObject::get_by_id( $this->getFileRelationClassName(), $uploadResponse['id'] );
-
+		$preview_url = $uploadedFile->setHeight(55)->Link();
+		
 		// Attach the file to record.				
 		$record->{"{$fileRelationName}ID"} = $uploadedFile->ID;					
 		$record->write();
@@ -374,7 +375,7 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		
 		// Collect all output data.
 		$return = array_merge($uploadResponse, array(
-			'preview_url' => $uploadedFile->setHeight(55)->Link(),
+			'preview_url' => $preview_url,
 			'record' => array(
 				'ID' => $record->ID,
 				'fields' => $recordEditableFormFields
