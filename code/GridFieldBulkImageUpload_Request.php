@@ -357,13 +357,12 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		$uploadField->setRecord($record);
 		$uploadResponse = $uploadField->upload( $request );
 
-		//get uploaded File
+		//get uploaded File response datas
 		$uploadResponse = Convert::json2array( $uploadResponse->getBody() );
 		$uploadResponse = array_shift( $uploadResponse );
-		$uploadedFile = DataObject::get_by_id( $this->getFileRelationClassName(), $uploadResponse['id'] );
-
+		
 		// Attach the file to record.				
-		$record->{"{$fileRelationName}ID"} = $uploadedFile->ID;					
+		$record->{"{$fileRelationName}ID"} = $uploadResponse['id'];					
 		$record->write();
 
 		// attached record to gridField relation
@@ -372,9 +371,27 @@ class GridFieldBulkImageUpload_Request extends RequestHandler {
 		//get record's CMS Fields
 		$recordEditableFormFields = $this->getRecordHTMLFormFields( $record->ID );
 		
+		//fetch uploadedFile record and sort out previewURL
+		//update $uploadResponse datas in case changes happened onAfterWrite()
+		$uploadedFile = DataObject::get_by_id( $this->getFileRelationClassName(), $uploadResponse['id'] );
+		if ( $uploadedFile )
+		{
+			$uploadResponse['name'] = $uploadedFile->Name;
+			$uploadResponse['url'] = $uploadedFile->getURL();
+
+			if ( $uploadedFile instanceof Image )
+			{
+				$uploadResponse['preview_url'] = $uploadedFile->setHeight(55)->Link();
+				$uploadResponse['thumbnail_url'] = $uploadedFile->StripThumbnail()->getURL();
+			}
+			else{
+				$uploadResponse['preview_url'] = $uploadedFile->Icon();
+				$uploadResponse['thumbnail_url'] = $uploadedFile->Icon();
+			}
+		}
+
 		// Collect all output data.
 		$return = array_merge($uploadResponse, array(
-			'preview_url' => $uploadedFile->setHeight(55)->Link(),
 			'record' => array(
 				'ID' => $record->ID,
 				'fields' => $recordEditableFormFields
