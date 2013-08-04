@@ -4,6 +4,7 @@
 	"description": "SilverStripe 3 GridField component to upload images and edit records in bulk",
 	"homepage": "https://github.com/colymba/GridFieldBulkEditingTools",
 	"keywords": ["silverstripe", "bulk upload", "image upload", "gridfield bulk upload"],
+	"license": "BSD Simplified",
 	"authors": [{
 			"name": "Thierry Francois",
 			"homepage": "http://colymba.com"
