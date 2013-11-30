@@ -77,6 +77,16 @@
 						$(btn).removeAttr('href');
 						break;
 				}
+
+				/*
+				$(icon).removeClass('btn-icon-decline btn-icon-pencil btn-icon-chain--minus')
+				$(btn).removeClass('ss-ui-action-destructive');
+				$(btn).attr('data-icon', 'decline');
+				$(btn).attr('data-icon', 'chain--minus');
+				$(btn).attr('data-icon', 'pencil');
+				$(btn).removeAttr('href');
+				$(btn).attr('href', $(btn).data('url')+'/edit');
+				*/
 				
 			} 
 		});
