@@ -5,8 +5,8 @@
  * @author colymba
  * @package GridFieldBulkEditingTools
  */
-class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, GridField_URLHandler {
-	
+class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, GridField_URLHandler
+{	
 	/**
 	 * component configuration
 	 * 
@@ -14,6 +14,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	 * 'editableFields' => fields editable on the Model
 	 * 'fieldsClassBlacklist' => field types that will be removed from the automatic form generation
 	 * 'fieldsNameBlacklist' => fields that will be removed from the automatic form generation
+	 * 'actions' => maps of action name and configuration
 	 * 
 	 * @var array 
 	 */
@@ -39,9 +40,9 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 		if ( $defaultActions )
 		{
 			$this->config['actions'] = array(
-	      'edit'   => array(
+	      'bulkedit'   => array(
 	      	'label' => _t('GridFieldBulkTools.EDIT_SELECT_LABEL', 'Edit'),
-	      	'handler' => 'GridFieldBulkManager_Request',
+	      	'handler' => 'GridFieldBulkActionEditHandler',
 	      	'config' => array(
 						'isAjax' => false,
 						'icon' => 'pencil',
@@ -50,7 +51,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	      ),
 	      'unlink' => array(
 	      	'label' => _t('GridFieldBulkTools.UNLINK_SELECT_LABEL', 'UnLink'),
-	      	'handler' => 'GridFieldBulkManager_Request',
+	      	'handler' => 'GridFieldBulkActionUnlinkHandler',
 	      	'config' => array(
 						'isAjax' => true,
 						'icon' => 'chain--minus',
@@ -59,7 +60,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	      ),
 	      'delete' => array(
 	      	'label' => _t('GridFieldBulkTools.DELETE_SELECT_LABEL', 'Delete'),
-	      	'handler' => 'GridFieldBulkManager_Request',
+	      	'handler' => 'GridFieldBulkActionDeleteHandler',
 	      	'config' => array(
 						'isAjax' => true,
 						'icon' => 'decline',
@@ -346,22 +347,36 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	
 	/**
 	 * Pass control over to the RequestHandler
+	 * loop through the handlers provided in config['actions']
+	 * and find matching url_handlers.
+	 *
+	 * $url_handlers rule should not use wildcards like '$Action' => '$Action'
+	 * but have more specific path defined
 	 * 
 	 * @param GridField $gridField
 	 * @param SS_HTTPRequest $request
 	 * @return mixed 
 	 */
 	public function handlebulkaction($gridField, $request)
-	{				
-		$bulkAction = strtolower( $request->remaining() );		
+	{
 		$controller = $gridField->getForm()->Controller();
 
-		if ( isset($this->config['actions'][$bulkAction]) )
+		foreach ($this->config['actions'] as $name => $data)
 		{
-			$handlerClass = $this->config['actions'][$bulkAction]['handler'];
-			$handler = Injector::inst()->create($handlerClass, $gridField, $this, $controller);
+			$handlerClass = $data['handler'];
+			$urlHandlers = Config::inst()->get($handlerClass, 'url_handlers', Config::UNINHERITED);
 
-			return $handler->handleRequest($request, DataModel::inst());
+			if($urlHandlers) foreach($urlHandlers as $rule => $action)
+			{
+				if($request->match($rule, false))
+				{
+					//print_r('matched ' . $handlerClass . ' to ' . $rule);
+					$handler = Injector::inst()->create($handlerClass, $gridField, $this, $controller);
+					return $handler->handleRequest($request, DataModel::inst());
+				}
+			}
 		}
+
+		user_error("Unable to find matching bulk action handler for ".$request->remaining().'.', E_USER_ERROR);
 	}
 }
