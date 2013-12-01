@@ -260,7 +260,8 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	function getColumnContent($gridField, $record, $columnName)
 	{
 		$cb = CheckboxField::create('bulkSelect_'.$record->ID)
-			->addExtraClass('bulkSelect no-change-track');
+			    ->addExtraClass('bulkSelect no-change-track')
+			    ->setAttribute('data-record', $record->ID);
 		return $cb->Field();
 	}
 	
@@ -287,6 +288,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	{				
 		Requirements::css(BULK_EDIT_TOOLS_PATH . '/css/GridFieldBulkManager.css');
 		Requirements::javascript(BULK_EDIT_TOOLS_PATH . '/javascript/GridFieldBulkManager.js');
+		Requirements::add_i18n_javascript(BULK_EDIT_TOOLS_PATH . '/javascript/lang');
 		
 		if ( !count($this->config['actions']) )
 		{
@@ -323,11 +325,6 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
     	),
     	'Colspan' => (count($gridField->getColumns()) - 1)
     );
-
-    if ( !$this->config['actions'][$firstAction]['config']['isAjax'] )
-    {
-    	$templateData['Button']['href'] = $gridField->Link('bulkaction') . '/' . $firstAction;
-    }
 
 		$templateData = new ArrayData($templateData);
 

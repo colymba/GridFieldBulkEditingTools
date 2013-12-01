@@ -29,17 +29,30 @@
 			onunmatch: function(){				
 			},
 			onclick: function(e) {
+				$('#bulkSelectAll').prop('checked', '');
 			}
 		});
 		
-    $('.toggleSelectAll').entwine({
+    $('#bulkSelectAll').entwine({
       onmatch: function(){
 			},
 			onunmatch: function(){				
 			},
-      onclick: function(){
+      onclick: function()
+      {
         var state = $(this).prop('checked');
-        $(this).parents('.ss-gridfield-table').find('td.col-bulkSelect input').each(function(){$(this).prop('checked', state);});
+        $(this).parents('.ss-gridfield-table')
+        			 .find('td.col-bulkSelect input')
+        			 .prop('checked', state);
+      },
+      getSelectRecordsID: function()
+      {
+      	return $(this).parents('.ss-gridfield-table')
+				      				.find('td.col-bulkSelect input:checked')
+				      				.map(function() {  
+				      					return parseInt( $(this).data('record') )
+				      				})
+										  .get();
       }
     });
     
@@ -56,15 +69,6 @@
             config  = $btn.data('config'),
             $icon   = $parent.find('.doBulkActionButton .ui-icon')
 						;
-
-				if ( config[value]['isAjax'] )
-				{
-					$btn.removeAttr('href');
-				}
-				else{
-					$btn.attr('href', $btn.data('url')+'/'+value);
-				}
-
 
 				$.each( config, function( configKey, configData )
 				{
@@ -87,48 +91,59 @@
 			} 
 		});
 		
-		//@TODO prevent button click to call default url request
 		$('.doBulkActionButton').entwine({
 			onmatch: function(){
 			},
 			onunmatch: function(){				
-			},
-			onmouseover: function(){
-				var action, ids = [];
-				action = $(this).parents('.bulkManagerOptions').find('select.bulkActionName').val();
-				if ( action == 'edit' )
-				{
-					$(this).parents('.ss-gridfield-table').find('td.col-bulkSelect input:checked').each(function(){
-						ids.push( parseInt( $(this).attr('name').split('_')[1] ) );
-					});
-					if(ids.length > 0) $(this).attr('href', $(this).data('url')+'/'+action+'?records[]='+ids.join('&records[]=') );
-				}
-			},			
-			onclick: function(e) {
-				var action, url, data = {}, ids = [], cacheBuster;
-				action = $(this).parents('.bulkManagerOptions').find('select.bulkActionName').val();
-				
-				if ( action != 'edit' )
-				{				
-					url = $(this).data('url');
-					cacheBuster = new Date().getTime();
-          
-					$(this).parents('.ss-gridfield-table').find('td.col-bulkSelect input:checked').each(function(){
-						ids.push( parseInt( $(this).attr('name').split('_')[1] ) );
-					});				
-					data.records = ids;
+			},	
+			onclick: function(e)
+			{
+				var $parent = $(this).parents('.bulkManagerOptions'),						
+						$btn = $parent.find('a.doBulkActionButton'),
 
-					if ( url.indexOf('?') !== -1 ) cacheBuster = '&cacheBuster=' + cacheBuster;
-					else cacheBuster = '?cacheBuster=' + cacheBuster;
+						action = $parent.find('select.bulkActionName').val(),
+						config = $btn.data('config'),
+
+						url = $(this).data('url'),	
+
+						ids = $('#bulkSelectAll').getSelectRecordsID(),
+						data = { records: ids },
+
+						cacheBuster = new Date().getTime()
+						;
+
+				if ( ids.length <= 0 )
+				{
+					alert( ss.i18n._t('GridFieldBulkTools.BULKACTION_EMPTY_SELECT') );
+					return;
+				}
+
+				if ( config[action]['isAjax'] )
+				{
+					//if ( url.indexOf('?') !== -1 ) cacheBuster = '&cacheBuster=' + cacheBuster;
+					//else cacheBuster = '?cacheBuster=' + cacheBuster;
 
 					$.ajax({
-						url: url + '/' + action + cacheBuster,
+						url: url + '/' + action + '?cacheBuster=' + cacheBuster,
 						data: data,
 						type: "POST",
 						context: $(this)
 					}).done(function() {
             $(this).parents('.ss-gridfield').entwine('.').entwine('ss').reload();
 					});
+				}
+				else{
+					var records = 'records[]='+ids.join('&records[]=');
+
+					if ( window.location.search )
+					{
+						url = url + '/' + action + window.location.search + '&' + records + '&cacheBuster=' + cacheBuster;
+					}
+					else{
+						url = url + '/' + action + '?' + records + '&cacheBuster=' + cacheBuster;
+					}
+
+					window.location.href = url;
 				}
 				
 			} 
