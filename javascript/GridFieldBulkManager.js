@@ -48,45 +48,41 @@
 			},
 			onunmatch: function(){				
 			},
-			onchange: function(e) {
-				var value, btn, icon;
-				value = $(this).val();
-				btn = $(this).parents('.bulkManagerOptions').find('.doBulkActionButton');
-				icon = $(this).parents('.bulkManagerOptions').find('.doBulkActionButton .ui-icon');
-				
-				switch (value) {
-					case 'edit':
-						$(btn).removeClass('ss-ui-action-destructive');
-						$(btn).attr('data-icon', 'pencil');
-						$(icon).removeClass('btn-icon-decline btn-icon-pencil').addClass('btn-icon-pencil');
-						
-						$(btn).attr('href', $(btn).data('url')+'/edit');
-						break;
-						
-					case 'unlink':
-						$(btn).removeClass('ss-ui-action-destructive');
-						$(btn).attr('data-icon', 'chain--minus');
-						$(icon).removeClass('btn-icon-decline btn-icon-pencil').addClass('btn-icon-chain--minus');
-						$(btn).removeAttr('href');
-						break;
-						
-					case 'delete':
-						$(btn).addClass('ss-ui-action-destructive');
-						$(btn).attr('data-icon', 'decline');
-						$(icon).removeClass('btn-icon-decline btn-icon-pencil').addClass('btn-icon-decline');
-						$(btn).removeAttr('href');
-						break;
+			onchange: function(e)
+			{
+        var value   = $(this).val(),
+            $parent = $(this).parents('.bulkManagerOptions'),
+            $btn    = $parent.find('.doBulkActionButton'),
+            config  = $btn.data('config'),
+            $icon   = $parent.find('.doBulkActionButton .ui-icon')
+						;
+
+				if ( config[value]['isAjax'] )
+				{
+					$btn.removeAttr('href');
+				}
+				else{
+					$btn.attr('href', $btn.data('url')+'/'+value);
 				}
 
-				/*
-				$(icon).removeClass('btn-icon-decline btn-icon-pencil btn-icon-chain--minus')
-				$(btn).removeClass('ss-ui-action-destructive');
-				$(btn).attr('data-icon', 'decline');
-				$(btn).attr('data-icon', 'chain--minus');
-				$(btn).attr('data-icon', 'pencil');
-				$(btn).removeAttr('href');
-				$(btn).attr('href', $(btn).data('url')+'/edit');
-				*/
+
+				$.each( config, function( configKey, configData )
+				{
+					if ( configKey != value )
+					{
+						$icon.removeClass('btn-icon-'+configData['icon']);
+					}
+				});
+				$icon.addClass('btn-icon-'+config[value]['icon']);
+
+
+				if ( config[value]['isDestructive'] )
+				{
+					$btn.addClass('ss-ui-action-destructive');
+				}
+				else{
+					$btn.removeClass('ss-ui-action-destructive');
+				}
 				
 			} 
 		});

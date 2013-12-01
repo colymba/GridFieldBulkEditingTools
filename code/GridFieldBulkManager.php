@@ -41,15 +41,30 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 			$this->config['actions'] = array(
 	      'edit'   => array(
 	      	'label' => _t('GridFieldBulkTools.EDIT_SELECT_LABEL', 'Edit'),
-	      	'handler' => 'GridFieldBulkManager_Request'
+	      	'handler' => 'GridFieldBulkManager_Request',
+	      	'config' => array(
+						'isAjax' => false,
+						'icon' => 'pencil',
+						'isDestructive' => false
+					)
 	      ),
 	      'unlink' => array(
 	      	'label' => _t('GridFieldBulkTools.UNLINK_SELECT_LABEL', 'UnLink'),
-	      	'handler' => 'GridFieldBulkManager_Request'
+	      	'handler' => 'GridFieldBulkManager_Request',
+	      	'config' => array(
+						'isAjax' => true,
+						'icon' => 'chain--minus',
+						'isDestructive' => false
+					)
 	      ),
 	      'delete' => array(
 	      	'label' => _t('GridFieldBulkTools.DELETE_SELECT_LABEL', 'Delete'),
-	      	'handler' => 'GridFieldBulkManager_Request'
+	      	'handler' => 'GridFieldBulkManager_Request',
+	      	'config' => array(
+						'isAjax' => true,
+						'icon' => 'decline',
+						'isDestructive' => true
+					)
 	      )
 			);
 		}
@@ -162,9 +177,10 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	 * @param  string                $name     Bulk action's name. Used by RequestHandler.
 	 * @param  string                $label    Dropdown menu action's label. Default to ucfirst($name).
 	 * @param  string                $handler  RequestHandler class name for this action. Default to 'GridFieldBulkAction'.ucfirst($name).'Handler'
+	 * @param  array 								 $config   Front-end configuration array( 'isAjax' => true, 'icon' => 'accept', 'isDestructive' => false )
 	 * @return GridFieldBulkManager            Current GridFieldBulkManager instance
 	 */
-	function addBulkAction(string $name, $label = null, $handler = null)
+	function addBulkAction(string $name, $label = null, $handler = null, $config = null)
 	{
 		if ( array_key_exists($name, $this->config['actions']) )
 		{
@@ -188,9 +204,22 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 			user_error("Bulk action handler for $name not found: $handler", E_USER_ERROR);
 		}
 
+		if ( $config && !is_array($config) )
+		{
+			user_error("Bulk action front-end config should be an array of key => value pairs.", E_USER_ERROR);
+		}
+		else{
+			$config = array(
+        'isAjax'        => true,
+        'icon'          => 'accept',
+        'isDestructive' => false
+			);
+		}
+
 		$this->config['actions'][$name] = array(
-    	'label' => $label,
-    	'handler' => $handler
+      'label'   => $label,
+      'handler' => $handler,
+      'config'  => $config
     );
 
 		return $this;
@@ -265,31 +294,45 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 		}
 
 		$actionsListSource = array();
+		$actionsConfig = array();
+
 		foreach ($this->config['actions'] as $action => $actionData)
 		{
-			$actionsListSource[$action] = $actionData['label'];
+      $actionsListSource[$action] = $actionData['label'];
+      $actionsConfig[$action]     = $actionData['config'];
 		}
+
+		reset($this->config['actions']);
+		$firstAction = key($this->config['actions']);
 
 		$dropDownActionsList = DropdownField::create('bulkActionName', '')
 			->setSource( $actionsListSource )
 			->setAttribute('class', 'bulkActionName no-change-track')
 			->setAttribute('id', '');
 
-    $templateData = new ArrayData(array(
+    $templateData = array(
     	'Menu' => $dropDownActionsList->FieldHolder(),
     	'Button' => array(
-    		'Label' => _t('GridFieldBulkTools.ACTION_BTN_LABEL', 'Go'),
-    		'DataURL' => $gridField->Link('bulkaction')
+        'Label'      => _t('GridFieldBulkTools.ACTION_BTN_LABEL', 'Go'),
+        'DataURL'    => $gridField->Link('bulkaction'),
+        'Icon'       => $this->config['actions'][$firstAction]['config']['icon'],
+        'DataConfig' => htmlspecialchars(json_encode($actionsConfig), ENT_QUOTES, 'UTF-8')
     	),
     	'Select' => array(
     		'Label' => _t('GridFieldBulkTools.SELECT_ALL_LABEL', 'Select all')
-    	)
-    ));
-		
-		$args = array('Colspan' => count($gridField->getColumns())-1);
+    	),
+    	'Colspan' => (count($gridField->getColumns()) - 1)
+    );
+
+    if ( !$this->config['actions'][$firstAction]['config']['isAjax'] )
+    {
+    	$templateData['Button']['href'] = $gridField->Link('bulkaction') . '/' . $firstAction;
+    }
+
+		$templateData = new ArrayData($templateData);
 
 		return array(
-			'header' => $templateData->renderWith('BulkManagerButtons', $args)
+			'header' => $templateData->renderWith('BulkManagerButtons')
 		);
 	}
 	
