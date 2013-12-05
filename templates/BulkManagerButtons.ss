@@ -2,7 +2,7 @@
 	<th class="extra bulkmanagerheading" colspan="$Colspan">
 		
 		$Menu
-		<a data-url="$Button.DataURL" data-config="$Button.DataConfig" class="doBulkActionButton action ss-ui-button cms-panel-link" data-icon="$Button.Icon">
+		<a data-url="$Button.DataURL" data-config="$Button.DataConfig" class="doBulkActionButton ss-ui-button" data-icon="$Button.Icon">
 			$Button.Label
 		</a>
 

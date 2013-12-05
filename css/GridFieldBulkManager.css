@@ -30,6 +30,11 @@
 	vertical-align: top;
 }
 
+.doBulkActionButton.loading .ui-icon
+{
+	background: transparent url(../../framework/images/network-save.gif) no-repeat 0 0;
+}
+
 .cms table.ss-gridfield-table tbody td a.tempDisabledEditLink
 {
   background: url('../../framework/admin/images/btn-icon/document--pencil.png') no-repeat 2px 0px;

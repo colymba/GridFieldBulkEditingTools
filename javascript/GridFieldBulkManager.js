@@ -112,6 +112,8 @@
 						cacheBuster = new Date().getTime()
 						;
 
+				$btn.addClass('loading');
+
 				if ( ids.length <= 0 )
 				{
 					alert( ss.i18n._t('GridFieldBulkTools.BULKACTION_EMPTY_SELECT') );
@@ -130,6 +132,7 @@
 						context: $(this)
 					}).done(function() {
             $(this).parents('.ss-gridfield').entwine('.').entwine('ss').reload();
+            $btn.removeClass('loading');
 					});
 				}
 				else{
