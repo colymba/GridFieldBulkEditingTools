@@ -18,14 +18,14 @@
 			}
 		});
 		
-		$('.bulkEditingForm input, .bulkEditingForm select, .bulkEditingForm textarea').entwine({
+		$('.bulkEditingForm input.text, .bulkEditingForm select, .bulkEditingForm textarea, .bulkEditingForm input.checkbox').entwine({
 			onchange: function(){
-				var form;
+				var $form = this.parents('form.bulkEditingForm');
 
-				form = this.parents('form.bulkEditingForm');
-
-				if ( !$(form).hasClass('hasUpdate') ) {
-					$(form).addClass('hasUpdate');
+				$form.removeClass('updated');
+				if ( !$form.hasClass('hasUpdate') )
+				{
+					$form.addClass('hasUpdate');
 				}
 			}
 		});		
@@ -37,15 +37,19 @@
 				onunmatch: function(){					
 				},
 				onclick: function(e){
-					var formsWithUpadtes, url, data, cacheBuster;
+					e.stopImmediatePropagation();
+
+          var $formsWithUpadtes = $('form.bulkEditingForm.hasUpdate'),
+              url               = $(this).data('url'),
+							data,
+							cacheBuster
+							;
 					
-					formsWithUpadtes = $('form.bulkEditingForm.hasUpdate');
-					$(this).data('formsToUpdate', $(formsWithUpadtes).length);
-					url = $(this).data('url');
+					$(this).data('formsToUpdate', $formsWithUpadtes.length);
 					
-					if ( $(formsWithUpadtes).length > 0 ) $(this).addClass('loading');
+					if ( $formsWithUpadtes.length > 0 ) $(this).addClass('loading');
 														
-					$(formsWithUpadtes).each(function(){
+					$formsWithUpadtes.each(function(){
 						cacheBuster = new Date().getTime() + '_' + $(this).attr('name');
 						data = $(this).serialize();
 						
@@ -57,16 +61,31 @@
 							data: data,
 							type: "POST",
 							context: $(this)
-						}).done(function() { 							
-							var btn = $('#bulkEditingUpdateBtn');
-							var totalForms = parseInt( $(btn).data('formsToUpdate') );				
-							var counter = parseInt( $(btn).data('completedForms') );							
+						}).success(function(data, textStatus, jqXHR) { 							
+              var $btn       = $('#bulkEditingUpdateBtn'),
+                  totalForms = parseInt( $btn.data('formsToUpdate') ),
+                  counter    = parseInt( $btn.data('completedForms') ),
+                  title
+									;							
+
 							counter = counter + 1;							
-							$(btn).data('completedForms', counter);
+							$btn.data('completedForms', counter);
 							
-							$(this).removeClass('hasUpdate');		
+							$(this).removeClass('hasUpdate');
+							$(this).addClass('updated');
+
+							try{
+								data = $.parseJSON( data );
+							}catch(er){}
+
+							if ( data.title )
+							{
+								$(this).find('.ui-accordion-header a').html(data.title);
+							}							
+							$(this).find('.ui-accordion-header').click();
 														
-							if ( counter == totalForms ) {
+							if ( counter == totalForms )
+							{
 								$('#bulkEditingUpdateBtn').data('completedForms', 0);
 								$('#bulkEditingUpdateBtn').removeClass('loading');
 							}							

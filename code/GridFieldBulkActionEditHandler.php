@@ -45,6 +45,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 				->setAttribute('data-icon', 'accept')
 				->setAttribute('data-url', $this->gridField->Link('bulkaction/bulkedit/update'))
 				->setUseButtonTag(true)
+				->setAttribute('src', '')//changes type to image so isn't hooked by default actions handlers
 		);
 		
 		$actions->push(
@@ -73,7 +74,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 			$editedRecordList->push(
 				ToggleCompositeField::create(
 					'GFBM_'.$id,
-					'#'.$id.': '.DataObject::get_by_id($this->gridField->list->dataClass, $id)->getTitle(),					
+					DataObject::get_by_id($this->gridField->list->dataClass, $id)->getTitle(),					
 					array_values($recordCMSDataFields)
 				)->setHeadingLevel(4)
 				->addExtraClass('bulkEditingFieldHolder')
@@ -108,7 +109,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 		$form->setAttribute('data-pjax-fragment', 'CurrentForm Content');
 				
 		Requirements::javascript(BULK_EDIT_TOOLS_PATH . '/javascript/GridFieldBulkEditingForm.js');	
-		Requirements::css(BULK_EDIT_TOOLS_PATH . '/css/GridFieldBulkManager.css');	
+		Requirements::css(BULK_EDIT_TOOLS_PATH . '/css/GridFieldBulkEditingForm.css');	
 		Requirements::add_i18n_javascript(BULK_EDIT_TOOLS_PATH . '/javascript/lang');	
 		
 		if($this->request->isAjax())
@@ -150,7 +151,11 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 			}
 		}		
 		$record->write();
-		
-		return '{done:1,recordID:'.$data['ID'].'}';
+
+		return json_encode(array(
+      'done'     => 1,
+      'recordID' => $data['ID'],
+      'title'    => $record->getTitle()
+		), JSON_NUMERIC_CHECK);
 	}
 }
