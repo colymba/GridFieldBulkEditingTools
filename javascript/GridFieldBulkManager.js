@@ -112,11 +112,20 @@
 						cacheBuster = new Date().getTime()
 						;
 
+				if ( $btn.hasClass('ss-ui-action-destructive') )
+				{
+					if( !confirm(ss.i18n._t('GridFieldBulkManager.CONFIRM_DESTRUCTIVE_ACTION')) )
+					{
+						e.preventDefault();
+						return false;
+					}					
+				}
+
 				$btn.addClass('loading');
 
 				if ( ids.length <= 0 )
 				{
-					alert( ss.i18n._t('GridFieldBulkTools.BULKACTION_EMPTY_SELECT') );
+					alert( ss.i18n._t('GridFieldBulkManager.BULKACTION_EMPTY_SELECT') );
 					return;
 				}
 
