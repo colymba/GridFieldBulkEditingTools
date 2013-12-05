@@ -20,22 +20,23 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 		'bulkedit/update' => 'update',
 		'bulkedit' => 'edit'
 	);
-	
-	
+
+
 	/**
-	 * Creates and return a Form
-	 * with a collection of editable fields for each selected records
+	 * Return a form for all the selected DataObject
+	 * with their respective editable fields.
 	 * 
-	 * @return Form Edit form with all the selected records
+	 * @return form Selected DataObject editable fields
 	 */
-	public function edit()
+	public function editForm()
 	{
-		$recordList = $this->getRecordIDList();
-		
 		$crumbs = $this->Breadcrumbs();
-		if($crumbs && $crumbs->count()>=2) $one_level_up = $crumbs->offsetGet($crumbs->count()-2);
+		if($crumbs && $crumbs->count()>=2)
+		{
+			$one_level_up = $crumbs->offsetGet($crumbs->count()-2);
+		}
 		
-		$actions = new FieldList();		
+		$actions = new FieldList();
 		
 		$actions->push(
 			FormAction::create('SaveAll', _t('GridFieldBulkTools.SAVE_BTN_LABEL', 'Save All'))
@@ -47,18 +48,16 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 		);
 		
 		$actions->push(
-			FormAction::create('Cancel', _t('GridFieldBulkTools.CANCEL_BTN_LABEL', 'Cancel & Delete All'))
+			FormAction::create('Cancel', _t('GridFieldBulkManager.CANCEL_BTN_LABEL', 'Cancel'))
 				->setAttribute('id', 'bulkEditingUpdateCancelBtn')
 				->addExtraClass('ss-ui-action-destructive cms-panel-link')
 				->setAttribute('data-icon', 'decline')
-				->setAttribute('data-url', $this->Link('cancel'))
+				->setAttribute('href', $one_level_up->Link)
 				->setUseButtonTag(true)
+				->setAttribute('src', '')//changes type to image so isn't hooked by default actions handlers
 		);
 		
-		/*
-		 * ********************************************************************
-		 */
-		
+		$recordList = $this->getRecordIDList();
 		$editedRecordList = new FieldList();
 		$config = $this->component->getConfig();
 				
@@ -81,45 +80,50 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 			);
 		}
 		
-		/*
-		 * ********************************************************************
-		 */
-		
 		$form = new Form(
 			$this,
 			'bulkEditingForm',
 			$editedRecordList,
 			$actions
-		);
-		
-		$form->setTemplate('LeftAndMain_EditForm');
-		$form->addExtraClass('center cms-content');
-		$form->setAttribute('data-pjax-fragment', 'CurrentForm Content');
+		);		
 		
 		if($crumbs && $crumbs->count()>=2){
 			$form->Backlink = $one_level_up->Link;
 		}
-		
-		$formHTML = $form->forTemplate();
+
+		return $form;
+	}
+	
+	
+	/**
+	 * Creates and return the editing interface
+	 * 
+	 * @return string Form's HTML
+	 */
+	public function edit()
+	{		
+		$form = $this->editForm();
+		$form->setTemplate('LeftAndMain_EditForm');
+		$form->addExtraClass('center cms-content');
+		$form->setAttribute('data-pjax-fragment', 'CurrentForm Content');
 				
-		Requirements::javascript(BULK_EDIT_TOOLS_PATH . '/javascript/GridFieldBulkManager.js');	
+		Requirements::javascript(BULK_EDIT_TOOLS_PATH . '/javascript/GridFieldBulkEditingForm.js');	
 		Requirements::css(BULK_EDIT_TOOLS_PATH . '/css/GridFieldBulkManager.css');	
 		Requirements::add_i18n_javascript(BULK_EDIT_TOOLS_PATH . '/javascript/lang');	
 		
-		$response = new SS_HTTPResponse($formHTML);
-		$response->addHeader('Content-Type', 'text/plain');
-		$response->addHeader('X-Title', 'SilverStripe - Bulk '.$this->gridField->list->dataClass.' Editing');
-		
 		if($this->request->isAjax())
 		{
+			$response = new SS_HTTPResponse(
+				Convert::raw2json(array( 'Content' => $form->forAjaxTemplate()->getValue() ))
+			);
+			$response->addHeader('X-Pjax', 'Content');
+			$response->addHeader('Content-Type', 'text/json');
+			$response->addHeader('X-Title', 'SilverStripe - Bulk '.$this->gridField->list->dataClass.' Editing');
 			return $response;
 		}
 		else {
 			$controller = $this->getToplevelController();
-			// If not requested by ajax, we need to render it within the controller context+template
-			return $controller->customise(array(
-				'Content' => $response->getBody(),
-			));	
+			return $controller->customise(array( 'Content' => $form ));
 		}
 	}
 

@@ -9,3 +9,5 @@ en:
     DELETE_SELECT_LABEL: Delete
     ACTION_BTN_LABEL: Go
     SELECT_ALL_LABEL: Select all
+  GridFieldBulkManager:
+    CANCEL_BTN_LABEL: Cancel
