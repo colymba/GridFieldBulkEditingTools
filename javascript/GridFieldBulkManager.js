@@ -29,11 +29,11 @@
 			onunmatch: function(){				
 			},
 			onclick: function(e) {
-				$('#bulkSelectAll').prop('checked', '');
+				$(this).parents('.ss-gridfield-table').find('input.bulkSelectAll').prop('checked', '');
 			}
 		});
 		
-    $('#bulkSelectAll').entwine({
+    $('input.bulkSelectAll').entwine({
       onmatch: function(){
 			},
 			onunmatch: function(){				
@@ -106,7 +106,7 @@
 
 						url = $(this).data('url'),	
 
-						ids = $('#bulkSelectAll').getSelectRecordsID(),
+						ids = $(this).parents('.bulkManagerOptions').find('input.bulkSelectAll:first').getSelectRecordsID(),
 						data = { records: ids },
 
 						cacheBuster = new Date().getTime()
