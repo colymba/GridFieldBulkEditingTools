@@ -111,6 +111,13 @@
 
 						cacheBuster = new Date().getTime()
 						;
+						
+
+				if ( ids.length <= 0 )
+				{
+					alert( ss.i18n._t('GridFieldBulkManager.BULKACTION_EMPTY_SELECT') );
+					return;
+				}
 
 				if ( $btn.hasClass('ss-ui-action-destructive') )
 				{
@@ -119,15 +126,9 @@
 						e.preventDefault();
 						return false;
 					}					
-				}
+				}	
 
 				$btn.addClass('loading');
-
-				if ( ids.length <= 0 )
-				{
-					alert( ss.i18n._t('GridFieldBulkManager.BULKACTION_EMPTY_SELECT') );
-					return;
-				}
 
 				if ( config[action]['isAjax'] )
 				{
