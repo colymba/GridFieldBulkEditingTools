@@ -181,7 +181,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	 * @param  array 								 $config   Front-end configuration array( 'isAjax' => true, 'icon' => 'accept', 'isDestructive' => false )
 	 * @return GridFieldBulkManager            Current GridFieldBulkManager instance
 	 */
-	function addBulkAction(string $name, $label = null, $handler = null, $config = null)
+	function addBulkAction($name, $label = null, $handler = null, $config = null)
 	{
 		if ( array_key_exists($name, $this->config['actions']) )
 		{
@@ -233,7 +233,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	 * @param  string 								$name  Bulk action's name
 	 * @return GridFieldBulkManager          Current GridFieldBulkManager instance
 	 */
-	function removeBulkAction(string $name)
+	function removeBulkAction($name)
 	{
 		if ( !array_key_exists($name, $this->config['actions']) )
 		{
