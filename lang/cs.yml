@@ -7,7 +7,7 @@ cs:
     EDIT_SELECT_LABEL: Upravit
     UNLINK_SELECT_LABEL: Odstranit vazbu
     DELETE_SELECT_LABEL: Smazat
-    ACTION_BTN_LABEL: Go
+    ACTION_BTN_LABEL: Provést
     SELECT_ALL_LABEL: Vybrat vše
   GridFieldBulkManager:
     CANCEL_BTN_LABEL: Storno
