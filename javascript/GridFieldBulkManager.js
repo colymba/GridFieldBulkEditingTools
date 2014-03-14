@@ -95,7 +95,29 @@
 			onmatch: function(){
 			},
 			onunmatch: function(){				
-			},	
+			},
+			getActionURL: function(action, url)
+			{
+				var cacheBuster = new Date().getTime();
+				url = url.split('?');
+
+				if ( action )
+				{
+					action = '/' + action;
+				}
+				else{
+					action = '';
+				}
+
+				if ( url[1] )
+				{
+					url = url[0] + action + '?' + url[1] + '&' + 'cacheBuster=' + cacheBuster;
+				}
+				else{
+					url = url[0] + action + '?' + 'cacheBuster=' + cacheBuster;
+				}
+				return url;
+			},
 			onclick: function(e)
 			{
 				var $parent = $(this).parents('.bulkManagerOptions'),						
@@ -104,12 +126,10 @@
 						action = $parent.find('select.bulkActionName').val(),
 						config = $btn.data('config'),
 
-						url = $(this).data('url'),	
+						url = this.getActionURL(action, $(this).data('url')),	
 
 						ids = $(this).parents('.bulkManagerOptions').find('input.bulkSelectAll:first').getSelectRecordsID(),
-						data = { records: ids },
-
-						cacheBuster = new Date().getTime()
+						data = { records: ids }
 						;
 						
 
@@ -128,15 +148,12 @@
 					}					
 				}	
 
-				$btn.addClass('loading');
+				$btn.addClass('loading');				
 
 				if ( config[action]['isAjax'] )
 				{
-					//if ( url.indexOf('?') !== -1 ) cacheBuster = '&cacheBuster=' + cacheBuster;
-					//else cacheBuster = '?cacheBuster=' + cacheBuster;
-
 					$.ajax({
-						url: url + '/' + action + '?cacheBuster=' + cacheBuster,
+						url: url,
 						data: data,
 						type: "POST",
 						context: $(this)
@@ -147,14 +164,7 @@
 				}
 				else{
 					var records = 'records[]='+ids.join('&records[]=');
-
-					if ( window.location.search )
-					{
-						url = url + '/' + action + window.location.search + '&' + records + '&cacheBuster=' + cacheBuster;
-					}
-					else{
-						url = url + '/' + action + '?' + records + '&cacheBuster=' + cacheBuster;
-					}
+					url = url + '&' + records;
 
 					window.location.href = url;
 				}
