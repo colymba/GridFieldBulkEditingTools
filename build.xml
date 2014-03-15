@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+# Phing build script
+# phing installation
+sudo pear channel-discover pear.phing.info
+sudo pear install phing/phing
+sudo pear install pear/VersionControl_Git-0.4.4
+-->
+
+<project name="gridfield-bulk-editing-tools" default="transifex" phingVersion="2.7.0">
+
+  <taskdef name="buildTransifexTranslations" classname="tasks.BuildTransifexTranslations" />
+
+  <target name="transifex" description="Fetches Transifex translations and build lang files.">
+    <echo msg="Building translations..." />
+    <buildTransifexTranslations
+      txproject="gridfieldbulkeditingtools"
+    />
+  </target>
+
+</project>
