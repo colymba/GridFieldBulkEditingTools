@@ -1,7 +1,7 @@
 <?php
 /**
  * Phing build task used to generate SilverStripe translation files
- * from Transifex data. This tasks asumes that:
+ * from Transifex data. This tasks assumes that:
  * - Javascript translations are from the Transifex resource called 'js'
  * - YML translations are from the Transifex resource called 'yml'
  * - Transifex AUTH credentials to be saved in $txAuthFile with content {"username": "user", "password": "pwd"}

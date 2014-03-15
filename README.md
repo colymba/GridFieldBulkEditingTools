@@ -37,10 +37,16 @@ See [BULK_MANAGER.md](BULK_MANAGER.md) for detailed configuration.
 ## Notes
 * The Record edit form uses the Model's getCMSFields()
 
-### @TODO
+#### @TODO
 * Add individual actions for each upload (update + cancel)
 * Handle and display errors better for: creation, update, cancel
 * Make it work not only for images but Files too
+
+## Translations
+
+Translations of the natural language strings are managed through a third party translation interface, transifex.com.
+
+Please use [https://www.transifex.com/projects/p/gridfieldbulkeditingtools/](https://www.transifex.com/projects/p/gridfieldbulkeditingtools/) to contribute translations, rather than sending pull requests with YAML/JS files.
 
 ## License (BSD Simplified)
 
