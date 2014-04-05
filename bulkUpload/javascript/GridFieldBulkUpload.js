@@ -113,7 +113,26 @@
 		// start add-on behaviours
 		// ============================================================================================
 				
-		$.entwine('colymba', function($) {		
+		$.entwine('colymba', function($) {
+
+      /**
+       * Makes sure the component is at the top :)
+       */
+      $('.bulkUpload').entwine({
+        onmatch: function(){
+          var $tr = this.parents('thead').find('tr'),
+              $component = this.clone(),
+              index = $tr.index(this)
+              ;
+          if ( index > 1 )
+          {
+            $component.insertAfter($tr.eq(0));
+            this.remove();
+          }          
+        },
+        onunmatch: function(){}
+      });
+
 		
       /*
 			 * handles individual edit forms changes

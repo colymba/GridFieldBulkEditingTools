@@ -287,9 +287,9 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	 */
 	public function getHTMLFragments($gridField)
 	{				
-		Requirements::css(BULK_EDIT_TOOLS_PATH . '/css/GridFieldBulkManager.css');
-		Requirements::javascript(BULK_EDIT_TOOLS_PATH . '/javascript/GridFieldBulkManager.js');
-		Requirements::add_i18n_javascript(BULK_EDIT_TOOLS_PATH . '/javascript/lang');
+		Requirements::css(BULKEDITTOOLS_MANAGER_PATH . '/css/GridFieldBulkManager.css');
+		Requirements::javascript(BULKEDITTOOLS_MANAGER_PATH . '/javascript/GridFieldBulkManager.js');
+		Requirements::add_i18n_javascript(BULKEDITTOOLS_MANAGER_PATH . '/javascript/lang');
 		
 		if ( !count($this->config['actions']) )
 		{

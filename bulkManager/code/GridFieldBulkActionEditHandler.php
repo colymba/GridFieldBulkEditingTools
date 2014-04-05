@@ -108,9 +108,9 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 		$form->addExtraClass('center cms-content');
 		$form->setAttribute('data-pjax-fragment', 'CurrentForm Content');
 				
-		Requirements::javascript(BULK_EDIT_TOOLS_PATH . '/javascript/GridFieldBulkEditingForm.js');	
-		Requirements::css(BULK_EDIT_TOOLS_PATH . '/css/GridFieldBulkEditingForm.css');	
-		Requirements::add_i18n_javascript(BULK_EDIT_TOOLS_PATH . '/javascript/lang');	
+		Requirements::javascript(BULKEDITTOOLS_MANAGER_PATH . '/javascript/GridFieldBulkEditingForm.js');	
+		Requirements::css(BULKEDITTOOLS_MANAGER_PATH . '/css/GridFieldBulkEditingForm.css');	
+		Requirements::add_i18n_javascript(BULKEDITTOOLS_MANAGER_PATH . '/javascript/lang');	
 		
 		if($this->request->isAjax())
 		{

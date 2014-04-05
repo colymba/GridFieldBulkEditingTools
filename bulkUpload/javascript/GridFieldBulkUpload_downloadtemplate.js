@@ -1,6 +1,6 @@
-window.tmpl.cache['colymba-gfbiu-uploadfield-downloadtemplate'] = tmpl(
+window.tmpl.cache['colymba-bulkuploaddownloadtemplate'] = tmpl(
 	'{% for (var i=0, files=o.files, l=files.length, file=files[0]; i<l; file=files[++i]) { %}' +
-		'<li class="ss-uploadfield-item template-download{% if (file.error) { %} ui-state-error{% } %}" data-fileid="{%=file.id%}">' + 
+		'<li class="ss-uploadfield-item template-download{% if (file.error) { %} ui-state-error{% }else{ %} done{% } %}" data-fileid="{%=file.id%} data-recordid="{%=file.record.id%}">' + 
 			'<div class="ss-uploadfield-item-preview preview"><span>' +
 				'<img src="{%=file.thumbnail_url%}" alt="" />' +
 			'</span></div>' +
@@ -26,21 +26,6 @@ window.tmpl.cache['colymba-gfbiu-uploadfield-downloadtemplate'] = tmpl(
 					//'<div class="ss-uploadfield-item-actions">{% print(file.buttons, true); %}</div>' +
 				'{% } %}' + 
 			'</div>' +
-			'{% if (!file.error) { %}' +				
-
-				'<div class="ss-uploadfield-item-editform">'+
-					'<form action="" method="post" class="bulkImageUploadUpdateForm" name="BIUUF_{%=file.record.ID%}">'+
-							'<input type="hidden" name="record_{%=file.record.ID%}_ID" value="{%=file.record.ID%}"/>'+
-							'<img class="imgPreview" src="{%=file.preview_url%}" />'+
-
-							'{% for (var key in file.record.fields) { %}' +								
-								'{%#file.record.fields[key]%}' +								
-							'{% } %}' +
-
-					'</form>'+
-				'</div>' +
-				
-			'{% } %}' + 
 		'</li>' + 
 	'{% } %}'
 );
