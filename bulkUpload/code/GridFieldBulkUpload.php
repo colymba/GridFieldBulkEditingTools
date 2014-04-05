@@ -223,6 +223,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 			->setConfig('previewMaxHeight', 20)
 			->setConfig('changeDetection', false)
 
+			->setTemplate('GridFieldBulkUploadField')
 			->setDownloadTemplateName('colymba-bulkuploaddownloadtemplate')
 			
 			->setConfig('url', $gridField->Link('bulkupload/upload'))
@@ -264,9 +265,41 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 			return array();
 		}
 
+		// upload management buttons
+		$finishButton = FormAction::create('Finish', _t('GridFieldBulkTools.FINISH_BTN_LABEL', 'Finish'))
+			->addExtraClass('bulkUploadFinishButton')
+			->setAttribute('data-icon', 'accept')
+			->setUseButtonTag(true)
+			->setAttribute('src', '');//changes type to image so isn't hooked by default actions handlers
+
+		$cancelButton = FormAction::create('Cancel', _t('GridFieldBulkTools.CANCEL_BTN_LABEL', 'Cancel & delete all'))
+			->addExtraClass('bulkUploadCancelButton ss-ui-action-destructive')
+			->setAttribute('data-icon', 'decline')
+			->setAttribute('data-url', $gridField->Link('bulkupload/cancel'))
+			->setUseButtonTag(true)
+			->setAttribute('src', '');
+
+		if ( $gridField->getConfig()->getComponentsByType('GridFieldBulkManager') )
+		{
+			$editAllButton = FormAction::create('EditAll', _t('GridFieldBulkTools.EDIT_ALL_BTN_LABEL', 'Edit all'))
+				->addExtraClass('bulkUploadEditButton')
+				->setAttribute('data-icon', 'pencil')
+				->setAttribute('data-url', $gridField->Link('bulkupload/edit'))
+				->setUseButtonTag(true)
+				->setAttribute('src', '');
+		}else{
+			$editAllButton = '';
+		}
+
+		// get uploadField + inject extra buttons
+		$uploadField = $this->bulkUploadField($gridField);
+    $uploadField->FinishButton  = $finishButton;
+    $uploadField->CancelButton  = $cancelButton;
+    $uploadField->EditAllButton = $editAllButton;
+
 		$data = ArrayData::create(array(
-      'Colspan'    => count($gridField->getColumns()),
-      'UploadField' => $this->bulkUploadField($gridField)->Field() // call ->Field() to get requirements in right order
+      'Colspan'     => count($gridField->getColumns()),
+      'UploadField' => $uploadField->Field() // call ->Field() to get requirements in right order
 		));
 
 		Requirements::css(BULKEDITTOOLS_UPLOAD_PATH . '/css/GridFieldBulkUpload.css');
