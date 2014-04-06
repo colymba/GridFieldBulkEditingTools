@@ -25,6 +25,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 		'actions' => array()
 	);
 	
+	
 	/**
 	 * Holds any class that should not be used as they break the component
 	 * These cannot be removed from the blacklist

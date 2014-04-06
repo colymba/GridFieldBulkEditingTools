@@ -11,40 +11,26 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 	 * component configuration
 	 * 
 	 * 'fileRelationName' => field name of the $has_one File/Image relation
-	 * 'editableFields' => fields editable on the Model
-	 * 'fieldsClassBlacklist' => field types that will be removed from the automatic form generation
-	 * 'fieldsNameBlacklist' => fields that will be removed from the automatic form generation
-	 * 
+	 * 'folderName' => where to upload the files
+	 * 'maxFileSize' => maximum file size allowed per upload
+	 * 'sequentialUploads' => process uploads 1 after the other rather than all at once
 	 * @var array 
 	 */
 	protected $config = array(
-		'fileRelationName' => null,
-		'editableFields' => null,
-		'fieldsClassBlacklist' => array(),
-		'fieldsNameBlacklist' => array(),
-		'folderName' => 'bulkUpload',
-		'maxFileSize' => null,
+    'fileRelationName'  => null,
+    'folderName'        => 'bulkUpload',
+    'maxFileSize'       => null,
     'sequentialUploads' => false
 	);
-	
-	/**
-	 * Holds any class that should not be used as they break the component
-	 * These cannot be removed from the blacklist
-	 */
-	protected $forbiddenFieldsClasses = array( 'GridField', 'UploadField' );
 
 	/**
 	 * 
 	 * @param string $fileRelationName
 	 * @param string/array $editableFields
 	 */
-	public function __construct($fileRelationName = null, $editableFields = null)
+	public function __construct($fileRelationName = null)
 	{		
 		if ( $fileRelationName != null ) $this->setConfig ( 'fileRelationName', $fileRelationName );
-		if ( $editableFields != null ) $this->setConfig ( 'editableFields', $editableFields );
-		
-		//init classes blacklist with forbidden classes
-		$this->config['fieldsClassBlacklist'] = $this->forbiddenFieldsClasses;
 	}
 	
 	/**
@@ -57,17 +43,6 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 	{
 		if (!key_exists($reference, $this->config) ) {
 			user_error("Unknown option reference: $reference", E_USER_ERROR);
-		}
-		
-		if ( ($reference == 'fieldsClassBlacklist' || $reference == 'fieldsClassBlacklist' || $reference == 'editableFields') && !is_array($value) )
-		{
-			$value = array($value);
-		}
-
-		//makes sure $forbiddenFieldsClasses are in no matter what
-		if ( $reference == 'fieldsClassBlacklist' )
-		{
-			$value = array_unique( array_merge($value, $this->forbiddenFieldsClasses) );
 		}
 
 		//makes sure maxFileSize is INT
@@ -96,58 +71,6 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 	{
 		if ( $reference ) return $this->config[$reference];
 		else return $this->config;
-	}
-	
-	/**
-	 * Add a field to the editable fields blacklist
-	 * 
-	 * @param string $fieldName
-	 * @return boolean 
-	 */
-	function addFieldNameToBlacklist ( $fieldName )
-	{
-		return array_push( $this->config['fieldsNameBlacklist'], $fieldName);
-	}
-	
-	/**
-	 * Add a class to the editable fields blacklist
-	 * 
-	 * @param string $className
-	 * @return boolean 
-	 */
-	function addClassToBlacklist ( $className )
-	{
-		return array_push( $this->config['fieldsClassBlacklist'], $className);
-	}
-	
-	/**
-	 * Remove a field to the editable fields blacklist
-	 * 
-	 * @param string $fieldName
-	 * @return boolean 
-	 */
-	function removeFieldNameFromBlacklist ( $fieldName )
-	{
-		if (key_exists($fieldName, $this->config['fieldsNameBlacklist'])) {
-			return delete( $this->config['fieldsNameBlacklist'][$fieldName] );
-		}else{
-			return false;
-		}
-	}
-	
-	/**
-	 * Remove a class to the editable fields blacklist
-	 * 
-	 * @param string $className
-	 * @return boolean 
-	 */
-	function removeClassFromBlacklist ( $className )
-	{
-		if (key_exists($className, $this->config['fieldsNameBlacklist']) && !in_array($className, $this->forbiddenFieldsClasses)) {
-			return delete( $this->config['fieldsNameBlacklist'][$className] );
-		}else{
-			return false;
-		}
 	}
 
 	/* ******************************************************************************** */
@@ -326,9 +249,9 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 	 * @return array 
 	 */
 	public function getURLHandlers($gridField) {
-			return array(
-				'bulkupload' => 'handleBulkUpload'
-			);
+		return array(
+			'bulkupload' => 'handleBulkUpload'
+		);
 	}
 	
 	/**
@@ -340,8 +263,8 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 	 */
 	public function handleBulkUpload($gridField, $request)
 	{				
-		$controller = $gridField->getForm()->Controller();
-		$handler = new GridFieldBulkUpload_Request($gridField, $this, $controller);
+    $controller = $gridField->getForm()->Controller();
+    $handler    = new GridFieldBulkUpload_Request($gridField, $this, $controller);
 		
 		return $handler->handleRequest($request, DataModel::inst());		
 	}

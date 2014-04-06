@@ -148,6 +148,9 @@
       });
 
 
+      /**
+       * Clears all updloads with warning or error
+       */
       $('.bulkUploadClearErrorButton').entwine({
         onmatch: function(){
           this.removeClass('action');
@@ -165,6 +168,11 @@
         }
       });
 
+
+      /**
+       * Cancel all uploads
+       * Clear the ones with warnings/error and delete dataObjects from the successful ones
+       */
       $('.bulkUploadCancelButton').entwine({
         onmatch: function(){
           this.removeClass('action');
@@ -222,6 +230,10 @@
         }
       });
 
+      
+      /**
+       * Clear all the warning/error/finished uploads
+       */
       $('.bulkUploadFinishButton').entwine({
         onmatch: function(){
           this.removeClass('action');
@@ -259,7 +271,7 @@
           if ( $doBulkActionButton.length > 0 )
           {
             this.addClass('loading');
-            
+
             recordsID = $records.map(function() {  
               return parseInt( $(this).data('recordid') )
             }).get();
@@ -268,130 +280,6 @@
           }
         }
       });
-
-
-
-      
-			/*
-			 * save changes button behaviour
-			 * loop through edited forms and submit data
-			 */
-			$('#bulkImageUploadUpdateBtn:not(.ui-state-disabled)').entwine({
-				onmatch: function()
-				{
-					$(this).data('completedForms', 0);
-				},
-				onunmatch: function(){},
-				onclick: function(e)
-				{
-					var formsWithUpadtes,
-							url,
-							data,
-							cacheBuster
-							;
-					
-					formsWithUpadtes = $('form.bulkImageUploadUpdateForm.hasUpdate');
-					$(this).data('formsToUpdate', $(formsWithUpadtes).length);
-					url = $(this).data('url');
-					
-					if ( $(formsWithUpadtes).length > 0 )
-					{
-						$(this).addClass('loading');
-					}
-					
-					$(formsWithUpadtes).each(function()
-					{
-						cacheBuster = new Date().getTime() + '_' + $(this).attr('name');
-            if ( url.indexOf('?') !== -1 )
-          	{
-          		cacheBuster = '&cacheBuster=' + cacheBuster;
-          	}
-            else{
-            	cacheBuster = '?cacheBuster=' + cacheBuster;
-          	}
-            
-            data = $(this).serialize();
-
-						$.ajax({
-              url:     url + cacheBuster,
-              data:    data,
-              type:    "POST",
-              context: $(this)
-						}).done(function() {				
-              var btn        = $('#bulkImageUploadUpdateBtn'),
-                  totalForms = parseInt( $(btn).data('formsToUpdate') ),
-                  counter    = parseInt( $(btn).data('completedForms') )
-									;
-
-							counter = counter + 1;							
-							$(btn).data('completedForms', counter);
-							
-							$(this).removeClass('hasUpdate');		
-							$(this).parents('li').find('.ss-uploadfield-item-status').removeClass('dirty').addClass('updated').html(ss.i18n._t('GridFieldBulkTools.EDIT_UPDATED'));														
-							$(this).parents('li').find('.ss-uploadfield-item-info').removeClass('dirty').addClass('updated');
-							$(this).parents('li').find('.ss-uploadfield-item-editform').css('display', 'none');
-							
-							$(this).removeClass('hasUpdate');
-							
-							if ( counter == totalForms )
-							{
-								$('#bulkImageUploadUpdateBtn').data('completedForms', 0);
-								$('#bulkImageUploadUpdateBtn').removeClass('loading');
-                $('#bulkImageUploadUpdateBtn').addClass('ui-state-disabled');
-							}							
-						});
-
-					});
-
-					return false;					
-				}
-			});
-      
-			/*
-			 * cancel button behaviour
-			 * loop through edit forms and submit for deletion
-			 */
-			$('#bulkImageUploadUpdateCancelBtn:not(.ui-state-disabled)').entwine({
-				onclick: function(e)
-				{					
-          var url         = $(this).data('url'),
-              cacheBuster = new Date().getTime()
-							;
-
-          if ( url.indexOf('?') !== -1 )
-          {
-          	cacheBuster = '&cacheBuster=' + cacheBuster;
-        	}
-          else{
-          	cacheBuster = '?cacheBuster=' + cacheBuster;
-        	}
-					
-					$('form.bulkImageUploadUpdateForm').each(function()
-					{
-						var data = $(this).serialize();
-						
-						$.ajax({
-              url:     url + cacheBuster,
-              data:    data,
-              type:    "POST",
-              context: $(this)
-						}).done(function() { 
-
-							$(this).parents('li.ss-uploadfield-item').empty().remove();
-							
-							if ( $('li.ss-uploadfield-item').length == 0 )
-							{
-								$('.ss-uploadfield-editandorganize').css('display', 'none');
-								$('#Form_bulkImageUploadForm').removeClass('loading');
-                $('#bulkImageUploadUpdateCancelBtn').addClass('ui-state-disabled');
-							}
-
-						});
-					});
-
-					return false;					
-				}				
-			});	
 
 		}); // colymba namespace
 
