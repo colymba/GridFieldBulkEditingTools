@@ -199,21 +199,26 @@
         {
           var $bulkUpload = this.parents('.bulkUpload'),
               $li         = $bulkUpload.find('li.ss-uploadfield-item'),
-              ids         = data.records
+              ids
               ;
 
+          if ( data )
+          {
+            ids = data.records;
+
+            $li.each(function(index, Element){
+              var $this    = $(this),
+                  recordID = parseInt( $this.data('recordid') )
+                  ;
+
+              if ( ids.indexOf(recordID) !== -1 )
+              {
+                $this.remove();
+              }
+            });
+          }
+
           this.removeClass('loading');
-
-          $li.each(function(index, Element){
-            var $this    = $(this),
-                recordID = parseInt( $this.data('recordid') )
-                ;
-
-            if ( ids.indexOf(recordID) !== -1 )
-            {
-              $this.remove();
-            }
-          });
         }
       });
 
@@ -228,10 +233,12 @@
               $li = $bulkUpload.find('li.ss-uploadfield-item')
               ;
 
+          this.addClass('loading');
           $li.each(function(index, Element){
             // skip in progress         
             $(this).remove();
           });
+          this.removeClass('loading');
         }
       });
 
@@ -251,16 +258,14 @@
 
           if ( $doBulkActionButton.length > 0 )
           {
+            this.addClass('loading');
+            
             recordsID = $records.map(function() {  
               return parseInt( $(this).data('recordid') )
             }).get();
 
-            $doBulkActionButton.doBulkAction('edit', recordsID, this.editCallback);
+            $doBulkActionButton.doBulkAction('bulkedit', recordsID);
           }
-        },
-        editCallback: function(response)
-        {
-
         }
       });
 

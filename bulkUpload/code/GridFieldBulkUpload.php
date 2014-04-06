@@ -265,16 +265,13 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 			return array();
 		}
 
+		// check BulkManager exists
+		$bulkManager = $gridField->getConfig()->getComponentsByType('GridFieldBulkManager');
+
 		// upload management buttons
 		$finishButton = FormAction::create('Finish', _t('GridFieldBulkTools.FINISH_BTN_LABEL', 'Finish'))
 			->addExtraClass('bulkUploadFinishButton')
 			->setAttribute('data-icon', 'accept')
-			->setUseButtonTag(true);
-
-		$cancelButton = FormAction::create('Cancel', _t('GridFieldBulkTools.CANCEL_BTN_LABEL', 'Cancel'))
-			->addExtraClass('bulkUploadCancelButton ss-ui-action-destructive')
-			->setAttribute('data-icon', 'decline')
-			->setAttribute('data-url', $gridField->Link('bulkupload/cancel'))
 			->setUseButtonTag(true);
 
 		$clearErrorButton = FormAction::create('ClearError', _t('GridFieldBulkTools.CLEAR_ERROR_BTN_LABEL', 'Clear errors'))
@@ -282,14 +279,22 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 			->setAttribute('data-icon', 'arrow-circle-double')
 			->setUseButtonTag(true);
 
-		if ( $gridField->getConfig()->getComponentsByType('GridFieldBulkManager') )
+		if ( !$bulkManager )
 		{
+			$cancelButton = FormAction::create('Cancel', _t('GridFieldBulkTools.CANCEL_BTN_LABEL', 'Cancel'))
+				->addExtraClass('bulkUploadCancelButton ss-ui-action-destructive')
+				->setAttribute('data-icon', 'decline')
+				->setAttribute('data-url', $gridField->Link('bulkupload/cancel'))
+				->setUseButtonTag(true);			
+
 			$editAllButton = FormAction::create('EditAll', _t('GridFieldBulkTools.EDIT_ALL_BTN_LABEL', 'Edit all'))
-				->addExtraClass('bulkUploadEditButton')
-				->setAttribute('data-icon', 'pencil')
-				->setAttribute('data-url', $gridField->Link('bulkupload/edit'))
-				->setUseButtonTag(true);
-		}else{
+					->addExtraClass('bulkUploadEditButton')
+					->setAttribute('data-icon', 'pencil')
+					->setAttribute('data-url', $gridField->Link('bulkupload/edit'))
+					->setUseButtonTag(true);
+		}
+		else{
+			$cancelButton = '';
 			$editAllButton = '';
 		}
 

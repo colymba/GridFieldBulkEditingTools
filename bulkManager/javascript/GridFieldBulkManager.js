@@ -150,11 +150,15 @@
 						return;
 					}
 
-					if ( $btn.hasClass('ss-ui-action-destructive') )
+					//if ( $btn.hasClass('ss-ui-action-destructive') )
+					if ( config[action]['isDestructive'] )
 					{
 						if( !confirm(ss.i18n._t('GridFieldBulkManager.CONFIRM_DESTRUCTIVE_ACTION')) )
 						{
-							e.preventDefault();
+							if ( callbackFunction && callbackContext )
+							{
+								callbackFunction.call(callbackContext, false);
+							}
 							return false;
 						}					
 					}	
