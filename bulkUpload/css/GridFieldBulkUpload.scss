@@ -3,7 +3,7 @@
 .bulkUpload
 {
 	padding: 0 !important;
-	border-bottom: 1px solid rgba(0, 0, 0, 0.1);	
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 
 	&:hover
 	{
@@ -28,8 +28,6 @@
 			float: left;
 			clear: both;
 			width: 100%;
-
-			padding-top: 70px;
 
 			// uploading file progress
 			.ss-uploadfield-files
@@ -168,15 +166,10 @@
 			// upload tools
 			.ss-uploadfield-addfile
 			{
-				position: absolute;
-				top: 0;
-				left: 0;
-
 				float: left;
 				clear: both;
 
 				width: 98%;
-				height: 50px;
 
 				padding: 1%;
 
@@ -214,7 +207,8 @@
 
 					.ss-uploadfield-item-name
 					{
-						height: 20px;
+						height: auto;
+						margin-bottom: 2px;
 					}
 
 					.ss-ui-button
@@ -239,7 +233,47 @@
 						padding: .5px;
 					}
 				}
-			}// .ss-uploadfield-item
+			}// .ss-uploadfield-addfile
+
+			.colymba-bulkupload-buttons
+			{
+				display: none;
+				float: left;
+				width: 98%;
+				padding: 6px 1% 6px 1%;
+
+				border-top: 1px solid rgba(0, 0, 0, 0.1);
+
+				button
+				{
+					float: left;
+					margin: 0 6px 0 0;
+
+					.ui-button-text
+					{
+						.ui-button-text
+						{
+							padding: 0;
+						}
+					}
+
+					&.bulkUploadEditButton,
+					&.bulkUploadClearErrorButton
+					{
+						float: right;
+						margin: 0 0 0 6px;
+					}
+				}// button
+
+				.colymba-bulkupload-info
+				{
+					float: left;
+					margin: 0 6px 0 0;
+					line-height: 28px;					
+					height: 28px;
+					color: #73818a;
+				}
+			}
 
 		}// .ss-uploadfield
 

@@ -272,10 +272,16 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 			->setUseButtonTag(true)
 			->setAttribute('src', '');//changes type to image so isn't hooked by default actions handlers
 
-		$cancelButton = FormAction::create('Cancel', _t('GridFieldBulkTools.CANCEL_BTN_LABEL', 'Cancel & delete all'))
+		$cancelButton = FormAction::create('Cancel', _t('GridFieldBulkTools.CANCEL_BTN_LABEL', 'Cancel'))
 			->addExtraClass('bulkUploadCancelButton ss-ui-action-destructive')
 			->setAttribute('data-icon', 'decline')
 			->setAttribute('data-url', $gridField->Link('bulkupload/cancel'))
+			->setUseButtonTag(true)
+			->setAttribute('src', '');
+
+		$clearErrorButton = FormAction::create('ClearError', _t('GridFieldBulkTools.CLEAR_ERROR_BTN_LABEL', 'Clear errors'))
+			->addExtraClass('bulkUploadClearErrorButton')
+			->setAttribute('data-icon', 'arrow-circle-double')
 			->setUseButtonTag(true)
 			->setAttribute('src', '');
 
@@ -293,9 +299,10 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 
 		// get uploadField + inject extra buttons
 		$uploadField = $this->bulkUploadField($gridField);
-    $uploadField->FinishButton  = $finishButton;
-    $uploadField->CancelButton  = $cancelButton;
-    $uploadField->EditAllButton = $editAllButton;
+    $uploadField->FinishButton     = $finishButton;
+    $uploadField->CancelButton     = $cancelButton;
+    $uploadField->EditAllButton    = $editAllButton;
+    $uploadField->ClearErrorButton = $clearErrorButton;
 
 		$data = ArrayData::create(array(
       'Colspan'     => count($gridField->getColumns()),

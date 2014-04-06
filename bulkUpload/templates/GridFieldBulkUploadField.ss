@@ -42,9 +42,11 @@
     <div class="clear"><!-- --></div>
   </div>
 
-  <div class="colymba-bulkupload-progress">
+  <div class="colymba-bulkupload-buttons">
     $FinishButton
     $CancelButton
+    <span class="colymba-bulkupload-info"></span>
+    $ClearErrorButton
     $EditAllButton
   </div>
 <% end_if %>

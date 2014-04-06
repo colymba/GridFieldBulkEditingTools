@@ -14,8 +14,7 @@
       position: relative;
       float: left;
       clear: both;
-      width: 100%;
-      padding-top: 70px; }
+      width: 100%; }
       .bulkUpload .component div.ss-uploadfield .ss-uploadfield-files {
         float: left;
         clear: both;
@@ -86,13 +85,9 @@
                 float: right;
                 margin-top: 2px; }
       .bulkUpload .component div.ss-uploadfield .ss-uploadfield-addfile {
-        position: absolute;
-        top: 0;
-        left: 0;
         float: left;
         clear: both;
         width: 98%;
-        height: 50px;
         padding: 1%; }
         .bulkUpload .component div.ss-uploadfield .ss-uploadfield-addfile.borderTop {
           border: none; }
@@ -114,7 +109,8 @@
           width: 60%;
           margin: 0; }
           .bulkUpload .component div.ss-uploadfield .ss-uploadfield-addfile .ss-uploadfield-item-info .ss-uploadfield-item-name {
-            height: 20px; }
+            height: auto;
+            margin-bottom: 2px; }
           .bulkUpload .component div.ss-uploadfield .ss-uploadfield-addfile .ss-uploadfield-item-info .ss-ui-button .ui-button-text .ui-button-text {
             padding: 0px; }
           .bulkUpload .component div.ss-uploadfield .ss-uploadfield-addfile .ss-uploadfield-item-info .ss-uploadfield-fromcomputer {
@@ -122,3 +118,23 @@
           .bulkUpload .component div.ss-uploadfield .ss-uploadfield-addfile .ss-uploadfield-item-info .ss-uploadfield-fromfiles {
             margin-bottom: 0;
             padding: .5px; }
+      .bulkUpload .component div.ss-uploadfield .colymba-bulkupload-buttons {
+        display: none;
+        float: left;
+        width: 98%;
+        padding: 6px 1% 6px 1%;
+        border-top: 1px solid rgba(0, 0, 0, 0.1); }
+        .bulkUpload .component div.ss-uploadfield .colymba-bulkupload-buttons button {
+          float: left;
+          margin: 0 6px 0 0; }
+          .bulkUpload .component div.ss-uploadfield .colymba-bulkupload-buttons button .ui-button-text .ui-button-text {
+            padding: 0; }
+          .bulkUpload .component div.ss-uploadfield .colymba-bulkupload-buttons button.bulkUploadEditButton, .bulkUpload .component div.ss-uploadfield .colymba-bulkupload-buttons button.bulkUploadClearErrorButton {
+            float: right;
+            margin: 0 0 0 6px; }
+        .bulkUpload .component div.ss-uploadfield .colymba-bulkupload-buttons .colymba-bulkupload-info {
+          float: left;
+          margin: 0 6px 0 0;
+          line-height: 28px;
+          height: 28px;
+          color: #73818a; }

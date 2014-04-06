@@ -4,6 +4,7 @@ if(typeof(ss) == 'undefined' || typeof(ss.i18n) == 'undefined') {
   if(typeof(console) != 'undefined') console.error('Class ss.i18n not defined');
 } else {
   ss.i18n.addDictionary('en', {
+    "GRIDFIELD_BULK_UPLOAD.PROGRESS_INFO": "Uploading %s file(s). %s done. %s error(s).",
     "GridFieldBulkTools.FINISH_CONFIRM": "You have unsaved changes. Continuing will loose all unsaved data.\n\nDo your really want to continue?",
     "GridFieldBulkTools.EDIT_CHANGED": "Modified",
     "GridFieldBulkTools.EDIT_UPDATED": "Saved",

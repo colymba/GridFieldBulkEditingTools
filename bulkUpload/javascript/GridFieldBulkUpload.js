@@ -133,61 +133,131 @@
         onunmatch: function(){}
       });
 
-		
-      /*
-			 * handles individual edit forms changes
-			 * updates buttons and visual styles 		
-			 */
-			$('.bulkImageUploadUpdateForm').entwine({
-        onmatch: function(){},
-				onunmatch: function(){},
-        haschanged: function()
-        {
-          var itemInfo,
-              itemStatus
-              ;
-					
-          itemStatus = $(this).parents('li').find('.ss-uploadfield-item-status');
-          itemInfo   = $(this).parents('li').find('.ss-uploadfield-item-info');
-					
-					if ( !$(this).hasClass('hasUpdate') )
-					{
-						$(this).addClass('hasUpdate');
-					}
-					
-					$(itemStatus).removeClass('updated').addClass('dirty').html(ss.i18n._t('GridFieldBulkTools.EDIT_CHANGED'));
-					if ( $(itemInfo).hasClass('updated') ) $(itemInfo).removeClass('updated');
-					if ( !$(itemInfo).hasClass('dirty') ) $(itemInfo).addClass('dirty');
 
-          $('#bulkImageUploadUpdateBtn').removeClass('ui-state-disabled ssui-button-disabled');
-          $('#bulkImageUploadUpdateBtn').attr('aria-disabled', 'false');
-          $('#bulkImageUploadUpdateBtn').removeAttr('disabled');
+      /**
+       * Track upload progress...
+       */      
+      $('ul.ss-uploadfield-files').entwine({
+        onmatch: function(){},
+        onunmatch: function(){},
+        trackProgress: function()
+        {
+          var $li = this.find('li.ss-uploadfield-item'),
+              total = $li.length,
+              $done = $li.filter('.done'),
+              done = $done.length,
+              $errors = $li.not($done).find('.ui-state-warning-text,.ui-state-error-text'),
+              errors = $errors.length
+              ;
+          
+          this.parents('.ss-uploadfield').find('.colymba-bulkupload-buttons').refresh(total, done, errors);
+          /*
+          this.closest('.colymba-bulkupload-info').html(ss.i18n.sprintf(
+            ss.i18n._t('GRIDFIELD_BULK_UPLOAD.PROGRESS_INFO'),
+            total,
+            done,
+            total
+          ));*/
         }
       });
-     
-			/*
-			 * catches edit form changes 		
-			 */
-			$('.bulkImageUploadUpdateForm input.text, .bulkImageUploadUpdateForm input.checkbox, .bulkImageUploadUpdateForm select, .bulkImageUploadUpdateForm textarea').entwine({
-				onchange: function()
-				{
-					this.closest('.bulkImageUploadUpdateForm').haschanged();
-				}
-			});
-    
-      /*
-			 * catches edit form changes 	
-			 * HTMLEditorField hack	
-			 */
-			//textarea node is being removed from the DOM when the HTMLEditorFieldChanges, not the best but works
-      $('.field.htmleditor textarea').entwine({
-        onmatch: function(){},
-				onunmatch: function()
-				{	
-          //note sure why querying straight from the texarea doesn't work... maybe because it is already removed from DOM?
-          $('input[type="hidden"][name="'+$(this).attr('name')+'"]').parents('.bulkImageUploadUpdateForm').haschanged();
-				}
+
+
+      /**
+       * Track new and canceled updloads
+       */
+      $('li.ss-uploadfield-item').entwine({
+        onmatch: function(){
+          this.parents('ul.ss-uploadfield-files').trackProgress();
+        },
+        onunmatch: function(){
+          $('ul.ss-uploadfield-files').trackProgress();
+        },
       });
+
+      /**
+       * Track updload warning/errors
+       */
+      $('li.ss-uploadfield-item .ui-state-warning-text,li.ss-uploadfield-item .ui-state-error-text').entwine({
+        onmatch: function(){
+          this.parents('ul.ss-uploadfield-files').trackProgress();
+        },
+        onunmatch: function(){
+          $('ul.ss-uploadfield-files').trackProgress();
+        },
+      });
+
+
+      /**
+       * Track completed uploads
+       *//*
+      $('li.ss-uploadfield-item.done').entwine({
+        onmatch: function(){
+          this.parents('ul.ss-uploadfield-files').trackProgress();
+        },
+        onunmatch: function(){},
+      });*/
+
+
+      /**
+       * Update buttons state and progress info...
+       */      
+      $('.colymba-bulkupload-buttons').entwine({
+        onmatch: function(){},
+        onunmatch: function(){},
+        refresh: function(total, done, error)
+        {
+          var $info          = this.find('.colymba-bulkupload-info'),
+              $editBtn       = this.find('.bulkUploadEditButton'),
+              $cancelBtn     = this.find('.bulkUploadCancelButton'),
+              $finishBtn     = this.find('.bulkUploadFinishButton'),
+              $clearErrorBtn = this.find('.bulkUploadClearErrorButton')
+              ;
+
+          if ( total > 0 )
+          {
+            this.css({display: 'block'});
+
+            $info.html(ss.i18n.sprintf(
+              ss.i18n._t('GRIDFIELD_BULK_UPLOAD.PROGRESS_INFO'),
+              total,
+              done,
+              error
+            ));
+
+            $cancelBtn.removeClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'false').removeAttr('disabled');
+            $finishBtn.removeClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'false').removeAttr('disabled');
+
+            if ( total === done )
+            {
+              $editBtn.removeClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'false').removeAttr('disabled');
+            }
+            else{
+              $editBtn.addClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'true').attr('disabled', 'true');
+            }
+
+            if ( error > 0 )
+            {
+              $clearErrorBtn.removeClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'false').removeAttr('disabled');
+            }
+            else{
+              $clearErrorBtn.addClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'true').attr('disabled', 'true');
+            }
+          }
+          else{
+            this.css({display: 'none'});
+            $editBtn.addClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'true').attr('disabled', 'true');
+            $cancelBtn.addClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'true').attr('disabled', 'true');
+            $finishBtn.addClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'true').attr('disabled', 'true');
+            $clearErrorBtn.addClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'true').attr('disabled', 'true');
+          }       
+        }
+      });
+
+
+
+
+
+
       
 			/*
 			 * save changes button behaviour
@@ -263,19 +333,6 @@
 					return false;					
 				}
 			});
-			
-      /*
-			 * edit forms ovverides 		
-			 */
-			$('.ss-uploadfield-item-editform').entwine({
-        onmatch: function(e)
-        {     
-          $('#bulkImageUploadUpdateCancelBtn').removeClass('ui-state-disabled ssui-button-disabled');
-          $('#bulkImageUploadUpdateCancelBtn').attr('aria-disabled', 'false');
-          $('#bulkImageUploadUpdateCancelBtn').removeAttr('disabled');
-        },
-				onunmatch: function(){}
-      });
       
 			/*
 			 * cancel button behaviour
