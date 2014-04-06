@@ -172,12 +172,12 @@
         onunmatch: function(){},
         onclick: function()
         {
-          var $bulkUpload = this.parents('.bulkUpload'),
-              $li = $bulkUpload.find('li.ss-uploadfield-item'),
-              $records = $li.filter('[data-recordid]'),              
-              recordsID,
-              $other = $li.not($records),
-              $doBulkActionButton = $bulkUpload.parents('.ss-gridfield-table').find('.doBulkActionButton')
+          var $bulkUpload         = this.parents('.bulkUpload'),
+              $li                 = $bulkUpload.find('li.ss-uploadfield-item'),
+              $records            = $li.filter('[data-recordid]'),
+              $other              = $li.not($records),
+              $doBulkActionButton = $bulkUpload.parents('.ss-gridfield-table').find('.doBulkActionButton'),              
+              recordsID
               ;
 
           $other.each(function(index, Element){
@@ -191,8 +191,29 @@
               return parseInt( $(this).data('recordid') )
             }).get();
 
-            $doBulkActionButton.doBulkAction('delete', recordsID);
+            this.addClass('loading');
+            $doBulkActionButton.doBulkAction('delete', recordsID, this.cancelCallback, this);
           }
+        },
+        cancelCallback: function(data)
+        {
+          var $bulkUpload = this.parents('.bulkUpload'),
+              $li         = $bulkUpload.find('li.ss-uploadfield-item'),
+              ids         = data.records
+              ;
+
+          this.removeClass('loading');
+
+          $li.each(function(index, Element){
+            var $this    = $(this),
+                recordID = parseInt( $this.data('recordid') )
+                ;
+
+            if ( ids.indexOf(recordID) !== -1 )
+            {
+              $this.remove();
+            }
+          });
         }
       });
 
@@ -234,8 +255,12 @@
               return parseInt( $(this).data('recordid') )
             }).get();
 
-            $doBulkActionButton.doBulkAction('edit', recordsID);
+            $doBulkActionButton.doBulkAction('edit', recordsID, this.editCallback);
           }
+        },
+        editCallback: function(response)
+        {
+
         }
       });
 

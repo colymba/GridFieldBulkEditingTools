@@ -126,19 +126,24 @@
 				},
 				onclick: function(e)
 				{
-					var $parent = $(this).parents('.bulkManagerOptions'),						
-							$btn = $parent.find('a.doBulkActionButton'),
+          var $parent = $(this).parents('.bulkManagerOptions'),
+              action  = $parent.find('select.bulkActionName').val(),
+              ids     = $(this).parents('.bulkManagerOptions').find('input.bulkSelectAll:first').getSelectRecordsID()
+							;							
 
-							action = $parent.find('select.bulkActionName').val(),
-							config = $btn.data('config'),
+					this.doBulkAction(action, ids);					
+				},
 
-							url = this.getActionURL(action, $(this).data('url')),	
+				doBulkAction: function(action, ids, callbackFunction, callbackContext)
+				{					
+          var $parent = $(this).parents('.bulkManagerOptions'),
+              $btn    = $parent.find('a.doBulkActionButton'),
 
-							ids = $(this).parents('.bulkManagerOptions').find('input.bulkSelectAll:first').getSelectRecordsID(),
-							data = { records: ids }
+              config  = $btn.data('config'),
+              url     = this.getActionURL(action, $(this).data('url')),
+              data    = { records: ids }
 							;
 							
-
 					if ( ids.length <= 0 )
 					{
 						alert( ss.i18n._t('GridFieldBulkManager.BULKACTION_EMPTY_SELECT') );
@@ -163,9 +168,15 @@
 							data: data,
 							type: "POST",
 							context: $(this)
-						}).done(function() {
-	            $(this).parents('.ss-gridfield').entwine('.').entwine('ss').reload();
+						}).done(function(data, textStatus, jqXHR) {	            
 	            $btn.removeClass('loading');
+	            if ( callbackFunction && callbackContext )
+							{
+								callbackFunction.call(callbackContext, data);
+							}
+							else{
+								$(this).parents('.ss-gridfield').entwine('.').entwine('ss').reload();
+							}
 						});
 					}
 					else{
@@ -174,12 +185,6 @@
 
 						window.location.href = url;
 					}
-					
-				},
-
-				doBulkAction: function(action, ids)
-				{
-					console.log(action, ids);
 				}
 			});
 
