@@ -1,43 +1,25 @@
-/* ************************************************************************
- * GRIDFIELD
- */
- 
+.cms table.ss-gridfield-table tr.bulkManagerOptions th.bulkmanagerselect {
+  text-align: center; }
+  .cms table.ss-gridfield-table tr.bulkManagerOptions th.bulkmanagerselect input {
+    margin-left: 0; }
+.cms table.ss-gridfield-table tr.bulkManagerOptions .dropdown {
+  display: inline-block;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  color: #000;
+  vertical-align: top; }
+.cms table.ss-gridfield-table tr.bulkManagerOptions .doBulkActionButton .ui-button-text {
+  padding: 6px 0 5px 2.1em; }
+.cms table.ss-gridfield-table tr.bulkManagerOptions .doBulkActionButton .loading .ui-icon {
+  background: transparent url(../../framework/images/network-save.gif) no-repeat 0 0; }
 .cms table.ss-gridfield-table tbody .col-bulkSelect {
-	width: 25px;
-	padding: 0 10px;
-	text-align: center;
-}
-
-.bulkManagerOptions
-{
-}
-
-.bulkManagerOptions th.bulkmanagerselect
-{
-	text-align: center;
-}
-
-.bulkManagerOptions .dropdown 
-{
-	display: inline-block;
-	border: none;
-	box-shadow: none;
-
-	padding: 0;
-	margin: 0;
-
-	color: #000;
-	vertical-align: top;
-}
-
-.doBulkActionButton.loading .ui-icon
-{
-	background: transparent url(../../framework/images/network-save.gif) no-repeat 0 0;
-}
-
-.cms table.ss-gridfield-table tbody td a.tempDisabledEditLink
-{
-  background: url('../../framework/admin/images/btn-icon/document--pencil.png') no-repeat 2px 0px;
+  width: 25px;
+  padding: 0 10px;
+  text-align: center; }
+.cms table.ss-gridfield-table tbody td a.tempDisabledEditLink {
+  background: url("../../framework/admin/images/btn-icon/document--pencil.png") no-repeat 2px 0px;
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -45,5 +27,4 @@
   overflow: hidden;
   vertical-align: middle;
   background-position: 2px 0px;
-  background-repeat: no-repeat no-repeat;
-}
+  background-repeat: no-repeat no-repeat; }
