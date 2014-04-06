@@ -1,6 +1,6 @@
 window.tmpl.cache['colymba-bulkuploaddownloadtemplate'] = tmpl(
 	'{% for (var i=0, files=o.files, l=files.length, file=files[0]; i<l; file=files[++i]) { %}' +
-		'<li class="ss-uploadfield-item template-download{% if (file.error) { %} ui-state-error{% }else{ %} done{% } %}" data-fileid="{%=file.id%} data-recordid="{%=file.record.id%}">' + 
+		'<li class="ss-uploadfield-item template-download{% if (file.error) { %} ui-state-error{% }else{ %} done{% } %}" data-fileid="{%=file.id%}" data-recordid="{%=file.record.id%}">' + 
 			'<div class="ss-uploadfield-item-preview preview"><span>' +
 				'<img src="{%=file.thumbnail_url%}" alt="" />' +
 			'</span></div>' +

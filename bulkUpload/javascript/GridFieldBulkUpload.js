@@ -1,118 +1,12 @@
 (function($) {	
 	$.entwine('ss', function($) {
 				
-		// ============================================================================================
 		// start SS namespace overrides
-		// ============================================================================================
-						
-		/*
-		 * open/close edit form		
-		 */
-		$('div.ss-upload .ss-uploadfield-item-edit, div.ss-upload .ss-uploadfield-item-name').entwine({
-			onclick: function(e)
-			{
-				this.closest('.ss-uploadfield-item').find('.ss-uploadfield-item-editform').toggleEditForm();
-			}
-		});
+
 		
-		/*
-		 * edit all button
-		 * @TODO fix		
-		 */
-		$('div.ss-upload .fileOverview .ss-uploadfield-item-edit-all').entwine({
-			onmatch: function()
-			{
-				if( !$(this).hasClass('opened') ){					
-					$(this).addClass('opened');
-				}        
-			},
-			onunmatch: function(){},
-			onclick: function(e)
-			{
-				if( $(this).hasClass('opened') )
-				{					
-					$('.ss-uploadfield-files .ss-uploadfield-item-editform').hide();					
-					$(this).removeClass('opened');
-				}
-				else{
-					$('.ss-uploadfield-files .ss-uploadfield-item-editform').show();					
-					$(this).addClass('opened');
-				}
-
-				e.preventDefault();
-			} 
-		});
-		
-		/*
-		 * show/hide edit form
-		 * overrides default behaviour		
-		 */
-		$('div.ss-upload .ss-uploadfield-item-editform').entwine({
-			toggleEditForm: function()
-			{
-				if( this.css('display') == 'none' ) {
-					this.show();
-				}
-				else{
-					this.hide();
-				}
-			}
-		});
-
-		/*
-		 * prevent submitting of individual edit forms		
-		 */
-		$('#Form_uploadForm, div.ss-upload .ss-uploadfield-item-editform form').entwine({
-			onsubmit: function(e)
-			{
-				return false;
-			}
-		});
-
-		/*
-		 * initialise disabled state		
-		 */
-		$('#bulkImageUploadUpdateBtn,#bulkImageUploadUpdateCancelBtn').entwine({
-			onmatch: function()
-			{
-				$(this).addClass('ui-state-disabled ssui-button-disabled');
-        $(this).attr('aria-disabled', 'true');
-        $(this).attr('disabled', 'true');
-			},
-			onunmatch: function(){}
-		});
-
-		/*
-		 * finish/return button		
-		 */
-		$('#bulkImageUploadFinishBtn').entwine({
-			onmatch: function(){},
-			onunmatch: function(){},
-			onclick: function(e)
-			{
-        var formsWithUpadtes = $('form.bulkImageUploadUpdateForm.hasUpdate').length,
-            confirmed        = true;
-
-				if ( formsWithUpadtes > 0 )
-				{
-					confirmed = confirm( ss.i18n._t('GridFieldBulkTools.FINISH_CONFIRM') );  				
-				}
-
-				if (confirmed)
-				{
-					$('.cms-container').loadPanel(this.attr('href'), null, {});
-				}
-			}
-		});
-		
-		// ============================================================================================
 		// end SS namespace overrides
-		// ============================================================================================
 		
-		// ============================================================================================
-		// start add-on behaviours
-		// ============================================================================================
-				
+
 		$.entwine('colymba', function($) {
 
       /**
@@ -254,7 +148,96 @@
       });
 
 
+      $('.bulkUploadClearErrorButton').entwine({
+        onmatch: function(){
+          this.removeClass('action');
+        },
+        onunmatch: function(){},
+        onclick: function(e)
+        {
+          var $bulkUpload = this.parents('.bulkUpload'),
+              $errors = $bulkUpload.find('li.ss-uploadfield-item .ui-state-warning-text,li.ss-uploadfield-item .ui-state-error-text').parents('li')
+              ;
 
+          $($errors.get().reverse()).each(function(index, Element){            
+            $(this).remove();
+          });
+        }
+      });
+
+      $('.bulkUploadCancelButton').entwine({
+        onmatch: function(){
+          this.removeClass('action');
+        },
+        onunmatch: function(){},
+        onclick: function()
+        {
+          var $bulkUpload = this.parents('.bulkUpload'),
+              $li = $bulkUpload.find('li.ss-uploadfield-item'),
+              $records = $li.filter('[data-recordid]'),              
+              recordsID,
+              $other = $li.not($records),
+              $doBulkActionButton = $bulkUpload.parents('.ss-gridfield-table').find('.doBulkActionButton')
+              ;
+
+          $other.each(function(index, Element){
+            // skip in progress         
+            $(this).remove();
+          });
+
+          if ( $doBulkActionButton.length > 0 )
+          {
+            recordsID = $records.map(function() {  
+              return parseInt( $(this).data('recordid') )
+            }).get();
+
+            $doBulkActionButton.doBulkAction('delete', recordsID);
+          }
+        }
+      });
+
+      $('.bulkUploadFinishButton').entwine({
+        onmatch: function(){
+          this.removeClass('action');
+        },
+        onunmatch: function(){},
+        onclick: function()
+        {          
+          var $bulkUpload = this.parents('.bulkUpload'),
+              $li = $bulkUpload.find('li.ss-uploadfield-item')
+              ;
+
+          $li.each(function(index, Element){
+            // skip in progress         
+            $(this).remove();
+          });
+        }
+      });
+
+      $('.bulkUploadEditButton').entwine({
+        onmatch: function(){
+          this.removeClass('action');
+        },
+        onunmatch: function(){},
+        onclick: function()
+        {
+          var $bulkUpload = this.parents('.bulkUpload'),
+              $li = $bulkUpload.find('li.ss-uploadfield-item'),
+              $records = $li.filter('[data-recordid]'),              
+              recordsID,
+              $doBulkActionButton = $bulkUpload.parents('.ss-gridfield-table').find('.doBulkActionButton')
+              ;
+
+          if ( $doBulkActionButton.length > 0 )
+          {
+            recordsID = $records.map(function() {  
+              return parseInt( $(this).data('recordid') )
+            }).get();
+
+            $doBulkActionButton.doBulkAction('edit', recordsID);
+          }
+        }
+      });
 
 
 
@@ -380,10 +363,7 @@
 				}				
 			});	
 
-		});
-		// ============================================================================================
-		// end add-on behaviours
-		// ============================================================================================		
+		}); // colymba namespace
 
-	});
+	}); // ss namespace
 }(jQuery));
