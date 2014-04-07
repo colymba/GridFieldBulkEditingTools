@@ -7,6 +7,40 @@
 		
 
 		$.entwine('colymba', function($) {
+
+			/**
+       * Makes sure the component is above the headers
+       */
+      $('.bulkManagerOptions').entwine({
+        onmatch: function(){
+          var $parent = this.parents('thead'),
+          		$tr = $parent.find('tr'),
+
+          		targets = ['.filter-header', '.sortable-header'],
+          		$target = $parent.find(targets.join(',')),
+
+              $component = this.clone(),
+              index = $tr.index(this),
+              newIndex = $tr.length - 1
+              ;
+
+          $target.each(function(index, Element){
+          	var idx = $tr.index(Element);
+          	if ( idx < newIndex )
+          	{
+          		newIndex = idx;
+          	}
+          });
+
+          if ( index > newIndex )
+          {
+            $component.insertBefore($tr.eq(newIndex));
+            this.remove();
+          }          
+        },
+        onunmatch: function(){}
+      });
+
 		    
 			$('td.col-bulkSelect').entwine({
 				onmatch: function(){
