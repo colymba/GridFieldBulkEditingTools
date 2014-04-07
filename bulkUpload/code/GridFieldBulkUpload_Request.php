@@ -155,8 +155,6 @@ class GridFieldBulkUpload_Request extends RequestHandler {
 		$record->extend("onBulkFileUpload", $this->gridField);
 
 		//get uploadField and process upload
-		//$fileRelationName = $this->getFileRelationName();
-		//$uploadField = $this->uploadForm()->Fields()->fieldByName($fileRelationName);
 		$uploadField = $this->getUploadField();
 		$uploadField->setRecord($record);
 
@@ -173,12 +171,9 @@ class GridFieldBulkUpload_Request extends RequestHandler {
 
 		// attached record to gridField relation
 		$this->gridField->list->add($record->ID);
-
-		//get record's CMS Fields
-		//$recordEditableFormFields = $this->getRecordHTMLFormFields( $record->ID );
 		
-		//fetch uploadedFile record and sort out previewURL
-		//update $uploadResponse datas in case changes happened onAfterWrite()
+		// fetch uploadedFile record and sort out previewURL
+		// update $uploadResponse datas in case changes happened onAfterWrite()
 		$uploadedFile = DataObject::get_by_id( $this->component->getFileRelationClassName($this->gridField), $uploadResponse['id'] );
 		if ( $uploadedFile )
 		{
@@ -187,12 +182,27 @@ class GridFieldBulkUpload_Request extends RequestHandler {
 
 			if ( $uploadedFile instanceof Image )
 			{
-				$uploadResponse['preview_url'] = $uploadedFile->setHeight(50)->Link();
 				$uploadResponse['thumbnail_url'] = $uploadedFile->CroppedImage(30,30)->getURL();
 			}
 			else{
-				$uploadResponse['preview_url'] = $uploadedFile->Icon();
 				$uploadResponse['thumbnail_url'] = $uploadedFile->Icon();
+			}
+
+			// check if our new record has a Title, if not create one automatically
+			$title = $record->getTitle();
+			if ( !$title || $title === $record->ID )
+			{
+				$title = basename($uploadedFile->getFilename());
+
+				if ( $record->hasDatabaseField('Title') )
+				{
+					$record->Title = $title;
+					$record->write();
+				}
+				else if ($record->hasDatabaseField('Name')){
+					$record->Name = $title;
+					$record->write();
+				}
 			}
 		}
 
