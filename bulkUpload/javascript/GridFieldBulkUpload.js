@@ -224,6 +224,8 @@
                 $this.remove();
               }
             });
+
+            $(this).parents('.ss-gridfield').entwine('.').entwine('ss').reload();
           }
 
           this.removeClass('loading');
@@ -250,6 +252,9 @@
             // skip in progress         
             $(this).remove();
           });
+
+          $(this).parents('.ss-gridfield').entwine('.').entwine('ss').reload();
+          
           this.removeClass('loading');
         }
       });
