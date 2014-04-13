@@ -42,7 +42,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 		{
 			$this->config['actions'] = array(
 	      'bulkedit'   => array(
-	      	'label' => _t('GridFieldBulkTools.EDIT_SELECT_LABEL', 'Edit'),
+	      	'label' => _t('GRIDFIELD_BULK_MANAGER.EDIT_SELECT_LABEL', 'Edit'),
 	      	'handler' => 'GridFieldBulkActionEditHandler',
 	      	'config' => array(
 						'isAjax' => false,
@@ -51,7 +51,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 					)
 	      ),
 	      'unlink' => array(
-	      	'label' => _t('GridFieldBulkTools.UNLINK_SELECT_LABEL', 'UnLink'),
+	      	'label' => _t('GRIDFIELD_BULK_MANAGER.UNLINK_SELECT_LABEL', 'UnLink'),
 	      	'handler' => 'GridFieldBulkActionUnlinkHandler',
 	      	'config' => array(
 						'isAjax' => true,
@@ -60,7 +60,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 					)
 	      ),
 	      'delete' => array(
-	      	'label' => _t('GridFieldBulkTools.DELETE_SELECT_LABEL', 'Delete'),
+	      	'label' => _t('GRIDFIELD_BULK_MANAGER.DELETE_SELECT_LABEL', 'Delete'),
 	      	'handler' => 'GridFieldBulkActionDeleteHandler',
 	      	'config' => array(
 						'isAjax' => true,
@@ -290,7 +290,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	{				
 		Requirements::css(BULKEDITTOOLS_MANAGER_PATH . '/css/GridFieldBulkManager.css');
 		Requirements::javascript(BULKEDITTOOLS_MANAGER_PATH . '/javascript/GridFieldBulkManager.js');
-		Requirements::add_i18n_javascript(BULKEDITTOOLS_MANAGER_PATH . '/javascript/lang');
+		Requirements::add_i18n_javascript(BULKEDITTOOLS_PATH . '/lang/js');
 		
 		if ( !count($this->config['actions']) )
 		{
@@ -317,13 +317,13 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
     $templateData = array(
     	'Menu' => $dropDownActionsList->FieldHolder(),
     	'Button' => array(
-        'Label'      => _t('GridFieldBulkTools.ACTION_BTN_LABEL', 'Go'),
+        'Label'      => _t('GRIDFIELD_BULK_MANAGER.ACTION_BTN_LABEL', 'Go'),
         'DataURL'    => $gridField->Link('bulkaction'),
         'Icon'       => $this->config['actions'][$firstAction]['config']['icon'],
         'DataConfig' => htmlspecialchars(json_encode($actionsConfig), ENT_QUOTES, 'UTF-8')
     	),
     	'Select' => array(
-    		'Label' => _t('GridFieldBulkTools.SELECT_ALL_LABEL', 'Select all')
+    		'Label' => _t('GRIDFIELD_BULK_MANAGER.SELECT_ALL_LABEL', 'Select all')
     	),
     	'Colspan' => (count($gridField->getColumns()) - 1)
     );

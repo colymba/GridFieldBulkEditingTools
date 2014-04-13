@@ -180,14 +180,14 @@
 							
 					if ( ids.length <= 0 )
 					{
-						alert( ss.i18n._t('GridFieldBulkManager.BULKACTION_EMPTY_SELECT') );
+						alert( ss.i18n._t('GRIDFIELD_BULK_MANAGER.BULKACTION_EMPTY_SELECT') );
 						return;
 					}
 
 					//if ( $btn.hasClass('ss-ui-action-destructive') )
 					if ( config[action]['isDestructive'] )
 					{
-						if( !confirm(ss.i18n._t('GridFieldBulkManager.CONFIRM_DESTRUCTIVE_ACTION')) )
+						if( !confirm(ss.i18n._t('GRIDFIELD_BULK_MANAGER.CONFIRM_DESTRUCTIVE_ACTION')) )
 						{
 							if ( callbackFunction && callbackContext )
 							{

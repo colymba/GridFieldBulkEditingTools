@@ -200,25 +200,25 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 		$bulkManager = $gridField->getConfig()->getComponentsByType('GridFieldBulkManager');
 
 		// upload management buttons
-		$finishButton = FormAction::create('Finish', _t('GridFieldBulkTools.FINISH_BTN_LABEL', 'Finish'))
+		$finishButton = FormAction::create('Finish', _t('GRIDFIELD_BULK_UPLOAD.FINISH_BTN_LABEL', 'Finish'))
 			->addExtraClass('bulkUploadFinishButton')
 			->setAttribute('data-icon', 'accept')
 			->setUseButtonTag(true);
 
-		$clearErrorButton = FormAction::create('ClearError', _t('GridFieldBulkTools.CLEAR_ERROR_BTN_LABEL', 'Clear errors'))
+		$clearErrorButton = FormAction::create('ClearError', _t('GRIDFIELD_BULK_UPLOAD.CLEAR_ERROR_BTN_LABEL', 'Clear errors'))
 			->addExtraClass('bulkUploadClearErrorButton')
 			->setAttribute('data-icon', 'arrow-circle-double')
 			->setUseButtonTag(true);
 
 		if ( $bulkManager )
 		{
-			$cancelButton = FormAction::create('Cancel', _t('GridFieldBulkTools.CANCEL_BTN_LABEL', 'Cancel'))
+			$cancelButton = FormAction::create('Cancel', _t('GRIDFIELD_BULK_UPLOAD.CANCEL_BTN_LABEL', 'Cancel'))
 				->addExtraClass('bulkUploadCancelButton ss-ui-action-destructive')
 				->setAttribute('data-icon', 'decline')
 				->setAttribute('data-url', $gridField->Link('bulkupload/cancel'))
 				->setUseButtonTag(true);			
 
-			$editAllButton = FormAction::create('EditAll', _t('GridFieldBulkTools.EDIT_ALL_BTN_LABEL', 'Edit all'))
+			$editAllButton = FormAction::create('EditAll', _t('GRIDFIELD_BULK_UPLOAD.EDIT_ALL_BTN_LABEL', 'Edit all'))
 					->addExtraClass('bulkUploadEditButton')
 					->setAttribute('data-icon', 'pencil')
 					->setAttribute('data-url', $gridField->Link('bulkupload/edit'))
@@ -244,7 +244,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 		Requirements::css(BULKEDITTOOLS_UPLOAD_PATH . '/css/GridFieldBulkUpload.css');
 		Requirements::javascript(BULKEDITTOOLS_UPLOAD_PATH . '/javascript/GridFieldBulkUpload.js');
 		Requirements::javascript(BULKEDITTOOLS_UPLOAD_PATH . '/javascript/GridFieldBulkUpload_downloadtemplate.js');
-		Requirements::add_i18n_javascript(BULKEDITTOOLS_UPLOAD_PATH . '/javascript/lang');
+		Requirements::add_i18n_javascript(BULKEDITTOOLS_PATH . '/lang/js');
 		
 		return array(
 			'header' => $data->renderWith('GridFieldBulkUpload')

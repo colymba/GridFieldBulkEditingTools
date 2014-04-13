@@ -39,7 +39,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 		$actions = new FieldList();
 		
 		$actions->push(
-			FormAction::create('SaveAll', _t('GridFieldBulkTools.SAVE_BTN_LABEL', 'Save All'))
+			FormAction::create('SaveAll', _t('GRIDFIELD_BULKMANAGER_EDIT_HANDLER.SAVE_BTN_LABEL', 'Save all'))
 				->setAttribute('id', 'bulkEditingUpdateBtn')
 				->addExtraClass('ss-ui-action-constructive cms-panel-link')
 				->setAttribute('data-icon', 'accept')
@@ -49,7 +49,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 		);
 		
 		$actions->push(
-			FormAction::create('Cancel', _t('GridFieldBulkManager.CANCEL_BTN_LABEL', 'Cancel'))
+			FormAction::create('Cancel', _t('GRIDFIELD_BULKMANAGER_EDIT_HANDLER.CANCEL_BTN_LABEL', 'Cancel'))
 				->setAttribute('id', 'bulkEditingUpdateCancelBtn')
 				->addExtraClass('ss-ui-action-destructive cms-panel-link')
 				->setAttribute('data-icon', 'decline')
@@ -110,7 +110,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 				
 		Requirements::javascript(BULKEDITTOOLS_MANAGER_PATH . '/javascript/GridFieldBulkEditingForm.js');	
 		Requirements::css(BULKEDITTOOLS_MANAGER_PATH . '/css/GridFieldBulkEditingForm.css');	
-		Requirements::add_i18n_javascript(BULKEDITTOOLS_MANAGER_PATH . '/javascript/lang');	
+		Requirements::add_i18n_javascript(BULKEDITTOOLS_PATH . '/lang/js');	
 		
 		if($this->request->isAjax())
 		{

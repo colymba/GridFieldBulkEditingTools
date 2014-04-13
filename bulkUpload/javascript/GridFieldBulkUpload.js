@@ -45,13 +45,6 @@
               ;
           
           this.parents('.ss-uploadfield').find('.colymba-bulkupload-buttons').refresh(total, done, errors);
-          /*
-          this.closest('.colymba-bulkupload-info').html(ss.i18n.sprintf(
-            ss.i18n._t('GRIDFIELD_BULK_UPLOAD.PROGRESS_INFO'),
-            total,
-            done,
-            total
-          ));*/
         }
       });
 
