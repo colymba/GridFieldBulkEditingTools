@@ -41,7 +41,7 @@ class GridFieldBulkUpload_Request extends RequestHandler {
 	 *
 	 */
 	private static $allowed_actions = array(
-		'upload', 'select', 'attach', 'fileexists', 'update', 'cancel'
+		'upload', 'select', 'attach', 'fileexists'
 	);
 
 	/**
@@ -64,73 +64,15 @@ class GridFieldBulkUpload_Request extends RequestHandler {
 		parent::__construct();
 	}
 
+
 	/**
-	 * Returns the URL for this RequestHandler
+	 * Return the original component's UploadField
 	 * 
-	 * @author SilverStripe
-	 * @see GridFieldDetailForm_ItemRequest
-	 * @param string $action
-	 * @return string 
-	 *//*
-	public function Link($action = null) {
-		return Controller::join_links($this->gridField->Link(), 'bulkimageupload', $action);
-	}*/
-		
-	
-	/**
-	 * Returns the list of editable fields from the managed record
-	 * Either as set in the component config or the default ones
-	 * 
-	 * @return array 
+	 * @return UploadField UploadField instance as defined in the component
 	 */
-	function getRecordEditableFields()
-	{
-		$fields = $this->component->getConfig('editableFields');
-		if ( $fields == null ) $fields = $this->getDefaultRecordEditableFields();
-		
-		return $fields;
-	}
-
-	/**
-	 *
-	 * @param type $recordID
-	 * @return type 
-	 */
-	function getRecordHTMLFormFields( $recordID = 0 )
-	{
-		$config = $this->component->getConfig();
-		$recordCMSDataFields = GridFieldBulkEditingHelper::getModelCMSDataFields( $config, $this->gridField->list->dataClass );
-		
-		//@TODO: if editableFields given use them with filterNonEditableRecordsFields()
-		// otherwise go through getModelFilteredDataFields
-		
-		
-		$recordCMSDataFields = GridFieldBulkEditingHelper::filterNonEditableRecordsFields($config, $recordCMSDataFields);
-		
-		$config['fileRelationName'] = $config['fileRelationName'] ? $config['fileRelationName'] : $this->component->getDefaultFileRelationName($this->gridField);
-		
-		$recordCMSDataFields = GridFieldBulkEditingHelper::getModelFilteredDataFields($config, $recordCMSDataFields);
-		$recordCMSDataFields = GridFieldBulkEditingHelper::populateCMSDataFields($recordCMSDataFields, $this->gridField->list->dataClass, $recordID);
-		$formFieldsHTML = GridFieldBulkEditingHelper::dataFieldsToHTML($recordCMSDataFields);
-		$formFieldsHTML = GridFieldBulkEditingHelper::escapeFormFieldsHTML($formFieldsHTML, $recordID);
-		
-		return $formFieldsHTML;
-	}
-
-
 	public function getUploadField()
 	{
 		return $this->component->bulkUploadField($this->gridField);
-	}
-
-	
-	
-	/**
-	 * Noop.
-	 */
-	public function index($request)
-	{	
-		return;
 	}
 
 	
@@ -219,6 +161,11 @@ class GridFieldBulkUpload_Request extends RequestHandler {
 	}
 
 
+	/**
+	 * Pass select request to UploadField
+	 * 
+	 * @link UploadField->select()
+	 */
 	public function select(SS_HTTPRequest $request)
 	{
 		$uploadField = $this->getUploadField();
@@ -226,6 +173,11 @@ class GridFieldBulkUpload_Request extends RequestHandler {
 	}
 
 
+	/**
+	 * Pass attach request to UploadField
+	 * 
+	 * @link UploadField->attach()
+	 */
 	public function attach(SS_HTTPRequest $request)
 	{
 		$uploadField = $this->getUploadField();
@@ -233,66 +185,15 @@ class GridFieldBulkUpload_Request extends RequestHandler {
 	}
 
 
+	/**
+	 * Pass fileexists request to UploadField
+	 * 
+	 * @link UploadField->fileexists()
+	 */
 	public function fileexists(SS_HTTPRequest $request)
 	{
 		$uploadField = $this->getUploadField();
 		return $uploadField->fileexists($request);
 	}
 
-	
-	/**
-	 * Update a record with the newly edited fields
-	 * 
-	 * @param SS_HTTPRequest $request
-	 * @return string 
-	 */
-	public function update(SS_HTTPRequest $request)
-	{
-    $data = GridFieldBulkEditingHelper::unescapeFormFieldsPOSTData($request->requestVars());
-		$record = DataObject::get_by_id($this->gridField->list->dataClass, $data['ID']);
-				
-		foreach($data as $field => $value)
-		{						
-			if ( $record->hasMethod($field) ) {				
-				$list = $record->$field();
-				$list->setByIDList( $value );
-			}else{
-				$record->setCastedField($field, $value);
-			}
-		}		
-		$record->write();
-		
-		return '{done:1,recordID:'.$data['ID'].'}';
-	}
-	
-	/**
-	 * Delete the Image Object and File as well as the DataObject
-	 * according to the ID sent from the form
-	 * 
-	 * @param SS_HTTPRequest $request
-	 * @return string json 
-	 */
-	public function cancel(SS_HTTPRequest $request)
-	{
-		$data = GridFieldBulkEditingHelper::unescapeFormFieldsPOSTData($request->requestVars());
-		$return = array();
-		
-		$recordClass = $this->gridField->list->dataClass;
-		$record = DataObject::get_by_id($recordClass, $data['ID']);	
-		
-		$imageField = $this->getFileRelationName();
-		$imageID = $record->$imageField.'ID';
-		$image = DataObject::get_by_id('Image', $imageID);
-		
-		$return[$data['ID']]['imageID'] = $imageID;			
-		$return[$data['ID']]['deletedDataObject'] = DataObject::delete_by_id($recordClass, $data['ID']);
-			
-		$return[$data['ID']]['deletedFormattedImages'] = $image->deleteFormattedImages();
-		$return[$data['ID']]['deletedImageFile'] = unlink( Director::getAbsFile($image->getRelativePath()) );
-		
-		
-		$response = new SS_HTTPResponse(Convert::raw2json($return));
-		$response->addHeader('Content-Type', 'text/plain');
-		return $response;		
-	}
 }

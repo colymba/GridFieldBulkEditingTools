@@ -136,6 +136,12 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 
 	/* ******************************************************************************** */
 
+	/**
+	 * Returned a configured UploadField instance
+	 * embedded in the gridfield heard
+	 * @param  GridField $gridField Current GridField
+	 * @return UploadField          Configured UploadField instance
+	 */
 	public function bulkUploadField($gridField)
 	{
 		$fileRelationName = $this->getFileRelationName($gridField);
@@ -174,9 +180,11 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 		
 		return $uploadField;
 	}
+
 		
 	/**
-	 *
+	 * HTML to be embedded into the GridField
+	 * 
 	 * @param GridField $gridField
 	 * @return array 
 	 */
@@ -242,9 +250,11 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 			'header' => $data->renderWith('GridFieldBulkUpload')
 		);
 	}
+
 	
 	/**
-	 *
+	 * Component URL handlers
+	 * 
 	 * @param GridField $gridField
 	 * @return array 
 	 */
