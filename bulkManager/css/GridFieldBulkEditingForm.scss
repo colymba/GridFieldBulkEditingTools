@@ -1,0 +1,66 @@
+
+#bulkEditHeader
+{
+	float: left;
+	width: 85%;
+
+	margin: 40px 0 20px 0;
+
+	font-size: 30px;
+	font-weight: bold;
+}
+
+#bulkEditToggle
+{
+	float: right;
+	clear: right;
+	width: 10%;
+
+	margin: 40px 0 20px 0;
+
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.bulkEditingForm
+{
+	position: relative;
+	float: left;
+	width: 100%;
+
+	&.hasUpdate .ui-accordion-header
+	{
+		background-color: #f2ba11;
+		
+		background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f2ba11), color-stop(100%, #df6e00));
+		background-image: -webkit-linear-gradient(top, #f2ba11 0%, #df6e00 100%);
+		background-image: -moz-linear-gradient(top, #f2ba11 0%, #df6e00 100%);
+		background-image: -o-linear-gradient(top, #f2ba11 0%, #df6e00 100%);
+		background-image: -ms-linear-gradient(top, #f2ba11 0%, #df6e00 100%);
+		background-image: linear-gradient(top, #f2ba11 0%, #df6e00 100%);
+
+		a
+		{
+			color: #fff;
+			text-shadow: none;
+		}
+	}
+
+	&.updated .ui-accordion-header
+	{
+		background-color: #a4ca3a;
+		
+		background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #a4ca3a), color-stop(100%, #59781D));
+		background-image: -webkit-linear-gradient(top, #a4ca3a 0%, #59781D 100%);
+		background-image: -moz-linear-gradient(top, #a4ca3a 0%, #59781D 100%);
+		background-image: -o-linear-gradient(top, #a4ca3a 0%, #59781D 100%);
+		background-image: -ms-linear-gradient(top, #a4ca3a 0%, #59781D 100%);
+		background-image: linear-gradient(top, #a4ca3a 0%, #59781D 100%);
+
+		a
+		{
+			color: #fff;
+			text-shadow: none;
+		}
+	}
+}

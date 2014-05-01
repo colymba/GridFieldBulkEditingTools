@@ -58,9 +58,28 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 				->setAttribute('src', '')//changes type to image so isn't hooked by default actions handlers
 		);
 		
-		$recordList = $this->getRecordIDList();
-		$editedRecordList = new FieldList();
-		$config = $this->component->getConfig();
+    $recordList       = $this->getRecordIDList();
+    $recordsFieldList = new FieldList();
+    $config           = $this->component->getConfig();
+
+    $editingCount     = count($recordList);
+    $singleton        = singleton($this->gridField->getModelClass());
+    $editingClassName = (($editingCount > 1) ? $singleton->i18n_plural_name() : $singleton->i18n_singular_name());
+
+		$header = LiteralField::create(
+			'bulkEditHeader',
+			'<h1 id="bulkEditHeader">' . _t('GRIDFIELD_BULKMANAGER_EDIT_HANDLER.HEADER',
+				'Editing {count} {class}',
+				array(
+					'count' => $editingCount,
+					'class' => $editingClassName
+				)
+			) . '</h1>'
+		);
+		$recordsFieldList->push($header);
+
+		$toggle = LiteralField::create('bulkEditToggle', '<span id="bulkEditToggle">' . _t('GRIDFIELD_BULKMANAGER_EDIT_HANDLER.TOGGLE_ALL_LINK', 'Show/Hide all') . '</span>');
+		$recordsFieldList->push($toggle);
 				
 		foreach ( $recordList as $id )
 		{						
@@ -71,7 +90,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 			$recordCMSDataFields['ID'] = new HiddenField('ID', '', $id);			
 			$recordCMSDataFields = GridFieldBulkEditingHelper::escapeFormFieldsName( $recordCMSDataFields, $id );
 			
-			$editedRecordList->push(
+			$recordsFieldList->push(
 				ToggleCompositeField::create(
 					'GFBM_'.$id,
 					DataObject::get_by_id($this->gridField->list->dataClass, $id)->getTitle(),					
@@ -84,7 +103,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 		$form = new Form(
 			$this,
 			'bulkEditingForm',
-			$editedRecordList,
+			$recordsFieldList,
 			$actions
 		);		
 		

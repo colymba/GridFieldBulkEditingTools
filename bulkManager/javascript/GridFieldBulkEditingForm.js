@@ -1,5 +1,41 @@
 (function($) {	
-	$.entwine('colymba', function($) {	    
+	$.entwine('colymba', function($) {
+
+		$('#bulkEditToggle') .entwine({
+			onmatch: function(){},
+			onunmatch: function(){},
+			onclick: function(e)
+			{
+				var toggleFields = $(this).parents('#Form_bulkEditingForm').find('.ss-toggle h4'),
+						state = this.data('state')
+						;
+
+				if ( !state || state === 'close' )
+				{
+					state = 'open';
+				}
+				else {
+					state = 'close';
+				}
+
+				toggleFields.each(function()
+				{
+					var $this = $(this);
+					
+					if ( state === 'open' && !$this.hasClass('ui-state-active') )
+					{
+						$this.click();
+					}
+
+					if ( state === 'close' && $this.hasClass('ui-state-active') )
+					{
+						$this.click();
+					} 
+				});
+
+				this.data('state', state);
+			}
+		}); 
 		
 		
 		$('.bulkEditingFieldHolder').entwine({
