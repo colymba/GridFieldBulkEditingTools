@@ -1,131 +1,123 @@
-(function($) {	
-	$.entwine('colymba', function($) {
+(function($) {
+  $.entwine('colymba', function($) {
 
-		$('#bulkEditToggle') .entwine({
-			onmatch: function(){},
-			onunmatch: function(){},
-			onclick: function(e)
-			{
-				var toggleFields = $(this).parents('#Form_bulkEditingForm').find('.ss-toggle h4'),
-						state = this.data('state')
-						;
+    $('#bulkEditToggle') .entwine({
+      onmatch: function(){},
+      onunmatch: function(){},
+      onclick: function(e)
+      {
+        var toggleFields = $(this).parents('#Form_bulkEditingForm').find('.ss-toggle h4'),
+            state = this.data('state')
+            ;
 
-				if ( !state || state === 'close' )
-				{
-					state = 'open';
-				}
-				else {
-					state = 'close';
-				}
+        if ( !state || state === 'close' )
+        {
+          state = 'open';
+        }
+        else {
+          state = 'close';
+        }
 
-				toggleFields.each(function()
-				{
-					var $this = $(this);
-					
-					if ( state === 'open' && !$this.hasClass('ui-state-active') )
-					{
-						$this.click();
-					}
+        toggleFields.each(function()
+        {
+          var $this = $(this);
+          
+          if ( state === 'open' && !$this.hasClass('ui-state-active') )
+          {
+            $this.click();
+          }
 
-					if ( state === 'close' && $this.hasClass('ui-state-active') )
-					{
-						$this.click();
-					} 
-				});
+          if ( state === 'close' && $this.hasClass('ui-state-active') )
+          {
+            $this.click();
+          } 
+        });
 
-				this.data('state', state);
-			}
-		}); 
-		
-		
-		$('.bulkEditingFieldHolder').entwine({
-			onmatch: function(){
-				var id, name = 'bulkEditingForm';
-				id = $(this).attr('id').split('_')[3];
-				$(this).wrap('<form name="'+name+'_'+id+'" id="'+name+'_'+id+'" class="'+name+'"/>');
-			},
-			onunmatch: function(){					
-			}
-		});
+        this.data('state', state);
+      }
+    });
+    
+    
+    $('.bulkEditingFieldHolder').entwine({
+      onmatch: function(){
+        var id    = this.attr('id').split('_')[3],
+            name  = 'bulkEditingForm',
+            $wrap = $('<div/>')
+            ;
 
-		$('.bulkEditingForm').entwine({
-			onsubmit: function(){
-				return false;
-			},
-			onchange: function(){
-				this.removeClass('updated');
-				if ( !this.hasClass('hasUpdate') )
-				{
-					this.addClass('hasUpdate');
-				}
-			}
-		});
-		
-		$('#bulkEditingUpdateBtn').entwine({
-				onmatch: function(){
-					$(this).data('completedForms', 0);
-				},
-				onunmatch: function(){					
-				},
-				onclick: function(e){
-					e.stopImmediatePropagation();
+        $wrap.attr('id', name + '_' + id).addClass(name).data('id', id);
+        this.wrap($wrap);
+      },
+      onunmatch: function(){}
+    });
 
-          var $formsWithUpadtes = $('form.bulkEditingForm.hasUpdate'),
-              url               = $(this).data('url'),
-							data,
-							cacheBuster
-							;
-					
-					$(this).data('formsToUpdate', $formsWithUpadtes.length);
-					
-					if ( $formsWithUpadtes.length > 0 ) $(this).addClass('loading');
-														
-					$formsWithUpadtes.each(function(){
-						cacheBuster = new Date().getTime() + '_' + $(this).attr('name');
-						data = $(this).serialize();
-						
-						if ( url.indexOf('?') !== -1 ) cacheBuster = '&cacheBuster=' + cacheBuster;
-						else cacheBuster = '?cacheBuster=' + cacheBuster;
+    $('.bulkEditingForm').entwine({
+      onchange: function(){
+        this.removeClass('updated');
+        if ( !this.hasClass('hasUpdate') )
+        {
+          this.addClass('hasUpdate');
+        }
+      }
+    });
+    
+    $('#bulkEditingUpdateBtn').entwine({
+        onmatch: function(){},
+        onunmatch: function(){},
+        onclick: function(e){
+          e.stopImmediatePropagation();
 
-						$.ajax({
-							url: url + cacheBuster,
-							data: data,
-							type: "POST",
-							context: $(this)
-						}).success(function(data, textStatus, jqXHR) { 							
-              var $btn       = $('#bulkEditingUpdateBtn'),
-                  totalForms = parseInt( $btn.data('formsToUpdate') ),
-                  counter    = parseInt( $btn.data('completedForms') ),
-                  title
-									;							
+          var $formsWithUpadtes = $('div.bulkEditingForm.hasUpdate'),
+              url               = this.data('url'),
+              data              = {},
+              cacheBuster       = new Date().getTime() + '_' + this.attr('name')
+              ;
+          
+          if ( $formsWithUpadtes.length > 0 )
+          {
+            this.addClass('loading');
+          }
+          else{
+            return;
+          }
 
-							counter = counter + 1;							
-							$btn.data('completedForms', counter);
-							
-							$(this).removeClass('hasUpdate');
-							$(this).addClass('updated');
+          if ( url.indexOf('?') !== -1 )
+          {
+            cacheBuster = '&cacheBuster=' + cacheBuster;
+          }
+          else{
+            cacheBuster = '?cacheBuster=' + cacheBuster;
+          }
 
-							try{
-								data = $.parseJSON( data );
-							}catch(er){}
+          $formsWithUpadtes.each(function(){
+            var $this = $(this);
+            data[$this.data('id')] = $this.find(':input').serializeArray();
+          });
 
-							if ( data.title )
-							{
-								$(this).find('.ui-accordion-header a').html(data.title);
-							}							
-							$(this).find('.ui-accordion-header').click();
-														
-							if ( counter == totalForms )
-							{
-								$('#bulkEditingUpdateBtn').data('completedForms', 0);
-								$('#bulkEditingUpdateBtn').removeClass('loading');
-							}							
-						});
-					})
-					
-				}
-		});
+          $.ajax({
+            url:     url + cacheBuster,
+            data:    data,
+            type:    "POST",
+            context: this
+          }).success(function(data, textStatus, jqXHR){
+            try{
+              data = $.parseJSON(data);
+            }catch(er){}
 
-		
-	});	
+            $.each(data.records, function(index, record){
+              var $form       = $('#bulkEditingForm_'+record.id)
+                  $formHeader = $form.find('.ui-accordion-header')
+                  ;
+
+              $form.removeClass('hasUpdate').addClass('updated');
+              $formHeader.find('a').html(record.title);
+              $formHeader.click();
+            });
+
+            this.removeClass('loading');
+          });
+        }
+    });
+    
+  });
 }(jQuery));

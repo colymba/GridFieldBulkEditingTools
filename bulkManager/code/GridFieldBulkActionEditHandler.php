@@ -87,7 +87,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 			$recordCMSDataFields = GridFieldBulkEditingHelper::getModelFilteredDataFields($config, $recordCMSDataFields);
 			$recordCMSDataFields = GridFieldBulkEditingHelper::populateCMSDataFields( $recordCMSDataFields, $this->gridField->list->dataClass, $id );
 			
-			$recordCMSDataFields['ID'] = new HiddenField('ID', '', $id);			
+			//$recordCMSDataFields['ID'] = new HiddenField('ID', '', $id);			
 			$recordCMSDataFields = GridFieldBulkEditingHelper::escapeFormFieldsName( $recordCMSDataFields, $id );
 			
 			$recordsFieldList->push(
@@ -155,26 +155,40 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 	 */
 	public function update()
 	{		
-		$data = GridFieldBulkEditingHelper::unescapeFormFieldsPOSTData($this->request->requestVars());
-		$record = DataObject::get_by_id($this->gridField->list->dataClass, $data['ID']);
-				
-		foreach($data as $field => $value)
-		{						
-			if ( $record->hasMethod($field) )
-			{				
-				$list = $record->$field();
-				$list->setByIDList( $value );
+		$data = $this->request->requestVars();
+		$return = array();
+		$className = $this->gridField->list->dataClass;
+
+		if ( isset($data['url']) ) unset($data['url']);
+		if ( isset($data['cacheBuster']) ) unset($data['cacheBuster']);
+
+		foreach ($data as $recordID => $recordDataSet)
+		{
+			$record = DataObject::get_by_id($className, $recordID);
+			foreach($recordDataSet as $recordData)
+			{
+				$field = preg_replace('/record_(\d+)_(\w+)/i', '$2', $recordData['name']);
+				$value = $recordData['value'];
+
+				if ( $record->hasMethod($field) )
+				{				
+					$list = $record->$field();
+					$list->setByIDList($value);
+				}
+				else{
+					$record->setCastedField($field, $value);
+				}
 			}
-			else{
-				$record->setCastedField($field, $value);
-			}
-		}		
-		$record->write();
+			$done = $record->write();
+			array_push($return, array(
+        'id'    => $done,
+        'title' => $record->getTitle()
+			));
+		}
 
 		return json_encode(array(
-      'done'     => 1,
-      'recordID' => $data['ID'],
-      'title'    => $record->getTitle()
+      'done'    => 1,
+      'records' => $return
 		), JSON_NUMERIC_CHECK);
 	}
 }
