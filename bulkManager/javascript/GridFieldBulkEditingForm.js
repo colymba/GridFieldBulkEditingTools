@@ -51,20 +51,15 @@
 		$('.bulkEditingForm').entwine({
 			onsubmit: function(){
 				return false;
-			}
-		});
-		
-		$('.bulkEditingForm input.text, .bulkEditingForm select, .bulkEditingForm textarea, .bulkEditingForm input.checkbox').entwine({
+			},
 			onchange: function(){
-				var $form = this.parents('form.bulkEditingForm');
-
-				$form.removeClass('updated');
-				if ( !$form.hasClass('hasUpdate') )
+				this.removeClass('updated');
+				if ( !this.hasClass('hasUpdate') )
 				{
-					$form.addClass('hasUpdate');
+					this.addClass('hasUpdate');
 				}
 			}
-		});		
+		});
 		
 		$('#bulkEditingUpdateBtn').entwine({
 				onmatch: function(){
