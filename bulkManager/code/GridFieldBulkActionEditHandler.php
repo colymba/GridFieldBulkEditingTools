@@ -23,10 +23,10 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 
 
 	/**
-	 * Return a form for all the selected DataObject
+	 * Return a form for all the selected DataObjects
 	 * with their respective editable fields.
 	 * 
-	 * @return form Selected DataObject editable fields
+	 * @return Form Selected DataObjects editable fields
 	 */
 	public function editForm()
 	{
@@ -84,25 +84,19 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 				
 		foreach ( $recordList as $id )
 		{						
-			$record = DataObject::get_by_id($modelClass, $id);
+      $record              = DataObject::get_by_id($modelClass, $id);
+      $recordEditingFields = $this->getRecordEditingFields($record);
 
-			$recordCMSDataFields = GridFieldBulkEditingHelper::getModelCMSDataFields( $config, $this->gridField->list->dataClass );
-			$recordCMSDataFields = GridFieldBulkEditingHelper::getModelFilteredDataFields($config, $recordCMSDataFields);
-			$recordCMSDataFields = GridFieldBulkEditingHelper::populateCMSDataFields( $recordCMSDataFields, $this->gridField->list->dataClass, $id );
-			
-			//$recordCMSDataFields['ID'] = new HiddenField('ID', '', $id);			
-			$recordCMSDataFields = GridFieldBulkEditingHelper::escapeFormFieldsName( $recordCMSDataFields, $id );
-			
-			$recordsFieldList->push(
-				ToggleCompositeField::create(
-					'RecordFields_'.$id,
-					$record->getTitle(),					
-					array_values($recordCMSDataFields)
-				)
-				->setHeadingLevel(4)
-				->setAttribute('data-id', $id)				
-				->addExtraClass('bulkEditingFieldHolder')
-			);
+			$toggleField = ToggleCompositeField::create(
+				'RecordFields_'.$id,
+				$record->getTitle(),
+				$recordEditingFields
+			)
+			->setHeadingLevel(4)
+			->setAttribute('data-id', $id)
+			->addExtraClass('bulkEditingFieldHolder');
+
+			$recordsFieldList->push($toggleField);
 		}
 		
 		$form = new Form(
@@ -117,6 +111,92 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 		}
 
 		return $form;
+	}
+
+
+	/**
+	 * Returns a record's populated form fields
+	 * with all filtering done ready to be included in the main form
+	 *
+	 * @uses DataObject::getCMSFields()
+	 * 
+	 * @param  DataObject $record The record to get the fields from
+	 * @return array              The record's editable fields
+	 */
+	private function getRecordEditingFields(DataObject $record)
+	{
+		$tempForm = Form::create(
+			$this, "TempEditForm",
+			$record->getCMSFields(),
+			FieldList::create()
+		);
+
+		$tempForm->loadDataFrom($record);
+		$fields = $tempForm->Fields();
+
+		$fields = $this->filterRecordEditingFields($fields, $record->ID);
+
+		return $fields;
+	}
+
+
+	/**
+	 * Filters a records editable fields
+	 * based on component's config
+	 * and escape each field with unique name.
+	 *
+	 * See {@link GridFieldBulkManager} component for filtering config.
+	 * 
+	 * @param  FieldList $fields Record's CMS Fields
+	 * @param  integer   $id     Record's ID, used fir unique name
+	 * @return array             Filtered record's fields
+	 */
+	private function filterRecordEditingFields(FieldList $fields, $id)
+	{
+    $config              = $this->component->getConfig();
+    $editableFields      = $config['editableFields'];
+    $fieldsNameBlacklist = $config['fieldsNameBlacklist'];
+    $readOnlyClasses     = $config['readOnlyFieldClasses'];
+
+    // get all dataFields or just the ones allowed in config
+		if ( $editableFields )
+		{
+			$dataFields = array();
+
+			foreach ($editableFields as $fieldName)
+			{
+				array_push(
+					$dataFields,
+					$fields->dataFieldByName($fieldName)
+				);
+			}
+		}
+		else{
+			$dataFields = $fields->dataFields();
+		}
+
+		// remove and/or set readonly fields in blacklists
+		foreach ($dataFields as $name => $field)
+		{
+			if ( in_array($name, $fieldsNameBlacklist) )
+			{
+				unset( $dataFields[$name] );
+			}
+			else if ( in_array(get_class($field), $readOnlyClasses) )
+			{
+				$newField = $field->performReadonlyTransformation();
+				$dataFields[$name] = $newField;
+			}
+		}
+
+		// escape field names with unique prefix
+		foreach ( $dataFields as $name => $field )
+		{
+      $field->Name       = 'record_' . $id . '_' . $name;
+      $dataFields[$name] = $field;
+		}
+		
+		return $dataFields;
 	}
 	
 	

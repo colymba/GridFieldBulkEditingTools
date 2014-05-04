@@ -12,17 +12,17 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	 * 
 	 * 'imageFieldName' => field name of the $has_one Model Image relation
 	 * 'editableFields' => fields editable on the Model
-	 * 'fieldsClassBlacklist' => field types that will be removed from the automatic form generation
+	 * 'readOnlyFieldClasses' => field types that will be converted to readonly
 	 * 'fieldsNameBlacklist' => fields that will be removed from the automatic form generation
 	 * 'actions' => maps of action name and configuration
 	 * 
 	 * @var array 
 	 */
 	protected $config = array(
-		'editableFields' => null,
-		'fieldsClassBlacklist' => array(),
-		'fieldsNameBlacklist' => array(),
-		'actions' => array()
+    'editableFields'       => null,
+    'fieldsNameBlacklist'  => array(),
+    'readOnlyFieldClasses' => array(),
+    'actions'              => array()
 	);
 	
 	
@@ -30,13 +30,13 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	 * Holds any class that should not be used as they break the component
 	 * These cannot be removed from the blacklist
 	 */
-	protected $forbiddenFieldsClasses = array( 'GridField', 'UploadField' );
+	protected $readOnlyFieldClasses = array('GridField', 'UploadField');
 	
 	
 	public function __construct($editableFields = null, $defaultActions = true)
 	{				
 		if ( $editableFields != null ) $this->setConfig ( 'editableFields', $editableFields );
-		$this->config['fieldsClassBlacklist'] = $this->forbiddenFieldsClasses;
+		$this->config['readOnlyFieldClasses'] = $this->readOnlyFieldClasses;
 
 		if ( $defaultActions )
 		{
@@ -73,12 +73,12 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	}
 	
 	/**
-	 * Set a component configuration parameter
+	 * Sets the component configuration parameter
 	 * 
 	 * @param string $reference
 	 * @param mixed $value 
 	 */
-	function setConfig ( $reference, $value )
+	function setConfig($reference, $value)
 	{
 		if (!key_exists($reference, $this->config) )
 		{
@@ -90,15 +90,15 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 			user_error("Bulk actions must be edited via addBulkAction() and removeBulkAction()", E_USER_ERROR);
 		}
 		
-		if ( ($reference == 'fieldsClassBlacklist' || $reference == 'fieldsClassBlacklist' || $reference == 'editableFields') && !is_array($value) )
+		if ( ($reference == 'readOnlyFieldClasses' || $reference == 'fieldsNameBlacklist' || $reference == 'editableFields') && !is_array($value) )
 		{
 			$value = array($value);
 		}
 
-		//makes sure $forbiddenFieldsClasses are in no matter what
-		if ( $reference == 'fieldsClassBlacklist' )
+		//makes sure $readOnlyFieldClasses are in no matter what
+		if ( $reference == 'readOnlyFieldClasses' )
 		{
-			$value = array_unique( array_merge($value, $this->forbiddenFieldsClasses) );
+			$value = array_unique( array_merge($value, $this->readOnlyFieldClasses) );
 		}
 
 		$this->config[$reference] = $value;
@@ -135,9 +135,9 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	 * @param string $className
 	 * @return boolean 
 	 */
-	function addClassToBlacklist ( $className )
+	function addClassToReadOnlyList ( $className )
 	{
-		return array_push( $this->config['fieldsClassBlacklist'], $className);
+		return array_push( $this->config['readOnlyFieldClasses'], $className);
 	}
 	
 	/**
@@ -161,10 +161,10 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	 * @param string $className
 	 * @return boolean 
 	 */
-	function removeClassFromBlacklist ( $className )
+	function removeClassFromReadOnlyList ( $className )
 	{
-		if (key_exists($className, $this->config['fieldsNameBlacklist']) && !in_array($className, $this->forbiddenFieldsClasses)) {
-			return delete( $this->config['fieldsNameBlacklist'][$className] );
+		if (key_exists($className, $this->config['readOnlyFieldClasses']) && !in_array($className, $this->forbiddenFieldsClasses)) {
+			return delete( $this->config['readOnlyFieldClasses'][$className] );
 		}else{
 			return false;
 		}
