@@ -10,7 +10,7 @@
       onunmatch: function(){},
       onclick: function(e)
       {
-        var toggleFields = this.parents('#Form_BulkEditingForm').find('.ss-toggle h4'),
+        var toggleFields = this.parents('#Form_BulkEditingForm').find('.ss-toggle .ui-accordion-header'),
             state        = this.data('state')
             ;
 
@@ -113,7 +113,10 @@
 
               $fieldHolder.removeClass('hasUpdate').addClass('updated');
               $header.find('a').html(record.title);
-              $header.click();
+              if ( $header.hasClass('ui-state-active') )
+              {
+                $header.click();
+              }              
             });
 
             this.removeClass('loading');
