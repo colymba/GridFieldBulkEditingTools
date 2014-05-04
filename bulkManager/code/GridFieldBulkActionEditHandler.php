@@ -1,8 +1,10 @@
 <?php
 /**
- *
+ * Bulk action handler for editing records.
+ * 
  * @author colymba
  * @package GridFieldBulkEditingTools
+ * @subpackage BulkManager
  */
 class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 {	
@@ -16,7 +18,6 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 	 * URL handling rules.
 	 */
 	private static $url_handlers = array(
-		//'$Action!' => '$Action'
 		'bulkedit/update' => 'update',
 		'bulkedit' => 'edit'
 	);

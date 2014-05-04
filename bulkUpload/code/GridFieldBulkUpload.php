@@ -4,9 +4,10 @@
  *
  * @author colymba
  * @package GridFieldBulkEditingTools
+ * @subpackage BulkUpload
  */
-class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandler {
-		
+class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandler
+{		
 	/**
 	 * component configuration
 	 * 
@@ -32,6 +33,12 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 	{		
 		if ( $fileRelationName != null ) $this->setConfig ( 'fileRelationName', $fileRelationName );
 	}
+	
+
+
+	/* **********************************************************************
+	 * Components settings and custom methodes
+	 * */
 	
 	/**
 	 * Set a component configuration parameter
@@ -73,7 +80,6 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 		else return $this->config;
 	}
 
-	/* ******************************************************************************** */
 
 	/**
 	 * Get the first has_one Image/File relation from the GridField managed DataObject
@@ -98,6 +104,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 		
 		return $imageField;
 	}	
+
 
 	/**
 	 * Returns the name of the Image/File field name from the managed record
@@ -132,9 +139,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 			return 'File';
 		}		
 	}
-
-
-	/* ******************************************************************************** */
+	
 
 	/**
 	 * Returned a configured UploadField instance
@@ -181,7 +186,12 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 		return $uploadField;
 	}
 
-		
+
+
+	/* **********************************************************************
+	 * GridField_HTMLProvider
+	 * */
+	
 	/**
 	 * HTML to be embedded into the GridField
 	 * 
@@ -251,6 +261,11 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 		);
 	}
 
+
+
+	/* **********************************************************************
+	 * GridField_URLHandler
+	 * */
 	
 	/**
 	 * Component URL handlers

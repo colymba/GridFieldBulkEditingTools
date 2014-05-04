@@ -1,8 +1,10 @@
 <?php
 /**
- *
+ * Bulk action handler for deleting records.
+ * 
  * @author colymba
  * @package GridFieldBulkEditingTools
+ * @subpackage BulkManager
  */
 class GridFieldBulkActionDeleteHandler extends GridFieldBulkActionHandler
 {	

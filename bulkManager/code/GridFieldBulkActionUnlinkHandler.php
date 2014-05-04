@@ -1,8 +1,10 @@
 <?php
 /**
- *
+ * Bulk action handler for unlinking records.
+ * 
  * @author colymba
  * @package GridFieldBulkEditingTools
+ * @subpackage BulkManager
  */
 class GridFieldBulkActionUnlinkHandler extends GridFieldBulkActionHandler
 {

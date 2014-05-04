@@ -4,6 +4,7 @@
  *
  * @author colymba
  * @package GridFieldBulkEditingTools
+ * @subpackage BulkManager
  */
 class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, GridField_URLHandler
 {	
@@ -72,6 +73,12 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 		}
 	}
 	
+
+
+	/* **********************************************************************
+	 * Components settings and custom methodes
+	 * */
+	
 	/**
 	 * Sets the component configuration parameter
 	 * 
@@ -130,7 +137,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	}
 	
 	/**
-	 * Add a class to the editable fields blacklist
+	 * Add a class to the readonly list
 	 * 
 	 * @param string $className
 	 * @return boolean 
@@ -156,7 +163,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	}
 	
 	/**
-	 * Remove a class to the editable fields blacklist
+	 * Remove a class to the readonly list
 	 * 
 	 * @param string $className
 	 * @return boolean 
@@ -246,19 +253,42 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 		return $this;
 	}
 
+
+
+	/* **********************************************************************
+	 * GridField_ColumnProvider
+	 * */
 	
-	/* GridField_ColumnProvider */
-	
+	/**
+	 * Add bulk select column
+	 * 
+	 * @param  GridField $gridField Current GridField instance
+	 * @param  array     $columns   Columns list
+	 */
 	function augmentColumns($gridField, &$columns)
 	{
 		if(!in_array('BulkSelect', $columns)) $columns[] = 'BulkSelect';
 	}
 	
+	/**
+	 * Which columns are handled by the component
+	 * 
+	 * @param  GridField $gridField Current GridField instance
+	 * @return array                List of handled column names
+	 */
 	function getColumnsHandled($gridField)
 	{
 		return array('BulkSelect');
 	}
 	
+	/**
+	 * Sets the column's content
+	 * 
+	 * @param  GridField  $gridField  Current GridField instance
+	 * @param  DataObject $record     Record intance for this row
+	 * @param  string     $columnName Column's name for which we need content
+	 * @return mixed                  Column's field content
+	 */
 	function getColumnContent($gridField, $record, $columnName)
 	{
 		$cb = CheckboxField::create('bulkSelect_'.$record->ID)
@@ -267,19 +297,38 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 		return $cb->Field();
 	}
 	
+	/**
+	 * Set the column's HTML attributes
+	 * 
+	 * @param  GridField  $gridField  Current GridField instance
+	 * @param  DataObject $record     Record intance for this row
+	 * @param  string     $columnName Column's name for which we need attributes
+	 * @return array                  List of HTML attributes
+	 */
 	function getColumnAttributes($gridField, $record, $columnName)
 	{
 		return array('class' => 'col-bulkSelect');
 	}
 	
+	/**
+	 * Set the column's meta data
+	 * 
+	 * @param  GridField  $gridField  Current GridField instance
+	 * @param  string     $columnName Column's name for which we need meta data
+	 * @return array                  List of meta data
+	 */
 	function getColumnMetadata($gridField, $columnName)
 	{
 		if($columnName == 'BulkSelect') {
 			return array('title' => 'Select');
 		}
 	}
-		
-	/* // GridField_ColumnProvider */
+
+
+
+	/* **********************************************************************
+	 * GridField_HTMLProvider
+	 * */
 	
 	/**
 	 *
@@ -334,9 +383,16 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 			'header' => $templateData->renderWith('BulkManagerButtons')
 		);
 	}
+
+
+
+	/* **********************************************************************
+	 * GridField_URLHandler
+	 * */
 	
 	/**
-	 *
+	 * Returns an action => handler list
+	 * 
 	 * @param GridField $gridField
 	 * @return array 
 	 */

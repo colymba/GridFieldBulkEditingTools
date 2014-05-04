@@ -1,10 +1,5 @@
 (function($) {	
-	$.entwine('ss', function($) {
-				
-		// start SS namespace overrides
-		
-		// end SS namespace overrides
-		
+	$.entwine('ss', function($) {		
 
 		$.entwine('colymba', function($) {
 
@@ -41,7 +36,10 @@
         onunmatch: function(){}
       });
 
-		    
+		  
+		  /**
+		   * Bulkselect table cell behaviours
+		   */
 			$('td.col-bulkSelect').entwine({
 				onmatch: function(){
 				},
@@ -62,7 +60,11 @@
 					else $(cb).prop('checked', false);
 				}
 			});
+
 			
+			/**
+			 * Individual select checkbox behaviour
+			 */
 			$('td.col-bulkSelect input').entwine({
 				onmatch: function(){
 				},
@@ -73,6 +75,10 @@
 				}
 			});
 			
+
+			/**
+			 * Bulkselect checkbox behaviours
+			 */
 	    $('input.bulkSelectAll').entwine({
 	      onmatch: function(){
 				},
@@ -95,7 +101,11 @@
 											  .get();
 	      }
 	    });
+
 	    
+	    /**
+	     * Bulk action dropdown behaviours
+	     */
 			$('select.bulkActionName').entwine({
 				onmatch: function(){
 				},
@@ -131,6 +141,10 @@
 				} 
 			});
 			
+
+			/**
+			 * bulk action button behaviours
+			 */
 			$('.doBulkActionButton').entwine({
 				onmatch: function(){
 				},

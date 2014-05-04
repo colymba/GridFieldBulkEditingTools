@@ -1,6 +1,6 @@
 <?php
 /**
- * Handles request from the GridFieldBulkImageUpload component 
+ * Handles request from the GridFieldBulkUpload component 
  * 
  * Handles:
  * * Form creation
@@ -9,9 +9,10 @@
  *
  * @author colymba
  * @package GridFieldBulkEditingTools
+ * @subpackage BulkUpload
  */
-class GridFieldBulkUpload_Request extends RequestHandler {
-	
+class GridFieldBulkUpload_Request extends RequestHandler
+{	
   /**
 	 *
 	 * @var GridField 
@@ -57,7 +58,8 @@ class GridFieldBulkUpload_Request extends RequestHandler {
 	 * @param GridField_URLHandler $component
 	 * @param Controller $controller
 	 */
-	public function __construct($gridField, $component, $controller) {
+	public function __construct($gridField, $component, $controller)
+	{
 		$this->gridField = $gridField;
 		$this->component = $component;
 		$this->controller = $controller;		
@@ -93,7 +95,6 @@ class GridFieldBulkUpload_Request extends RequestHandler {
 		$record->write();
 
 		// passes the current gridfield-instance to a call-back method on the new object
-		//$record->extend("onBulkImageUpload", $this->gridField);
 		$record->extend("onBulkFileUpload", $this->gridField);
 
 		//get uploadField and process upload

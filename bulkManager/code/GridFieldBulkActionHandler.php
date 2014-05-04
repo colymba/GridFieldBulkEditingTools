@@ -1,8 +1,12 @@
 <?php
 /**
- *
+ * Base class to extend for all custom bulk action handlers
+ * Gives access to the GridField, Component and Controller
+ * and implements useful functions like {@link getRecordIDList()} and {@link getRecords()}
+ * 
  * @author colymba
  * @package GridFieldBulkEditingTools
+ * @subpackage BulkManager
  */
 class GridFieldBulkActionHandler extends RequestHandler
 {
