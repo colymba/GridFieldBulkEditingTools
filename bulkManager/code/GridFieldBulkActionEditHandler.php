@@ -63,8 +63,9 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
     $config           = $this->component->getConfig();
 
     $editingCount     = count($recordList);
-    $singleton        = singleton($this->gridField->getModelClass());
-    $editingClassName = (($editingCount > 1) ? $singleton->i18n_plural_name() : $singleton->i18n_singular_name());
+    $modelClass       = $this->gridField->getModelClass();
+    $singleton        = singleton($modelClass);
+    $titleModelClass  = (($editingCount > 1) ? $singleton->i18n_plural_name() : $singleton->i18n_singular_name());
 
 		$header = LiteralField::create(
 			'bulkEditHeader',
@@ -72,7 +73,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 				'Editing {count} {class}',
 				array(
 					'count' => $editingCount,
-					'class' => $editingClassName
+					'class' => $titleModelClass
 				)
 			) . '</h1>'
 		);
@@ -83,6 +84,8 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 				
 		foreach ( $recordList as $id )
 		{						
+			$record = DataObject::get_by_id($modelClass, $id);
+
 			$recordCMSDataFields = GridFieldBulkEditingHelper::getModelCMSDataFields( $config, $this->gridField->list->dataClass );
 			$recordCMSDataFields = GridFieldBulkEditingHelper::getModelFilteredDataFields($config, $recordCMSDataFields);
 			$recordCMSDataFields = GridFieldBulkEditingHelper::populateCMSDataFields( $recordCMSDataFields, $this->gridField->list->dataClass, $id );
@@ -92,17 +95,19 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 			
 			$recordsFieldList->push(
 				ToggleCompositeField::create(
-					'GFBM_'.$id,
-					DataObject::get_by_id($this->gridField->list->dataClass, $id)->getTitle(),					
+					'RecordFields_'.$id,
+					$record->getTitle(),					
 					array_values($recordCMSDataFields)
-				)->setHeadingLevel(4)
+				)
+				->setHeadingLevel(4)
+				->setAttribute('data-id', $id)				
 				->addExtraClass('bulkEditingFieldHolder')
 			);
 		}
 		
 		$form = new Form(
 			$this,
-			'bulkEditingForm',
+			'BulkEditingForm',
 			$recordsFieldList,
 			$actions
 		);		

@@ -1,13 +1,17 @@
 (function($) {
   $.entwine('colymba', function($) {
 
+    /**
+     * Toggle all accordion forms
+     * open or closed
+     */
     $('#bulkEditToggle') .entwine({
       onmatch: function(){},
       onunmatch: function(){},
       onclick: function(e)
       {
-        var toggleFields = $(this).parents('#Form_bulkEditingForm').find('.ss-toggle h4'),
-            state = this.data('state')
+        var toggleFields = this.parents('#Form_BulkEditingForm').find('.ss-toggle h4'),
+            state        = this.data('state')
             ;
 
         if ( !state || state === 'close' )
@@ -38,20 +42,13 @@
     });
     
     
+    /**
+     * Contains each rocrds editing fields,
+     * tracks changes and updates...
+     */
     $('.bulkEditingFieldHolder').entwine({
-      onmatch: function(){
-        var id    = this.attr('id').split('_')[3],
-            name  = 'bulkEditingForm',
-            $wrap = $('<div/>')
-            ;
-
-        $wrap.attr('id', name + '_' + id).addClass(name).data('id', id);
-        this.wrap($wrap);
-      },
-      onunmatch: function(){}
-    });
-
-    $('.bulkEditingForm').entwine({
+      onmatch: function(){},
+      onunmatch: function(){},
       onchange: function(){
         this.removeClass('updated');
         if ( !this.hasClass('hasUpdate') )
@@ -61,19 +58,24 @@
       }
     });
     
+
+    /**
+     * Save all button
+     * process all field holders with updates
+     */
     $('#bulkEditingUpdateBtn').entwine({
         onmatch: function(){},
         onunmatch: function(){},
         onclick: function(e){
           e.stopImmediatePropagation();
 
-          var $formsWithUpadtes = $('div.bulkEditingForm.hasUpdate'),
+          var $fieldHolders     = $('div.bulkEditingFieldHolder.hasUpdate'),
               url               = this.data('url'),
               data              = {},
               cacheBuster       = new Date().getTime() + '_' + this.attr('name')
               ;
           
-          if ( $formsWithUpadtes.length > 0 )
+          if ( $fieldHolders.length > 0 )
           {
             this.addClass('loading');
           }
@@ -89,7 +91,7 @@
             cacheBuster = '?cacheBuster=' + cacheBuster;
           }
 
-          $formsWithUpadtes.each(function(){
+          $fieldHolders.each(function(){
             var $this = $(this);
             data[$this.data('id')] = $this.find(':input').serializeArray();
           });
@@ -105,13 +107,13 @@
             }catch(er){}
 
             $.each(data.records, function(index, record){
-              var $form       = $('#bulkEditingForm_'+record.id)
-                  $formHeader = $form.find('.ui-accordion-header')
+              var $fieldHolder = $('#Form_BulkEditingForm_RecordFields_'+record.id),
+                  $header      = $fieldHolder.find('.ui-accordion-header')
                   ;
 
-              $form.removeClass('hasUpdate').addClass('updated');
-              $formHeader.find('a').html(record.title);
-              $formHeader.click();
+              $fieldHolder.removeClass('hasUpdate').addClass('updated');
+              $header.find('a').html(record.title);
+              $header.click();
             });
 
             this.removeClass('loading');

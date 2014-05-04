@@ -13,11 +13,11 @@
   text-decoration: underline;
   cursor: pointer; }
 
-.bulkEditingForm {
+.bulkEditingFieldHolder {
   position: relative;
   float: left;
   width: 100%; }
-  .bulkEditingForm.hasUpdate .ui-accordion-header {
+  .bulkEditingFieldHolder.hasUpdate .ui-accordion-header {
     background-color: #f2ba11;
     background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f2ba11), color-stop(100%, #df6e00));
     background-image: -webkit-linear-gradient(top, #f2ba11 0%, #df6e00 100%);
@@ -25,10 +25,10 @@
     background-image: -o-linear-gradient(top, #f2ba11 0%, #df6e00 100%);
     background-image: -ms-linear-gradient(top, #f2ba11 0%, #df6e00 100%);
     background-image: linear-gradient(top, #f2ba11 0%, #df6e00 100%); }
-    .bulkEditingForm.hasUpdate .ui-accordion-header a {
+    .bulkEditingFieldHolder.hasUpdate .ui-accordion-header a {
       color: #fff;
       text-shadow: none; }
-  .bulkEditingForm.updated .ui-accordion-header {
+  .bulkEditingFieldHolder.updated .ui-accordion-header {
     background-color: #a4ca3a;
     background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #a4ca3a), color-stop(100%, #59781d));
     background-image: -webkit-linear-gradient(top, #a4ca3a 0%, #59781d 100%);
@@ -36,6 +36,6 @@
     background-image: -o-linear-gradient(top, #a4ca3a 0%, #59781d 100%);
     background-image: -ms-linear-gradient(top, #a4ca3a 0%, #59781d 100%);
     background-image: linear-gradient(top, #a4ca3a 0%, #59781d 100%); }
-    .bulkEditingForm.updated .ui-accordion-header a {
+    .bulkEditingFieldHolder.updated .ui-accordion-header a {
       color: #fff;
       text-shadow: none; }
