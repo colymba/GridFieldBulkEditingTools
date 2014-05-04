@@ -1,46 +1,45 @@
 GridField Bulk Editing Tools
 ============================
-Set of SilverStripe 3 GridField components to facilitate bulk image upload & record editing.
+Set of SilverStripe 3 GridField components to facilitate bulk file upload & record editing.
 ![preview](screenshots/preview.png)
 
 Components included:
-* [Bulk Image Upload](#bulk-image-upload): Upload multiple images at once into DataObjects with on the fly fields editing
+* [Bulk Upload](#bulk-upload): Upload multiple images or files at once into DataObjects
 * [Bulk Manager](#bulk-manager): Handles actions for multiple records straight from the GridField (comes with unlink, delete and edit)
 
 [More screenshots here.](screenshots)
 
 ## Requirements
-* SilverStripe 3.1 (version master / 1.+)
+* SilverStripe 3.1 (version master / 2.+ / 1.+)
 * Silverstripe 3.0 (version [0.5](https://github.com/colymba/GridFieldBulkEditingTools/tree/0.5))
 
 ## Development notes
-The master branch will try to be compatible with the latest SilverStripe release/pre-release. Please submit pull request against the master branch. Older branches are kept for compatibility but may not be maintained.
+The master branch will try to be compatible with the latest SilverStripe release/pre-release. Please submit pull request against the master branch. Older branches are kept for compatibility but are not maintained.
 
 ## Installation
 * Download and copy module in SilverStripe root directory and name it whatever you want
-* run ?flush to regenerate the manifest
+* flush the manifest
 
-## Bulk Image Upload
-Upload multiple images at once into DataObjects. Perfect for galleries and the like.
+## Bulk Upload
+Upload multiple images or files at once into DataObjects. Perfect for galleries and the like.
 
-    $config->addComponent(new GridFieldBulkImageUpload());
+    $config->addComponent(new GridFieldBulkUpload());
 
-See [BULK_IMAGE_UPLOAD.md](BULK_IMAGE_UPLOAD.md) for detailed configuration.
+See [BULK_UPLOAD.md](bulkUpload/BULK_UPLOAD.md) for detailed configuration.
 
 ## Bulk Manager
 Perform actions on multiple records straight from the GridField
 
     $config->addComponent(new GridFieldBulkManager());
 
-See [BULK_MANAGER.md](BULK_MANAGER.md) for detailed configuration.
+See [BULK_MANAGER.md](bulkManager/BULK_MANAGER.md) for detailed configuration.
 
-## Notes
-* The Record edit form uses the Model's getCMSFields()
+## Interdependencies
+The `GridFieldBulkUpload` component makes use of `GridFieldBulkManager` to allow quick editing of the newly uploaded files. Although not nescessary for the component to work, adding `GridFieldBulkManager` too to your `GridFieldConfig` will give you this advantage.
 
 #### @TODO
 * Add individual actions for each upload (update + cancel)
 * Handle and display errors better for: creation, update, cancel
-* Make it work not only for images but Files too
 
 ## Translations
 
