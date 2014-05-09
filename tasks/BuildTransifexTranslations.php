@@ -19,7 +19,7 @@ class BuildTransifexTranslations extends Task
   private $txAuth     = null;
 
   private $root   = '';
-  private $jsDir  = '/javascript/lang';
+  private $jsDir  = '/lang/js';
   private $ymlDir = '/lang';
 
   public function settxapi($txapi)
