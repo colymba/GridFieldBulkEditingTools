@@ -63,3 +63,8 @@ li.ss-uploadfield-item.template-download .imgPreview
 {
 	color: #f25000;
 }
+
+#BulkImageUploadField .field .help
+{
+	margin: 4px 0 0 184px;
+}
