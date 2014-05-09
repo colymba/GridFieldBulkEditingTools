@@ -211,9 +211,9 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 		}
 		else{
 			$config = array(
-        'isAjax'        => true,
-        'icon'          => 'accept',
-        'isDestructive' => false
+				'isAjax'        => isset($config['isAjax']) ? $config['isAjax'] : true,
+				'icon'          => isset($config['icon']) ? $config['icon'] : 'accept',
+				'isDestructive' => isset($config['isDestructive']) ? $config['isDestructive'] : false
 			);
 		}
 
