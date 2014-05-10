@@ -14,5 +14,7 @@ fr:
     ACTION_BTN_LABEL: Go
     SELECT_ALL_LABEL: Sélectionner tout
   GRIDFIELD_BULKMANAGER_EDIT_HANDLER:
+    HEADER_TEXT: Edition de {count} {class}
+    TOGGLE_ALL_LINK: Afficher/Masquer tout
     SAVE_BTN_LABEL: Sauvegarder tout
     CANCEL_BTN_LABEL: Annuler

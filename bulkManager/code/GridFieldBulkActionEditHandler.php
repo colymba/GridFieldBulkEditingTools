@@ -68,15 +68,16 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
     $singleton        = singleton($modelClass);
     $titleModelClass  = (($editingCount > 1) ? $singleton->i18n_plural_name() : $singleton->i18n_singular_name());
 
+    $headerText = _t('GRIDFIELD_BULKMANAGER_EDIT_HANDLER.HEADER_TEXT',
+    	'Editing {count} {class}',
+			array(
+				'count' => $editingCount,
+				'class' => $titleModelClass
+			)
+		);
 		$header = LiteralField::create(
 			'bulkEditHeader',
-			'<h1 id="bulkEditHeader">' . _t('GRIDFIELD_BULKMANAGER_EDIT_HANDLER.HEADER',
-				'Editing {count} {class}',
-				array(
-					'count' => $editingCount,
-					'class' => $titleModelClass
-				)
-			) . '</h1>'
+			'<h1 id="bulkEditHeader">' . $headerText . '</h1>'
 		);
 		$recordsFieldList->push($header);
 
