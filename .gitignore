@@ -1,5 +1,3 @@
-#################  
-## Transifex
-#################
-
 transifexAuth.json
+**/css/bourbon
+**/.sass-cache
