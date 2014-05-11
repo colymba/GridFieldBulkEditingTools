@@ -9,16 +9,20 @@
 class GridFieldBulkActionDeleteHandler extends GridFieldBulkActionHandler
 {	
 	/**
-	 * List of action handling methods
+	 * RequestHandler allowed actions
+	 * @var array
 	 */
 	private static $allowed_actions = array('delete');
 
+
 	/**
-	 * URL handling rules.
+	 * RequestHandler url => action map
+	 * @var array
 	 */
 	private static $url_handlers = array(
 		'delete' => 'delete'
 	);
+	
 
 	/**
 	 * Delete the selected records passed from the delete bulk action

@@ -24,7 +24,9 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
     'sequentialUploads' => false
 	);
 
+
 	/**
+	 * Component constructor
 	 * 
 	 * @param string $fileRelationName
 	 * @param string/array $editableFields
@@ -68,6 +70,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 		$this->config[$reference] = $value;
 	}
 	
+
 	/**
 	 * Returns one $config parameter of the full $config
 	 * 
@@ -117,6 +120,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 		$configFileRelationName = $this->getConfig('fileRelationName');
 		return $configFileRelationName ? $configFileRelationName : $this->getDefaultFileRelationName($gridField);
 	}
+
 
 	/**
 	 * Return the ClassName of the fileRelation
@@ -279,6 +283,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 		);
 	}
 	
+
 	/**
 	 * Pass control over to the RequestHandler
 	 * 
@@ -294,4 +299,3 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 		return $handler->handleRequest($request, DataModel::inst());		
 	}
 }
-

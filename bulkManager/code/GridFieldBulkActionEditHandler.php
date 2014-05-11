@@ -9,13 +9,15 @@
 class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 {	
 	/**
-	 * List of action handling methods
+	 * RequestHandler allowed actions
+	 * @var array
 	 */
 	private static $allowed_actions = array('edit', 'update');
 
 
 	/**
-	 * URL handling rules.
+	 * RequestHandler url => action map
+	 * @var array
 	 */
 	private static $url_handlers = array(
 		'bulkedit/update' => 'update',

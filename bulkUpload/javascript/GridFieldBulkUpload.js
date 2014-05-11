@@ -1,10 +1,5 @@
 (function($) {	
 	$.entwine('ss', function($) {
-				
-		// start SS namespace overrides
-
-		
-		// end SS namespace overrides
 		
 
 		$.entwine('colymba', function($) {
@@ -72,17 +67,6 @@
           $('ul.ss-uploadfield-files').trackProgress();
         },
       });
-
-
-      /**
-       * Track completed uploads
-       *//*
-      $('li.ss-uploadfield-item.done').entwine({
-        onmatch: function(){
-          this.parents('ul.ss-uploadfield-files').trackProgress();
-        },
-        onunmatch: function(){},
-      });*/
 
 
       /**

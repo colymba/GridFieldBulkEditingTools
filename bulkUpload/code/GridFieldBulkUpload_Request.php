@@ -1,11 +1,6 @@
 <?php
 /**
- * Handles request from the GridFieldBulkUpload component 
- * 
- * Handles:
- * * Form creation
- * * file upload
- * * editing and cancelling records
+ * Handles request from the GridFieldBulkUpload component
  *
  * @author colymba
  * @package GridFieldBulkEditingTools
@@ -14,46 +9,47 @@
 class GridFieldBulkUpload_Request extends RequestHandler
 {	
   /**
-	 *
+	 * Gridfield instance
 	 * @var GridField 
 	 */
 	protected $gridField;
 	
+
 	/**
-	 *
-	 * @var GridField_URLHandler
+	 * Bulk upload component
+	 * @var GridFieldBulkUpload
 	 */
 	protected $component;
 	
+
 	/**
-	 *
+	 * Gridfield Form controller
 	 * @var Controller
 	 */
 	protected $controller;
 	
+
 	/**
-	 * Cache the records FieldList from getCMSfields()
-	 * 
-	 * @var FieldList 
-	 */
-	protected $recordCMSFieldList;
-	
-	/**
-	 *
+	 * RequestHandler allowed actions
+	 * @var array
 	 */
 	private static $allowed_actions = array(
 		'upload', 'select', 'attach', 'fileexists'
 	);
 
+
 	/**
-	 *
+	 * RequestHandler url => action map
+	 * @var array
 	 */
 	private static $url_handlers = array(
 		'$Action!' => '$Action'
 	);
 	
+
 	/**
-	 *
+	 * Handler's constructor
+	 * 
 	 * @param GridFIeld $gridField
 	 * @param GridField_URLHandler $component
 	 * @param Controller $controller

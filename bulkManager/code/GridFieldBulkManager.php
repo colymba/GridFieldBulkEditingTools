@@ -11,7 +11,6 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	/**
 	 * component configuration
 	 * 
-	 * 'imageFieldName' => field name of the $has_one Model Image relation
 	 * 'editableFields' => fields editable on the Model
 	 * 'readOnlyFieldClasses' => field types that will be converted to readonly
 	 * 'fieldsNameBlacklist' => fields that will be removed from the automatic form generation
@@ -34,6 +33,12 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	protected $readOnlyFieldClasses = array('GridField', 'UploadField');
 	
 	
+	/**
+	 * GridFieldBulkManager component constructor
+	 * 
+	 * @param array   $editableFields List of editable fields
+	 * @param boolean $defaultActions Use default actions list. False to start fresh.
+	 */
 	public function __construct($editableFields = null, $defaultActions = true)
 	{				
 		if ( $editableFields != null ) $this->setConfig ( 'editableFields', $editableFields );
@@ -112,6 +117,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 
 		return $this;
 	}
+
 	
 	/**
 	 * Returns one $config parameter of the full $config
@@ -125,6 +131,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 		else return $this->config;
 	}
 	
+
 	/**
 	 * Add a field to the editable fields blacklist
 	 * 
@@ -135,6 +142,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	{
 		return array_push( $this->config['fieldsNameBlacklist'], $fieldName);
 	}
+
 	
 	/**
 	 * Add a class to the readonly list
@@ -146,6 +154,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	{
 		return array_push( $this->config['readOnlyFieldClasses'], $className);
 	}
+
 	
 	/**
 	 * Remove a field to the editable fields blacklist
@@ -161,6 +170,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 			return false;
 		}
 	}
+
 	
 	/**
 	 * Remove a class to the readonly list
@@ -269,6 +279,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	{
 		if(!in_array('BulkSelect', $columns)) $columns[] = 'BulkSelect';
 	}
+
 	
 	/**
 	 * Which columns are handled by the component
@@ -280,6 +291,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	{
 		return array('BulkSelect');
 	}
+
 	
 	/**
 	 * Sets the column's content
@@ -296,6 +308,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 			    ->setAttribute('data-record', $record->ID);
 		return $cb->Field();
 	}
+
 	
 	/**
 	 * Set the column's HTML attributes
@@ -310,6 +323,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 		return array('class' => 'col-bulkSelect');
 	}
 	
+
 	/**
 	 * Set the column's meta data
 	 * 
@@ -401,6 +415,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 				'bulkaction' => 'handlebulkaction'
 			);
 	}
+
 	
 	/**
 	 * Pass control over to the RequestHandler
