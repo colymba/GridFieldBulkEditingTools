@@ -91,7 +91,12 @@ class GridFieldBulkUpload_Request extends RequestHandler
 		$record->write();
 
 		// passes the current gridfield-instance to a call-back method on the new object
-		$record->extend("onBulkFileUpload", $this->gridField);
+		$record->extend("onBulkUpload", $this->gridField);
+		if ( $record->hasMethod('onBulkImageUpload') )
+		{
+			Deprecation::notice('2.0', '"onBulkImageUpload" callback is deprecated, use "onBulkUpload" instead.');
+			$record->extend("onBulkImageUpload", $this->gridField);
+		}
 
 		//get uploadField and process upload
 		$uploadField = $this->getUploadField();

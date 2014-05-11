@@ -20,6 +20,11 @@ The master branch will try to be compatible with the latest SilverStripe release
 * Download and copy module in SilverStripe root directory and name it whatever you want
 * flush the manifest
 
+## 2.0.0 deprecations
+Major depractions in latest 2.0.0 release:
+* The `GridFieldBulkImageUpload` has been renamed to `GridFieldBulkUpload`.
+* `onBulkImageUpload` callback has been renamed to `onBulkUpload`
+
 ## Bulk Upload
 Upload multiple images or files at once into DataObjects. Perfect for galleries and the like.
 
