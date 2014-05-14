@@ -224,7 +224,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 			->setAttribute('data-icon', 'arrow-circle-double')
 			->setUseButtonTag(true);
 
-		if ( $bulkManager )
+		if ( count($bulkManager) )
 		{
 			$cancelButton = FormAction::create('Cancel', _t('GRIDFIELD_BULK_UPLOAD.CANCEL_BTN_LABEL', 'Cancel'))
 				->addExtraClass('bulkUploadCancelButton ss-ui-action-destructive')
