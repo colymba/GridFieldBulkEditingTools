@@ -21,7 +21,9 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
     'fileRelationName'  => null,
     'folderName'        => 'bulkUpload',
     'maxFileSize'       => null,
-    'sequentialUploads' => false
+    'sequentialUploads' => false,
+    'canAttachExisting' => true,
+    'canPreviewFolder'  => true
 	);
 
 
@@ -160,6 +162,9 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 			->setConfig('previewMaxWidth', 20)
 			->setConfig('previewMaxHeight', 20)
 			->setConfig('changeDetection', false)
+
+			->setConfig('canPreviewFolder', $this->getConfig('canPreviewFolder'))
+			->setConfig('canAttachExisting', $this->getConfig('canAttachExisting'))
 
 			->setTemplate('GridFieldBulkUploadField')
 			->setDownloadTemplateName('colymba-bulkuploaddownloadtemplate')
