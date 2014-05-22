@@ -250,6 +250,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 
 		if ( isset($data['url']) ) unset($data['url']);
 		if ( isset($data['cacheBuster']) ) unset($data['cacheBuster']);
+		if ( isset($data['locale']) ) unset($data['locale']);
 
 		foreach ($data as $recordID => $recordDataSet)
 		{
