@@ -161,6 +161,8 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 			->setConfig('previewMaxHeight', 20)
 			->setConfig('changeDetection', false)
 
+			->setRecord(DataObject::create()) // avoid UploadField to get auto-config from the Page (e.g fix allowedMaxFileNumber)
+
 			->setTemplate('GridFieldBulkUploadField')
 			->setDownloadTemplateName('colymba-bulkuploaddownloadtemplate')
 			
