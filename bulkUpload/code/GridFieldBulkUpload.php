@@ -29,7 +29,6 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 	 * Component constructor
 	 * 
 	 * @param string $fileRelationName
-	 * @param string/array $editableFields
 	 */
 	public function __construct($fileRelationName = null)
 	{		
