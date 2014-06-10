@@ -74,13 +74,13 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 		//canAttachExisting true/false
 		if ( $reference == 'canAttachExisting' && !is_bool($value) )
 		{
-			$value = false;
+			$value = true;
 		}
 
 		//canPreviewFolder true/false
 		if ( $reference == 'canPreviewFolder' && !is_bool($value) )
 		{
-			$value = false;
+			$value = true;
 		}
 
 		$this->config[$reference] = $value;
