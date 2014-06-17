@@ -23,6 +23,8 @@ The available configuration options are:
 * 'folderName' : name of the folder where the images or files should be uploaded
 * 'maxFileSize' : integer, maximum upload file size in bytes
 * 'sequentialUploads' : boolean, if true files will be uploaded one by one
+* 'canAttachExisting' : boolean, if false the "From files" button will not be displayed in the UploadField (default: true)
+* 'canPreviewFolder' : boolean, if false the upload location will not be displayed in the UploadField (default: true)
 
 ## Bulk Editing
 To get a quick edit shortcut to all the newly upload files, please also add the `GridFieldBulkManager` component to your `GridFieldConfig`.

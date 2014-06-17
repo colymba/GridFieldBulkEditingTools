@@ -15,13 +15,17 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 	 * 'folderName' => where to upload the files
 	 * 'maxFileSize' => maximum file size allowed per upload
 	 * 'sequentialUploads' => process uploads 1 after the other rather than all at once
+	 * 'canAttachExisting' => displays "From files" button in the UploadField
+	 * 'canPreviewFolder' => displays the upload location in the UploadField
 	 * @var array 
 	 */
 	protected $config = array(
     'fileRelationName'  => null,
     'folderName'        => 'bulkUpload',
     'maxFileSize'       => null,
-    'sequentialUploads' => false
+    'sequentialUploads' => false,
+    'canAttachExisting' => true,
+    'canPreviewFolder'  => true
 	);
 
 
@@ -60,10 +64,22 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 			$value = null;
 		}
     
-    //sequentialUploads true/false
-    if ( $reference == 'sequentialUploads' && !is_bool($value) )
+		//sequentialUploads true/false
+		if ( $reference == 'sequentialUploads' && !is_bool($value) )
 		{
-      $value = false;
+			$value = false;
+		}
+
+		//canAttachExisting true/false
+		if ( $reference == 'canAttachExisting' && !is_bool($value) )
+		{
+			$value = true;
+		}
+
+		//canPreviewFolder true/false
+		if ( $reference == 'canPreviewFolder' && !is_bool($value) )
+		{
+			$value = true;
 		}
 
 		$this->config[$reference] = $value;
@@ -159,7 +175,9 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 			->setConfig('previewMaxWidth', 20)
 			->setConfig('previewMaxHeight', 20)
 			->setConfig('changeDetection', false)
-
+			->setConfig('canPreviewFolder', $this->getConfig('canPreviewFolder'))
+			->setConfig('canAttachExisting', $this->getConfig('canAttachExisting'))
+			
 			->setRecord(DataObject::create()) // avoid UploadField to get auto-config from the Page (e.g fix allowedMaxFileNumber)
 
 			->setTemplate('GridFieldBulkUploadField')
