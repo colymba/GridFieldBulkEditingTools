@@ -82,6 +82,18 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 			$value = true;
 		}
 
+		//canAttachExisting true/false
+		if ( $reference == 'canAttachExisting' && !is_bool($value) )
+		{
+			$value = true;
+		}
+
+		//canPreviewFolder true/false
+		if ( $reference == 'canPreviewFolder' && !is_bool($value) )
+		{
+			$value = true;
+		}
+
 		$this->config[$reference] = $value;
 	}
 	
@@ -179,6 +191,9 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 			->setConfig('canAttachExisting', $this->getConfig('canAttachExisting'))
 			
 			->setRecord(DataObject::create()) // avoid UploadField to get auto-config from the Page (e.g fix allowedMaxFileNumber)
+
+			->setConfig('canPreviewFolder', $this->getConfig('canPreviewFolder'))
+			->setConfig('canAttachExisting', $this->getConfig('canAttachExisting'))
 
 			->setTemplate('GridFieldBulkUploadField')
 			->setDownloadTemplateName('colymba-bulkuploaddownloadtemplate')
