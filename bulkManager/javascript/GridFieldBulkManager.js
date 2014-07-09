@@ -89,7 +89,8 @@
 	        var state = $(this).prop('checked');
 	        $(this).parents('.ss-gridfield-table')
 	        			 .find('td.col-bulkSelect input')
-	        			 .prop('checked', state);
+	        			 .prop('checked', state)
+	        			 .trigger('change');
 	      },
 	      getSelectRecordsID: function()
 	      {
