@@ -156,15 +156,13 @@ class GridFieldBulkUpload_Request extends RequestHandler
 			$title = $record->getTitle();
 			if ( !$title || $title === $record->ID )
 			{
-				$title = basename($uploadedFile->getFilename());
-
 				if ( $record->hasDatabaseField('Title') )
 				{
-					$record->Title = $title;
+					$record->Title = $uploadedFile->Title;
 					$record->write();
 				}
 				else if ($record->hasDatabaseField('Name')){
-					$record->Name = $title;
+					$record->Name = $uploadedFile->Title;
 					$record->write();
 				}
 			}
