@@ -50,11 +50,13 @@
 					padding: 5px 1% 5px 1%;
 					
 					border: none;
-					//border-top: 1px solid rgba(0, 0, 0, 0.1);
+					border-top: 1px solid rgba(0, 0, 0, 0.1);
+
+					background-color: #eceff1;
 
 					&:nth-child(2n-1)
 					{
-						background-color: rgba(0,0,0,.1); // #4a4b4d;
+						background-color: #e6eaed;
 					}
 
 					.ss-uploadfield-item-preview
@@ -82,7 +84,11 @@
 
 							.name
 							{
-								color: #eee;
+								color: #343434;
+							}
+
+							.size {
+								font-weight: normal;
 							}
 
 							.ss-uploadfield-item-status
@@ -95,7 +101,7 @@
 
 								&.ui-state-warning-text
 								{
-									color: #f2be08;
+									color: #f29500;
 								}
 								&.ui-state-success-text
 								{
@@ -208,7 +214,10 @@
 					.ss-uploadfield-item-name
 					{
 						height: auto;
-						margin-bottom: 2px;
+						margin-bottom: 5px !important;
+						small {
+							font-weight: normal !important;
+						}
 					}
 
 					.ss-ui-button
@@ -242,7 +251,9 @@
 				width: 98%;
 				padding: 6px 1% 6px 1%;
 
-				border-top: 1px solid rgba(0, 0, 0, 0.1);
+				// border-top: 1px solid rgba(0, 0, 0, 0.1);
+
+				background-color: #8898a3;
 
 				button
 				{
@@ -268,10 +279,10 @@
 				.colymba-bulkupload-info
 				{
 					float: left;
-					margin: 0 6px 0 0;
+					margin: 0 6px 0 6px;
 					line-height: 28px;					
 					height: 28px;
-					color: #73818a;
+					color: #ffffff;
 				}
 			}
 
