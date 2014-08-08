@@ -26,9 +26,11 @@
           overflow: hidden;
           width: 98%;
           padding: 5px 1% 5px 1%;
-          border: none; }
+          border: none;
+          border-top: 1px solid rgba(0, 0, 0, 0.1);
+          background-color: #eceff1; }
           .bulkUpload .component div.ss-uploadfield .ss-uploadfield-files .ss-uploadfield-item:nth-child(2n-1) {
-            background-color: rgba(0, 0, 0, 0.1); }
+            background-color: #e6eaed; }
           .bulkUpload .component div.ss-uploadfield .ss-uploadfield-files .ss-uploadfield-item .ss-uploadfield-item-preview {
             width: 30px;
             height: 30px;
@@ -45,7 +47,9 @@
               height: 100%;
               line-height: 40px; }
               .bulkUpload .component div.ss-uploadfield .ss-uploadfield-files .ss-uploadfield-item .ss-uploadfield-item-info .ss-uploadfield-item-name .name {
-                color: #eee; }
+                color: #343434; }
+              .bulkUpload .component div.ss-uploadfield .ss-uploadfield-files .ss-uploadfield-item .ss-uploadfield-item-info .ss-uploadfield-item-name .size {
+                font-weight: normal; }
               .bulkUpload .component div.ss-uploadfield .ss-uploadfield-files .ss-uploadfield-item .ss-uploadfield-item-info .ss-uploadfield-item-name .ss-uploadfield-item-status {
                 float: left;
                 width: auto;
@@ -53,7 +57,7 @@
                 text-align: left;
                 max-width: none; }
                 .bulkUpload .component div.ss-uploadfield .ss-uploadfield-files .ss-uploadfield-item .ss-uploadfield-item-info .ss-uploadfield-item-name .ss-uploadfield-item-status.ui-state-warning-text {
-                  color: #f2be08; }
+                  color: #f29500; }
                 .bulkUpload .component div.ss-uploadfield .ss-uploadfield-files .ss-uploadfield-item .ss-uploadfield-item-info .ss-uploadfield-item-name .ss-uploadfield-item-status.ui-state-success-text {
                   color: #298530; }
             .bulkUpload .component div.ss-uploadfield .ss-uploadfield-files .ss-uploadfield-item .ss-uploadfield-item-info .ss-uploadfield-item-actions {
@@ -110,7 +114,9 @@
           margin: 0; }
           .bulkUpload .component div.ss-uploadfield .ss-uploadfield-addfile .ss-uploadfield-item-info .ss-uploadfield-item-name {
             height: auto;
-            margin-bottom: 2px; }
+            margin-bottom: 5px !important; }
+            .bulkUpload .component div.ss-uploadfield .ss-uploadfield-addfile .ss-uploadfield-item-info .ss-uploadfield-item-name small {
+              font-weight: normal !important; }
           .bulkUpload .component div.ss-uploadfield .ss-uploadfield-addfile .ss-uploadfield-item-info .ss-ui-button .ui-button-text .ui-button-text {
             padding: 0px; }
           .bulkUpload .component div.ss-uploadfield .ss-uploadfield-addfile .ss-uploadfield-item-info .ss-uploadfield-fromcomputer {
@@ -123,7 +129,7 @@
         float: left;
         width: 98%;
         padding: 6px 1% 6px 1%;
-        border-top: 1px solid rgba(0, 0, 0, 0.1); }
+        background-color: #8898a3; }
         .bulkUpload .component div.ss-uploadfield .colymba-bulkupload-buttons button {
           float: left;
           margin: 0 6px 0 0; }
@@ -134,7 +140,7 @@
             margin: 0 0 0 6px; }
         .bulkUpload .component div.ss-uploadfield .colymba-bulkupload-buttons .colymba-bulkupload-info {
           float: left;
-          margin: 0 6px 0 0;
+          margin: 0 6px 0 6px;
           line-height: 28px;
           height: 28px;
-          color: #73818a; }
+          color: #ffffff; }
