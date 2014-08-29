@@ -120,8 +120,9 @@ class GridFieldBulkUpload_Request extends RequestHandler
 		$responseData = $this->newRecordJSTemplateData($record, $uploadResponse);
 				
 		$response = new SS_HTTPResponse(Convert::raw2json(array($responseData)));
-		$response->addHeader('Content-Type', 'text/json');
-		return $response;		
+		$this->contentTypeNegotiation($response);
+		
+		return $response;
 	}
 
 
@@ -260,7 +261,8 @@ class GridFieldBulkUpload_Request extends RequestHandler
 		}
 
 		$response = new SS_HTTPResponse(Convert::raw2json($return));
-		$response->addHeader('Content-Type', 'text/json');
+		$this->contentTypeNegotiation($response);
+
 		return $response;
 	}
 
@@ -285,4 +287,19 @@ class GridFieldBulkUpload_Request extends RequestHandler
 		return Controller::join_links($this->gridField->Link(), '/bulkupload/', $action);
 	}
 
+	/**
+	 * Sets response 'Content-Type' depending on browser capabilities
+	 * e.g. IE needs text/plain for iframe transport
+	 * https://github.com/blueimp/jQuery-File-Upload/issues/1795
+	 * @param  SS_HTTPResponse $response HTTP Response to set content-type on
+	 */
+	protected function contentTypeNegotiation(&$response)
+	{
+		if (isset($_SERVER['HTTP_ACCEPT']) && (strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false))
+		{
+			$response->addHeader('Content-Type', 'application/json');
+		}else{
+			$response->addHeader('Content-Type', 'text/plain');
+		}
+	}
 }
