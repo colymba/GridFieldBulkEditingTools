@@ -20,8 +20,8 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 	 * @var array
 	 */
 	private static $url_handlers = array(
-		'bulkedit/update' => 'update',
-		'bulkedit' => 'edit'
+		'bulkEdit/update' => 'update',
+		'bulkEdit' => 'edit'
 	);
 
 
@@ -46,7 +46,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 				->setAttribute('id', 'bulkEditingUpdateBtn')
 				->addExtraClass('ss-ui-action-constructive cms-panel-link')
 				->setAttribute('data-icon', 'accept')
-				->setAttribute('data-url', $this->gridField->Link('bulkaction/bulkedit/update'))
+				->setAttribute('data-url', $this->gridField->Link('bulkaction/bulkEdit/update'))
 				->setUseButtonTag(true)
 				->setAttribute('src', '')//changes type to image so isn't hooked by default actions handlers
 		);

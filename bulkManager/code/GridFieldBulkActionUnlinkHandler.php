@@ -6,13 +6,13 @@
  * @package GridFieldBulkEditingTools
  * @subpackage BulkManager
  */
-class GridFieldBulkActionUnlinkHandler extends GridFieldBulkActionHandler
+class GridFieldBulkActionUnLinkHandler extends GridFieldBulkActionHandler
 {
 	/**
 	 * RequestHandler allowed actions
 	 * @var array
 	 */
-	private static $allowed_actions = array('unlink');
+	private static $allowed_actions = array('unLink');
 
 
 	/**
@@ -20,7 +20,7 @@ class GridFieldBulkActionUnlinkHandler extends GridFieldBulkActionHandler
 	 * @var array
 	 */
 	private static $url_handlers = array(
-		'unlink' => 'unlink'
+		'unLink' => 'unLink'
 	);
 	
 	
@@ -30,7 +30,7 @@ class GridFieldBulkActionUnlinkHandler extends GridFieldBulkActionHandler
 	 * @param SS_HTTPRequest $request
 	 * @return SS_HTTPResponse List of affected records ID
 	 */
-	public function unlink(SS_HTTPRequest $request)
+	public function unLink(SS_HTTPRequest $request)
 	{
 		$ids = $this->getRecordIDList();
 		$this->gridField->list->removeMany($ids);

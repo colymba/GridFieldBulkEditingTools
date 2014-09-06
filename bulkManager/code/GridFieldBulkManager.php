@@ -47,7 +47,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 		if ( $defaultActions )
 		{
 			$this->config['actions'] = array(
-	      'bulkedit'   => array(
+	      'bulkEdit'   => array(
 	      	'label' => _t('GRIDFIELD_BULK_MANAGER.EDIT_SELECT_LABEL', 'Edit'),
 	      	'handler' => 'GridFieldBulkActionEditHandler',
 	      	'config' => array(
@@ -56,9 +56,9 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 						'isDestructive' => false
 					)
 	      ),
-	      'unlink' => array(
+	      'unLink' => array(
 	      	'label' => _t('GRIDFIELD_BULK_MANAGER.UNLINK_SELECT_LABEL', 'UnLink'),
-	      	'handler' => 'GridFieldBulkActionUnlinkHandler',
+	      	'handler' => 'GridFieldBulkActionUnLinkHandler',
 	      	'config' => array(
 						'isAjax' => true,
 						'icon' => 'chain--minus',
@@ -203,10 +203,8 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	{
 		if ( array_key_exists($name, $this->config['actions']) )
 		{
-			user_error("Bulk action $name already exists.", E_USER_ERROR);
+			user_error("Bulk action '$name' already exists.", E_USER_ERROR);
 		}
-
-		$name = strtolower($name);
 
 		if ( !$label )
 		{
@@ -255,7 +253,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	{
 		if ( !array_key_exists($name, $this->config['actions']) )
 		{
-			user_error("Bulk action $name doesn't exists.", E_USER_ERROR);
+			user_error("Bulk action '$name' doesn't exists.", E_USER_ERROR);
 		}
 
 		unset( $this->config['actions'][$name] );
