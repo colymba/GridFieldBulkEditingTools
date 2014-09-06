@@ -96,8 +96,22 @@
             ));
 
             $cancelBtn.removeClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'false').removeAttr('disabled');
-            $finishBtn.removeClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'false').removeAttr('disabled');
 
+            //if there are still uploads going
+            if ( (done + error) < total )
+            {
+              if ( !this.hasClass('loading') )
+              {
+                this.addClass('loading');
+                $finishBtn.addClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'true').attr('disabled', 'disabled');
+              }              
+            }
+            else{
+              this.removeClass('loading');
+              $finishBtn.removeClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'false').removeAttr('disabled');
+            }            
+
+            //if all done and OK, enable edit
             if ( total === done )
             {
               $editBtn.removeClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'false').removeAttr('disabled');
@@ -106,6 +120,7 @@
               $editBtn.addClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'true').attr('disabled', 'true');
             }
 
+            //toggle clear error button
             if ( error > 0 )
             {
               $clearErrorBtn.removeClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'false').removeAttr('disabled');
@@ -115,7 +130,8 @@
             }
           }
           else{
-            this.css({display: 'none'});
+            //if not uploading, reset + hide
+            this.css({display: 'none'}).removeClass('loading');
             $editBtn.addClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'true').attr('disabled', 'true');
             $cancelBtn.addClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'true').attr('disabled', 'true');
             $finishBtn.addClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'true').attr('disabled', 'true');
@@ -128,7 +144,7 @@
       /**
        * Clears all updloads with warning or error
        */
-      $('.bulkUploadClearErrorButton').entwine({
+      $('.bulkUploadClearErrorButton:not(.ui-state-disabled)').entwine({
         onmatch: function(){
           this.removeClass('action');
         },
@@ -150,7 +166,7 @@
        * Cancel all uploads
        * Clear the ones with warnings/error and delete dataObjects from the successful ones
        */
-      $('.bulkUploadCancelButton').entwine({
+      $('.bulkUploadCancelButton:not(.ui-state-disabled)').entwine({
         onmatch: function(){
           this.removeClass('action');
         },
@@ -213,7 +229,7 @@
       /**
        * Clear all the warning/error/finished uploads
        */
-      $('.bulkUploadFinishButton').entwine({
+      $('.bulkUploadFinishButton:not(.ui-state-disabled)').entwine({
         onmatch: function(){
           this.removeClass('action');
         },
@@ -236,7 +252,7 @@
         }
       });
 
-      $('.bulkUploadEditButton').entwine({
+      $('.bulkUploadEditButton:not(.ui-state-disabled)').entwine({
         onmatch: function(){
           this.removeClass('action');
         },

@@ -143,4 +143,11 @@
           margin: 0 6px 0 6px;
           line-height: 28px;
           height: 28px;
-          color: #ffffff; }
+          color: #ffffff;
+          background-image: url(../../images/spinner.gif);
+          background-position: 0 -50px;
+          background-repeat: no-repeat;
+          overflow: hidden; }
+        .bulkUpload .component div.ss-uploadfield .colymba-bulkupload-buttons.loading .colymba-bulkupload-info {
+          padding-left: 20px;
+          background-position: 0 5px; }
