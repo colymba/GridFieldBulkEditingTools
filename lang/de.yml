@@ -4,13 +4,17 @@ de:
   GRIDFIELD_BULK_UPLOAD:
     FINISH_BTN_LABEL: Fertigstellen
     CANCEL_BTN_LABEL: Abbrechen
+    CLEAR_ERROR_BTN_LABEL: Fehler löschen
     EDIT_ALL_BTN_LABEL: Alle bearbeiten
   GRIDFIELD_BULK_MANAGER:
+    COMPONENT_TITLE: Einen oder mehrere Einträge gleichzeitig bearbeiten
     EDIT_SELECT_LABEL: Bearbeiten
     UNLINK_SELECT_LABEL: Verbindung entfernen
     DELETE_SELECT_LABEL: Löschen
     ACTION_BTN_LABEL: Los
     SELECT_ALL_LABEL: Alle auswählen
   GRIDFIELD_BULKMANAGER_EDIT_HANDLER:
+    HEADER_TEXT: Bearbeite {count} {class}
+    TOGGLE_ALL_LINK: Alle Anzeigen/Verbergen
     SAVE_BTN_LABEL: Alle speichern
     CANCEL_BTN_LABEL: Abbrechen

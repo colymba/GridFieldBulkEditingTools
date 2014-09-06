@@ -4,13 +4,17 @@ nl:
   GRIDFIELD_BULK_UPLOAD:
     FINISH_BTN_LABEL: Afronden
     CANCEL_BTN_LABEL: Annuleren
+    CLEAR_ERROR_BTN_LABEL: Verwijder fouten
     EDIT_ALL_BTN_LABEL: Alles bewerken
   GRIDFIELD_BULK_MANAGER:
+    COMPONENT_TITLE: Bewerk één of meerdere items tegelijkertijd
     EDIT_SELECT_LABEL: Bewerken
     UNLINK_SELECT_LABEL: Loskoppelen
     DELETE_SELECT_LABEL: Verwijderen
     ACTION_BTN_LABEL: Gaan
     SELECT_ALL_LABEL: Selecteer alles
   GRIDFIELD_BULKMANAGER_EDIT_HANDLER:
+    HEADER_TEXT: '{count} {class} aan het bewerken'
+    TOGGLE_ALL_LINK: Toon/verberg alle
     SAVE_BTN_LABEL: Alles opslaan
     CANCEL_BTN_LABEL: Annuleren
