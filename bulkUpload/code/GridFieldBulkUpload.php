@@ -12,20 +12,57 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 	 * component configuration
 	 * 
 	 * 'fileRelationName' => field name of the $has_one File/Image relation
-	 * 'folderName' => where to upload the files
-	 * 'maxFileSize' => maximum file size allowed per upload
-	 * 'sequentialUploads' => process uploads 1 after the other rather than all at once
-	 * 'canAttachExisting' => displays "From files" button in the UploadField
-	 * 'canPreviewFolder' => displays the upload location in the UploadField
 	 * @var array 
 	 */
 	protected $config = array(
-    'fileRelationName'  => null,
-    'folderName'        => 'bulkUpload',
-    'maxFileSize'       => null,
-    'sequentialUploads' => false,
+    'fileRelationName'  => null
+	);
+
+
+	/**
+	 * UploadField configuration.
+	 * These options are passed on directly to the UploadField
+	 * via {@link UploadField::setConfig()} api
+	 *
+	 * Defaults are:	 * 
+	 * 'sequentialUploads' => false : process uploads 1 after the other rather than all at once
+	 * 'canAttachExisting' => true : displays "From files" button in the UploadField
+	 * 'canPreviewFolder'  => true : displays the upload location in the UploadField
+	 * 
+	 * @var array 
+	 */
+	protected $ufConfig = array(
+		'sequentialUploads' => false,
     'canAttachExisting' => true,
     'canPreviewFolder'  => true
+	);
+
+
+	/**
+	 * UploadField setup function calls.
+	 * List of setup functions to call on {@link UploadField} with the value to pass
+	 * 
+	 * e.g. array('setFolderName' => 'bulkUpload') will result in:
+	 * $uploadField->setFolderName('bulkUpload')
+	 * 
+	 * @var array 
+	 */
+	protected $ufSetup = array(
+    'setFolderName' => 'bulkUpload'
+	);
+
+
+	/**
+	 * UploadField Validator setup function calls.
+	 * List of setup functions to call on {@link Upload::validator} with the value to pass
+	 * 
+	 * e.g. array('setAllowedMaxFileSize' => 10) will result in:
+	 * $uploadField->getValidator()->setAllowedMaxFileSize(10)
+	 * 
+	 * @var array 
+	 */
+	protected $ufValidatorSetup = array(
+    'setAllowedMaxFileSize' => null
 	);
 
 
@@ -57,37 +94,52 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 			user_error("Unknown option reference: $reference", E_USER_ERROR);
 		}
 
-		//makes sure maxFileSize is INT
-		if ( $reference == 'maxFileSize' && !is_int($value) )
-		{
-			user_warning("maxFileSize should be an Integer. Setting it to Auto.", E_USER_ERROR);
-			$value = null;
-		}
-    
-		//sequentialUploads true/false
-		if ( $reference == 'sequentialUploads' && !is_bool($value) )
-		{
-			$value = false;
-		}
-
-		//canAttachExisting true/false
-		if ( $reference == 'canAttachExisting' && !is_bool($value) )
-		{
-			$value = true;
-		}
-
-		//canPreviewFolder true/false
-		if ( $reference == 'canPreviewFolder' && !is_bool($value) )
-		{
-			$value = true;
-		}
-
 		$this->config[$reference] = $value;
+		return $this;
+	}
+
+
+	/**
+	 * Set an UploadField configuration parameter
+	 * 
+	 * @param string $reference
+	 * @param mixed $value 
+	 */
+	function setUfConfig ( $reference, $value )
+	{
+		$this->ufConfig[$reference] = $value;		
+		return $this;
+	}
+
+
+	/**
+	 * Set an UploadField setup function call
+	 * 
+	 * @param string $function
+	 * @param mixed $param 
+	 */
+	function setUfSetup ( $function, $param )
+	{
+		$this->ufSetup[$function] = $param;
+		return $this;
+	}
+
+
+	/**
+	 * Set an UploadField Validator setup function call
+	 * 
+	 * @param string $function
+	 * @param mixed $param 
+	 */
+	function setUfValidatorSetup ( $function, $param )
+	{
+		$this->ufValidatorSetup[$function] = $param;
+		return $this;
 	}
 	
 
 	/**
-	 * Returns one $config parameter of the full $config
+	 * Returns one $config reference or the full $config
 	 * 
 	 * @param string $reference $congif parameter to return
 	 * @return mixed 
@@ -96,6 +148,45 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 	{
 		if ( $reference ) return $this->config[$reference];
 		else return $this->config;
+	}
+	
+
+	/**
+	 * Returns one $ufConfig reference or the full config.
+	 * 
+	 * @param string $reference $ufConfig parameter to return
+	 * @return mixed 
+	 */
+	function getUfConfig ( $reference = false )
+	{
+		if ( $reference ) return $this->ufConfig[$reference];
+		else return $this->ufConfig;
+	}
+	
+
+	/**
+	 * Returns one $ufSetup reference or the full config.
+	 * 
+	 * @param string $reference $ufSetup parameter to return
+	 * @return mixed 
+	 */
+	function getUfSetup ( $reference = false )
+	{
+		if ( $reference ) return $this->ufSetup[$reference];
+		else return $this->ufSetup;
+	}
+	
+
+	/**
+	 * Returns one $ufValidatorSetup reference or the full config.
+	 * 
+	 * @param string $reference $ufValidatorSetup parameter to return
+	 * @return mixed 
+	 */
+	function getUfValidatorSetup ( $reference = false )
+	{
+		if ( $reference ) return $this->ufValidatorSetup[$reference];
+		else return $this->ufValidatorSetup;
 	}
 
 
@@ -175,8 +266,6 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 			->setConfig('previewMaxWidth', 20)
 			->setConfig('previewMaxHeight', 20)
 			->setConfig('changeDetection', false)
-			->setConfig('canPreviewFolder', $this->getConfig('canPreviewFolder'))
-			->setConfig('canAttachExisting', $this->getConfig('canAttachExisting'))
 			
 			->setRecord(DataObject::create()) // avoid UploadField to get auto-config from the Page (e.g fix allowedMaxFileNumber)
 
@@ -189,22 +278,23 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 			->setConfig('urlFileExists', $gridField->Link('bulkupload/fileexists'))
 			;
 
-		//max file size
-		$maxFileSize = $this->getConfig('maxFileSize');
-		if ( $maxFileSize !== null ) 
-		{
-			$uploadField->getValidator()->setAllowedMaxFileSize( $maxFileSize );
-		}
+    //set UploadField config
+    foreach ($this->ufConfig as $key => $val)
+    {
+    	$uploadField->setConfig($key, $val);
+    }
 
-		//upload dir
-		$uploadDir = $this->getConfig('folderName');
-		if ( $uploadDir !== null )
-		{
-			$uploadField->setFolderName($uploadDir);
-		}	
+    //UploadField setup
+    foreach ($this->ufSetup as $fn => $param)
+    {
+    	$uploadField->{$fn}($param);
+    }
 
-		//sequential upload
-		$uploadField->setConfig('sequentialUploads', $this->getConfig('sequentialUploads'));
+    //UploadField Validator setup
+    foreach ($this->ufValidatorSetup as $fn => $param)
+    {
+    	$uploadField->getValidator()->{$fn}($param);
+    }
 		
 		return $uploadField;
 	}

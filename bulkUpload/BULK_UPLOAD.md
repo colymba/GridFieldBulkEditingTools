@@ -13,18 +13,28 @@ $fileRelationName (string, optional): The name of the `Image` or `File` has_one 
 		$config->addComponent(new GridFieldBulkUpload($fileRelationName));
 
 ## Configuration
-The component's option can be configurated individually or in bulk through the 'config' functions like this:
+### Component configuration
+The component's option can be configurated through the `setConfig` functions like this:
 
     $config->getComponentByType('GridFieldBulkUpload')->setConfig($reference, $value);
 		
-### $config overview
 The available configuration options are:
 * 'fileRelationName' : sets the name of the `Image` or `File` has_one field to use (i.e. 'MyImage')
-* 'folderName' : name of the folder where the images or files should be uploaded
-* 'maxFileSize' : integer, maximum upload file size in bytes
-* 'sequentialUploads' : boolean, if true files will be uploaded one by one
-* 'canAttachExisting' : boolean, if false the "From files" button will not be displayed in the UploadField (default: true)
-* 'canPreviewFolder' : boolean, if false the upload location will not be displayed in the UploadField (default: true)
+
+### UploadField configuration
+The underlying `UploadField` can be configured via a set of APIs:
+* `setUfConfig($reference, $value)` is used to set an `UploadField::$ufConfig` settings
+* `setUfSetup($function, $param)` is used to pass function calls on to the `UploadField` itself
+* `setUfValidatorSetup($function, $param)` is used to pass function calls on to the `UploadField` `Validator` itself
+
+For example, to set the upload folder, which is set by calling `setFolderName` on the `UploadField`, and setting the upload method as sequential, you would use the following:
+
+    $config->getComponentByType('GridFieldBulkUpload')
+        ->setUfSetup('setFolderName', 'myFolder')
+        ->setUfConfig('sequentialUploads', true);
+
+Please see the [`UploadField` api](http://api.silverstripe.org/master/class-UploadField.html) and the [`Upload` api](http://api.silverstripe.org/master/class-Upload.html) for more info.
+
 
 ## Bulk Editing
 To get a quick edit shortcut to all the newly upload files, please also add the `GridFieldBulkManager` component to your `GridFieldConfig`.
