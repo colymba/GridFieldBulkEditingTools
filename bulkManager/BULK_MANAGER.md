@@ -14,8 +14,6 @@ The component's options can be configurated individually or in bulk through the 
 ### $config overview
 The available configuration options are:
 * 'editableFields' : array of string referencing specific CMS fields available for editing
-* 'fieldsNameBlacklist' : array of string referencing the names of fields that wont be available for editing
-* 'readOnlyFieldClasses' : array of string referencing types (ClassName) of fields that will be transformed to read only (always includes `GridField` and `UploadField`)
 
 ## Custom actions
 You can remove or add individual action or replace them all via `addBulkAction()` and `removeBulkAction()`

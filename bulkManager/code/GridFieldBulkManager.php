@@ -12,25 +12,14 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	 * component configuration
 	 * 
 	 * 'editableFields' => fields editable on the Model
-	 * 'readOnlyFieldClasses' => field types that will be converted to readonly
-	 * 'fieldsNameBlacklist' => fields that will be removed from the automatic form generation
 	 * 'actions' => maps of action name and configuration
 	 * 
 	 * @var array 
 	 */
 	protected $config = array(
-    'editableFields'       => null,
-    'fieldsNameBlacklist'  => array(),
-    'readOnlyFieldClasses' => array(),
-    'actions'              => array()
+    'editableFields' => null,
+    'actions'        => array()
 	);
-	
-	
-	/**
-	 * Holds any class that should not be used as they break the component
-	 * These cannot be removed from the blacklist
-	 */
-	protected $readOnlyFieldClasses = array('GridField', 'UploadField');
 	
 	
 	/**
@@ -42,7 +31,6 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	public function __construct($editableFields = null, $defaultActions = true)
 	{				
 		if ( $editableFields != null ) $this->setConfig ( 'editableFields', $editableFields );
-		$this->config['readOnlyFieldClasses'] = $this->readOnlyFieldClasses;
 
 		if ( $defaultActions )
 		{
@@ -102,15 +90,9 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 			user_error("Bulk actions must be edited via addBulkAction() and removeBulkAction()", E_USER_ERROR);
 		}
 		
-		if ( ($reference == 'readOnlyFieldClasses' || $reference == 'fieldsNameBlacklist' || $reference == 'editableFields') && !is_array($value) )
+		if ( ($reference == 'editableFields') && !is_array($value) )
 		{
 			$value = array($value);
-		}
-
-		//makes sure $readOnlyFieldClasses are in no matter what
-		if ( $reference == 'readOnlyFieldClasses' )
-		{
-			$value = array_unique( array_merge($value, $this->readOnlyFieldClasses) );
 		}
 
 		$this->config[$reference] = $value;
@@ -129,62 +111,6 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	{
 		if ( $reference ) return $this->config[$reference];
 		else return $this->config;
-	}
-	
-
-	/**
-	 * Add a field to the editable fields blacklist
-	 * 
-	 * @param string $fieldName
-	 * @return boolean 
-	 */
-	function addFieldNameToBlacklist ( $fieldName )
-	{
-		return array_push( $this->config['fieldsNameBlacklist'], $fieldName);
-	}
-
-	
-	/**
-	 * Add a class to the readonly list
-	 * 
-	 * @param string $className
-	 * @return boolean 
-	 */
-	function addClassToReadOnlyList ( $className )
-	{
-		return array_push( $this->config['readOnlyFieldClasses'], $className);
-	}
-
-	
-	/**
-	 * Remove a field to the editable fields blacklist
-	 * 
-	 * @param string $fieldName
-	 * @return boolean 
-	 */
-	function removeFieldNameFromBlacklist ( $fieldName )
-	{
-		if (key_exists($fieldName, $this->config['fieldsNameBlacklist'])) {
-			return delete( $this->config['fieldsNameBlacklist'][$fieldName] );
-		}else{
-			return false;
-		}
-	}
-
-	
-	/**
-	 * Remove a class to the readonly list
-	 * 
-	 * @param string $className
-	 * @return boolean 
-	 */
-	function removeClassFromReadOnlyList ( $className )
-	{
-		if (key_exists($className, $this->config['readOnlyFieldClasses']) && !in_array($className, $this->forbiddenFieldsClasses)) {
-			return delete( $this->config['readOnlyFieldClasses'][$className] );
-		}else{
-			return false;
-		}
 	}
 
 
@@ -379,7 +305,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
     	'Menu' => $dropDownActionsList->FieldHolder(),
     	'Button' => array(
         'Label'      => _t('GRIDFIELD_BULK_MANAGER.ACTION_BTN_LABEL', 'Go'),
-        'DataURL'    => $gridField->Link('bulkaction'),
+        'DataURL'    => $gridField->Link('bulkAction'),
         'Icon'       => $this->config['actions'][$firstAction]['config']['icon'],
         'DataConfig' => htmlspecialchars(json_encode($actionsConfig), ENT_QUOTES, 'UTF-8')
     	),
@@ -410,7 +336,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	 */
 	public function getURLHandlers($gridField) {
 			return array(
-				'bulkaction' => 'handlebulkaction'
+				'bulkAction' => 'handleBulkAction'
 			);
 	}
 
@@ -427,7 +353,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	 * @param SS_HTTPRequest $request
 	 * @return mixed 
 	 */
-	public function handlebulkaction($gridField, $request)
+	public function handleBulkAction($gridField, $request)
 	{
 		$controller = $gridField->getForm()->Controller();
 

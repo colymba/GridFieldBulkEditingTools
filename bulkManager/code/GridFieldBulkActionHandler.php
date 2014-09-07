@@ -56,7 +56,7 @@ class GridFieldBulkActionHandler extends RequestHandler
 	 */
 	public function Link($action = null)
 	{
-		return Controller::join_links($this->gridField->Link(), 'bulkediting', $action);
+		return Controller::join_links($this->gridField->Link(), 'bulkAction', $action);
 	}
 
 	
