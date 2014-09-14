@@ -90,7 +90,23 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 	 */
 	function setConfig ( $reference, $value )
 	{
-		if (!key_exists($reference, $this->config) ) {
+		if ( in_array($reference, array('folderName', 'maxFileSize', 'sequentialUploads', 'canAttachExisting', 'canPreviewFolder')) )
+		{
+			Deprecation::notice('2.1.0', "GridFieldBulkUpload 'setConfig()' doesn't support '$reference' anymore. Please use 'setUfConfig()', 'setUfSetup()' or 'setUfValidatorSetup()' instead.");
+
+			if ( $reference === 'folderName' )
+			{
+				$this->setUfSetup('setFolderName', $value);
+			}
+			else if ( $reference === 'maxFileSize' )
+			{
+				$this->setUfValidatorSetup('setAllowedMaxFileSize', $value);
+			}
+			else{
+				$this->setUfConfig($reference, $value);
+			}
+		}
+		else if (!key_exists($reference, $this->config) ) {
 			user_error("Unknown option reference: $reference", E_USER_ERROR);
 		}
 
