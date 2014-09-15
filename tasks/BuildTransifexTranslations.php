@@ -242,9 +242,18 @@ class BuildTransifexTranslations extends Task
   public function saveYMLTranslation($locale, $yml)
   {
     echo "Saving $locale.yml\n";
+    
+    if ($locale !== 'en')
+    {
+      $content = $this->getBanner('yml') . $yml;
+    }
+    else{
+      $content = $yml;
+    }
+
     file_put_contents(
       $this->ymlDir . DIRECTORY_SEPARATOR . $locale . '.yml',
-      $this->getBanner('yml') . $yml
+      $content
     );
   }
 
