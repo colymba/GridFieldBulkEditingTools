@@ -20,4 +20,4 @@ en:
     TOGGLE_ALL_LINK: Show/Hide all
     SAVE_BTN_LABEL: Save all
     CANCEL_BTN_LABEL: Cancel
-    SAVE_RESULT_TEXT: {count} {class} saved successfully.
+    SAVE_RESULT_TEXT: '{count} {class} saved successfully.'
