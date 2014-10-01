@@ -1,11 +1,17 @@
 GridField Bulk Editing Tools
 ============================
+
+[![Latest Stable Version](https://poser.pugx.org/colymba/gridfield-bulk-editing-tools/v/stable.svg)](https://github.com/colymba/GridFieldBulkEditingTools/releases)
+[![Latest Unstable Version](https://poser.pugx.org/colymba/gridfield-bulk-editing-tools/v/unstable.svg)](https://github.com/colymba/GridFieldBulkEditingTools/tree/master)
+[![License](https://poser.pugx.org/colymba/gridfield-bulk-editing-tools/license.svg)](#license-bsd-simplified)
+
 Set of SilverStripe 3 GridField components to facilitate bulk file upload & record editing.
+
 ![preview](screenshots/preview.png)
 
-Components included:
+## Components:
 * [Bulk Upload](#bulk-upload): Upload multiple images or files at once into DataObjects
-* [Bulk Manager](#bulk-manager): Handles actions for multiple records straight from the GridField (comes with unlink, delete and edit)
+* [Bulk Manager](#bulk-manager): Delete, Unlink, Edit (and more) multiple records at once
 
 [More screenshots here.](screenshots)
 
@@ -13,12 +19,11 @@ Components included:
 * SilverStripe 3.1 (version master / 2.+ / 1.+)
 * Silverstripe 3.0 (version [0.5](https://github.com/colymba/GridFieldBulkEditingTools/tree/0.5))
 
-## Development notes
-The master branch will try to be compatible with the latest SilverStripe release/pre-release. Please submit pull request against the master branch. Older branches are kept for compatibility but are not maintained.
-
 ## Installation
-* Download and copy module in SilverStripe root directory and name it whatever you want
-* flush the manifest
+### Composer
+* `composer require "colymba/userforms:*"`
+### Manual
+* Download and copy module in SilverStripe root directory
 
 ## 2.0.0 deprecations
 Major depractions in latest 2.0.0 release:
