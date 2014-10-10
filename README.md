@@ -22,6 +22,7 @@ Set of SilverStripe 3 GridField components to facilitate bulk file upload & reco
 ## Installation
 ### Composer
 * `composer require "colymba/gridfield-bulk-editing-tools:*"`
+
 ### Manual
 * Download and copy module in SilverStripe root directory
 
