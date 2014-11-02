@@ -238,10 +238,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 
 			foreach ($editableFields as $fieldName)
 			{
-				array_push(
-					$dataFields,
-					$fields->dataFieldByName($fieldName)
-				);
+				$dataFields[$fieldName] = $fields->dataFieldByName($fieldName);
 			}
 		}
 		else{
