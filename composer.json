@@ -17,6 +17,6 @@
     "url": "git@github.com:colymba/GridFieldBulkEditingTools.git"
   }],
 	"require": {
-    "silverstripe/framework": "~3.1"
+    "silverstripe/framework": ">=3.1"
 	}
 }
