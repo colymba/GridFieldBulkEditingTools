@@ -379,7 +379,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 		}
 
 		//compose form message
-		$messageModelClass  = (($editingCount > 1) ? $singleton->i18n_plural_name() : $singleton->i18n_singular_name());
+		$messageModelClass  = (($done > 1) ? $singleton->i18n_plural_name() : $singleton->i18n_singular_name());
 		$message = _t('GRIDFIELD_BULKMANAGER_EDIT_HANDLER.SAVE_RESULT_TEXT',
     	'{count} {class} saved successfully.',
 			array(
