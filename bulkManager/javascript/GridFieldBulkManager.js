@@ -14,7 +14,6 @@
           		targets = ['.filter-header', '.sortable-header'],
           		$target = $parent.find(targets.join(',')),
 
-              $component = this.clone(),
               index = $tr.index(this),
               newIndex = $tr.length - 1
               ;
@@ -29,9 +28,8 @@
 
           if ( index > newIndex )
           {
-            $component.insertBefore($tr.eq(newIndex));
-            this.remove();
-          }          
+            $tr.eq(newIndex).insertAfter($(this));
+          }
         },
         onunmatch: function(){}
       });
