@@ -17,8 +17,8 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	 * @var array 
 	 */
 	protected $config = array(
-    'editableFields' => null,
-    'actions'        => array()
+		'editableFields' => null,
+		'actions'        => array()
 	);
 	
 	
@@ -29,39 +29,48 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	 * @param boolean $defaultActions Use default actions list. False to start fresh.
 	 */
 	public function __construct($editableFields = null, $defaultActions = true)
-	{				
-		if ( $editableFields != null ) $this->setConfig ( 'editableFields', $editableFields );
+	{
+		if ($editableFields != null) $this->setConfig ('editableFields', $editableFields);
 
-		if ( $defaultActions )
+		if ($defaultActions)
 		{
 			$this->config['actions'] = array(
-	      'bulkEdit'   => array(
-	      	'label' => _t('GRIDFIELD_BULK_MANAGER.EDIT_SELECT_LABEL', 'Edit'),
-	      	'handler' => 'GridFieldBulkActionEditHandler',
-	      	'config' => array(
+				'bulkAdd' => array(
+					'label' => _t('GRIDFIELD_BULK_MANAGER.ADD_SELECT_LABEL', 'Add'),
+					'handler' => 'GridFieldBulkActionAddHandler',
+					'config' => array(
+						'isAjax' => false,
+						'icon' => 'add',
+						'isDestructive' => false
+					)
+				),
+				'bulkEdit' => array(
+					'label' => _t('GRIDFIELD_BULK_MANAGER.EDIT_SELECT_LABEL', 'Edit'),
+					'handler' => 'GridFieldBulkActionEditHandler',
+					'config' => array(
 						'isAjax' => false,
 						'icon' => 'pencil',
 						'isDestructive' => false
 					)
-	      ),
-	      'unLink' => array(
-	      	'label' => _t('GRIDFIELD_BULK_MANAGER.UNLINK_SELECT_LABEL', 'UnLink'),
-	      	'handler' => 'GridFieldBulkActionUnLinkHandler',
-	      	'config' => array(
+				),
+				'unLink' => array(
+					'label' => _t('GRIDFIELD_BULK_MANAGER.UNLINK_SELECT_LABEL', 'UnLink'),
+					'handler' => 'GridFieldBulkActionUnLinkHandler',
+					'config' => array(
 						'isAjax' => true,
 						'icon' => 'chain--minus',
 						'isDestructive' => false
 					)
-	      ),
-	      'delete' => array(
-	      	'label' => _t('GRIDFIELD_BULK_MANAGER.DELETE_SELECT_LABEL', 'Delete'),
-	      	'handler' => 'GridFieldBulkActionDeleteHandler',
-	      	'config' => array(
+				),
+				'delete' => array(
+					'label' => _t('GRIDFIELD_BULK_MANAGER.DELETE_SELECT_LABEL', 'Delete'),
+					'handler' => 'GridFieldBulkActionDeleteHandler',
+					'config' => array(
 						'isAjax' => true,
 						'icon' => 'decline',
 						'isDestructive' => true
 					)
-	      )
+				)
 			);
 		}
 	}
@@ -160,10 +169,10 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 		}
 
 		$this->config['actions'][$name] = array(
-      'label'   => $label,
-      'handler' => $handler,
-      'config'  => $config
-    );
+			'label'   => $label,
+			'handler' => $handler,
+			'config'  => $config
+		);
 
 		return $this;
 	}
@@ -177,12 +186,11 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	 */
 	function removeBulkAction($name)
 	{
-		if ( !array_key_exists($name, $this->config['actions']) )
-		{
+		if (!array_key_exists($name, $this->config['actions'])) {
 			user_error("Bulk action '$name' doesn't exists.", E_USER_ERROR);
 		}
 
-		unset( $this->config['actions'][$name] );
+		unset($this->config['actions'][$name]);
 
 		return $this;
 	}
@@ -228,8 +236,8 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	function getColumnContent($gridField, $record, $columnName)
 	{
 		$cb = CheckboxField::create('bulkSelect_'.$record->ID)
-			    ->addExtraClass('bulkSelect no-change-track')
-			    ->setAttribute('data-record', $record->ID);
+				->addExtraClass('bulkSelect no-change-track')
+				->setAttribute('data-record', $record->ID);
 		return $cb->Field();
 	}
 
@@ -263,7 +271,6 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	}
 
 
-
 	/* **********************************************************************
 	 * GridField_HTMLProvider
 	 * */
@@ -279,18 +286,16 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 		Requirements::javascript(BULKEDITTOOLS_MANAGER_PATH . '/javascript/GridFieldBulkManager.js');
 		Requirements::add_i18n_javascript(BULKEDITTOOLS_PATH . '/lang/js');
 		
-		if ( !count($this->config['actions']) )
-		{
+		if (!count($this->config['actions'])) {
 			user_error("Trying to use GridFieldBulkManager without any bulk action.", E_USER_ERROR);
 		}
 
 		$actionsListSource = array();
 		$actionsConfig = array();
 
-		foreach ($this->config['actions'] as $action => $actionData)
-		{
-      $actionsListSource[$action] = $actionData['label'];
-      $actionsConfig[$action]     = $actionData['config'];
+		foreach ($this->config['actions'] as $action => $actionData) {
+			$actionsListSource[$action] = $actionData['label'];
+			$actionsConfig[$action]     = $actionData['config'];
 		}
 
 		reset($this->config['actions']);
@@ -301,19 +306,19 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 			->setAttribute('class', 'bulkActionName no-change-track')
 			->setAttribute('id', '');
 
-    $templateData = array(
-    	'Menu' => $dropDownActionsList->FieldHolder(),
-    	'Button' => array(
-        'Label'      => _t('GRIDFIELD_BULK_MANAGER.ACTION_BTN_LABEL', 'Go'),
-        'DataURL'    => $gridField->Link('bulkAction'),
-        'Icon'       => $this->config['actions'][$firstAction]['config']['icon'],
-        'DataConfig' => htmlspecialchars(json_encode($actionsConfig), ENT_QUOTES, 'UTF-8')
-    	),
-    	'Select' => array(
-    		'Label' => _t('GRIDFIELD_BULK_MANAGER.SELECT_ALL_LABEL', 'Select all')
-    	),
-    	'Colspan' => (count($gridField->getColumns()) - 1)
-    );
+		$templateData = array(
+			'Menu' => $dropDownActionsList->FieldHolder(),
+			'Button' => array(
+				'Label'      => _t('GRIDFIELD_BULK_MANAGER.ACTION_BTN_LABEL', 'Go'),
+				'DataURL'    => $gridField->Link('bulkAction'),
+				'Icon'       => $this->config['actions'][$firstAction]['config']['icon'],
+				'DataConfig' => htmlspecialchars(json_encode($actionsConfig), ENT_QUOTES, 'UTF-8')
+			),
+			'Select' => array(
+				'Label' => _t('GRIDFIELD_BULK_MANAGER.SELECT_ALL_LABEL', 'Select all')
+			),
+			'Colspan' => (count($gridField->getColumns()) - 1)
+		);
 
 		$templateData = new ArrayData($templateData);
 
