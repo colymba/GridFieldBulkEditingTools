@@ -14,6 +14,7 @@
           		targets = ['.filter-header', '.sortable-header'],
           		$target = $parent.find(targets.join(',')),
 
+              $component = this.clone(),
               index = $tr.index(this),
               newIndex = $tr.length - 1
               ;
@@ -28,8 +29,9 @@
 
           if ( index > newIndex )
           {
-            $tr.eq(newIndex).insertAfter($(this));
-          }
+            $component.insertBefore($tr.eq(newIndex));
+            this.remove();
+          }          
         },
         onunmatch: function(){}
       });
@@ -191,7 +193,7 @@
               data    = { records: ids }
 							;
 							
-					if ( ids.length <= 0 )
+					if ( ids.length <= 0 && action != 'bulkAdd' )
 					{
 						alert( ss.i18n._t('GRIDFIELD_BULK_MANAGER.BULKACTION_EMPTY_SELECT') );
 						return;
