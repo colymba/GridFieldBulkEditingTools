@@ -106,7 +106,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 				$this->setUfConfig($reference, $value);
 			}
 		}
-		else if (!key_exists($reference, $this->config) ) {
+		else if (!array_key_exists($reference, $this->config) ) {
 			user_error("Unknown option reference: $reference", E_USER_ERROR);
 		}
 
