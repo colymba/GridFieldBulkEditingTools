@@ -80,7 +80,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 	 */
 	function setConfig($reference, $value)
 	{
-		if (!key_exists($reference, $this->config) )
+		if (!array_key_exists($reference, $this->config) )
 		{
 			user_error("Unknown option reference: $reference", E_USER_ERROR);
 		}
