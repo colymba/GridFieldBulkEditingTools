@@ -1,305 +1,295 @@
 <?php
 /**
- * Handles request from the GridFieldBulkUpload component
+ * Handles request from the GridFieldBulkUpload component.
  *
  * @author colymba
- * @package GridFieldBulkEditingTools
- * @subpackage BulkUpload
  */
 class GridFieldBulkUpload_Request extends RequestHandler
-{	
-  /**
-	 * Gridfield instance
-	 * @var GridField 
-	 */
-	protected $gridField;
-	
+{
+    /**
+     * Gridfield instance.
+     *
+     * @var GridField
+     */
+    protected $gridField;
 
-	/**
-	 * Bulk upload component
-	 * @var GridFieldBulkUpload
-	 */
-	protected $component;
-	
+    /**
+     * Bulk upload component.
+     *
+     * @var GridFieldBulkUpload
+     */
+    protected $component;
 
-	/**
-	 * Gridfield Form controller
-	 * @var Controller
-	 */
-	protected $controller;
-	
+    /**
+     * Gridfield Form controller.
+     *
+     * @var Controller
+     */
+    protected $controller;
 
-	/**
-	 * RequestHandler allowed actions
-	 * @var array
-	 */
-	private static $allowed_actions = array(
-		'upload', 'select', 'attach', 'fileexists'
-	);
+    /**
+     * RequestHandler allowed actions.
+     *
+     * @var array
+     */
+    private static $allowed_actions = array(
+        'upload', 'select', 'attach', 'fileexists',
+    );
 
+    /**
+     * RequestHandler url => action map.
+     *
+     * @var array
+     */
+    private static $url_handlers = array(
+        '$Action!' => '$Action',
+    );
 
-	/**
-	 * RequestHandler url => action map
-	 * @var array
-	 */
-	private static $url_handlers = array(
-		'$Action!' => '$Action'
-	);
-	
+    /**
+     * Handler's constructor.
+     * 
+     * @param GridFIeld            $gridField
+     * @param GridField_URLHandler $component
+     * @param Controller           $controller
+     */
+    public function __construct($gridField, $component, $controller)
+    {
+        $this->gridField = $gridField;
+        $this->component = $component;
+        $this->controller = $controller;
+        parent::__construct();
+    }
 
-	/**
-	 * Handler's constructor
-	 * 
-	 * @param GridFIeld $gridField
-	 * @param GridField_URLHandler $component
-	 * @param Controller $controller
-	 */
-	public function __construct($gridField, $component, $controller)
-	{
-		$this->gridField = $gridField;
-		$this->component = $component;
-		$this->controller = $controller;		
-		parent::__construct();
-	}
+    /**
+     * Return the original component's UploadField.
+     * 
+     * @return UploadField UploadField instance as defined in the component
+     */
+    public function getUploadField()
+    {
+        return $this->component->bulkUploadField($this->gridField);
+    }
 
+    /**
+     * Process upload through UploadField,
+     * creates new record and link newly uploaded file
+     * adds record to GrifField relation list
+     * and return image/file data and record edit form.
+     *
+     * @param SS_HTTPRequest $request
+     *
+     * @return string json
+     */
+    public function upload(SS_HTTPRequest $request)
+    {
+        //create record
+        $recordClass = $this->gridField->list->dataClass;
+        $record = Object::create($recordClass);
+        $record->write();
 
-	/**
-	 * Return the original component's UploadField
-	 * 
-	 * @return UploadField UploadField instance as defined in the component
-	 */
-	public function getUploadField()
-	{
-		return $this->component->bulkUploadField($this->gridField);
-	}
+        // passes the current gridfield-instance to a call-back method on the new object
+        $record->extend('onBulkUpload', $this->gridField);
+        if ($record->hasMethod('onBulkImageUpload')) {
+            Deprecation::notice('2.0', '"onBulkImageUpload" callback is deprecated, use "onBulkUpload" instead.');
+            $record->extend('onBulkImageUpload', $this->gridField);
+        }
 
-	
-	/**
-	 * Process upload through UploadField,
-	 * creates new record and link newly uploaded file
-	 * adds record to GrifField relation list
-	 * and return image/file data and record edit form
-	 *
-	 * @param SS_HTTPRequest $request
-	 * @return string json
-	 */
-	public function upload(SS_HTTPRequest $request)
-	{
-		//create record
-		$recordClass = $this->gridField->list->dataClass;		
-		$record = Object::create($recordClass);
-		$record->write();
+        //get uploadField and process upload
+        $uploadField = $this->getUploadField();
+        $uploadField->setRecord($record);
 
-		// passes the current gridfield-instance to a call-back method on the new object
-		$record->extend("onBulkUpload", $this->gridField);
-		if ( $record->hasMethod('onBulkImageUpload') )
-		{
-			Deprecation::notice('2.0', '"onBulkImageUpload" callback is deprecated, use "onBulkUpload" instead.');
-			$record->extend("onBulkImageUpload", $this->gridField);
-		}
+        $fileRelationName = $uploadField->getName();
+        $uploadResponse = $uploadField->upload($request);
 
-		//get uploadField and process upload
-		$uploadField = $this->getUploadField();
-		$uploadField->setRecord($record);
+        //get uploaded File response datas
+        $uploadResponse = Convert::json2array($uploadResponse->getBody());
+        $uploadResponse = array_shift($uploadResponse);
 
-    $fileRelationName = $uploadField->getName();
-    $uploadResponse   = $uploadField->upload($request);
+        // Attach the file to record.				
+        $record->{"{$fileRelationName}ID"} = $uploadResponse['id'];
+        $record->write();
 
-		//get uploaded File response datas
-		$uploadResponse = Convert::json2array( $uploadResponse->getBody() );
-		$uploadResponse = array_shift( $uploadResponse );
-		
-		// Attach the file to record.				
-		$record->{"{$fileRelationName}ID"} = $uploadResponse['id'];					
-		$record->write();
+        // attached record to gridField relation
+        $this->gridField->list->add($record->ID);
 
-		// attached record to gridField relation
-		$this->gridField->list->add($record->ID);
-		
-		// JS Template Data
-		$responseData = $this->newRecordJSTemplateData($record, $uploadResponse);
-				
-		$response = new SS_HTTPResponse(Convert::raw2json(array($responseData)));
-		$this->contentTypeNegotiation($response);
-		
-		return $response;
-	}
+        // JS Template Data
+        $responseData = $this->newRecordJSTemplateData($record, $uploadResponse);
 
+        $response = new SS_HTTPResponse(Convert::raw2json(array($responseData)));
+        $this->contentTypeNegotiation($response);
 
-	/**
-	 * Updates the Upload/Attach response from the UploadField
-	 * with the new DataObject records for the JS template
-	 * 
-	 * @param  DataObject $record Newly create DataObject record
-	 * @param  array $uploadResponse Upload or Attach response from UploadField
-	 * @return array                 Updated $uploadResponse with $record data
-	 */
-	protected function newRecordJSTemplateData(DataObject &$record, &$uploadResponse)
-	{
-		// fetch uploadedFile record and sort out previewURL
-		// update $uploadResponse datas in case changes happened onAfterWrite()
-		$uploadedFile = DataObject::get_by_id( $this->component->getFileRelationClassName($this->gridField), $uploadResponse['id'] );
-		
-		if ( $uploadedFile )
-		{
-			$uploadResponse['name'] = $uploadedFile->Name;
-			$uploadResponse['url'] = $uploadedFile->getURL();
+        return $response;
+    }
 
-			if ( $uploadedFile instanceof Image )
-			{
-				$uploadResponse['thumbnail_url'] = $uploadedFile->CroppedImage(30,30)->getURL();
-			}
-			else{
-				$uploadResponse['thumbnail_url'] = $uploadedFile->Icon();
-			}
+    /**
+     * Updates the Upload/Attach response from the UploadField
+     * with the new DataObject records for the JS template.
+     * 
+     * @param DataObject $record         Newly create DataObject record
+     * @param array      $uploadResponse Upload or Attach response from UploadField
+     *
+     * @return array Updated $uploadResponse with $record data
+     */
+    protected function newRecordJSTemplateData(DataObject &$record, &$uploadResponse)
+    {
+        // fetch uploadedFile record and sort out previewURL
+        // update $uploadResponse datas in case changes happened onAfterWrite()
+        $uploadedFile = DataObject::get_by_id($this->component->getFileRelationClassName($this->gridField), $uploadResponse['id']);
 
-			// check if our new record has a Title, if not create one automatically
-			$title = $record->getTitle();
-			if ( !$title || $title === $record->ID )
-			{
-				if ( $record->hasDatabaseField('Title') )
-				{
-					$record->Title = $uploadedFile->Title;
-					$record->write();
-				}
-				else if ($record->hasDatabaseField('Name')){
-					$record->Name = $uploadedFile->Title;
-					$record->write();
-				}
-			}
-		}
+        if ($uploadedFile) {
+            $uploadResponse['name'] = $uploadedFile->Name;
+            $uploadResponse['url'] = $uploadedFile->getURL();
 
-		// Collect all data for JS template
-		$return = array_merge($uploadResponse, array(
-			'record' => array(
-				'id' => $record->ID
-			)
-		));
+            if ($uploadedFile instanceof Image) {
+                $uploadResponse['thumbnail_url'] = $uploadedFile->CroppedImage(30, 30)->getURL();
+            } else {
+                $uploadResponse['thumbnail_url'] = $uploadedFile->Icon();
+            }
 
-		return $return;
-	}
+            // check if our new record has a Title, if not create one automatically
+            $title = $record->getTitle();
+            if (!$title || $title === $record->ID) {
+                if ($record->hasDatabaseField('Title')) {
+                    $record->Title = $uploadedFile->Title;
+                    $record->write();
+                } elseif ($record->hasDatabaseField('Name')) {
+                    $record->Name = $uploadedFile->Title;
+                    $record->write();
+                }
+            }
+        }
 
+        // Collect all data for JS template
+        $return = array_merge($uploadResponse, array(
+            'record' => array(
+                'id' => $record->ID,
+            ),
+        ));
 
-	/**
-	 * Pass select request to UploadField
-	 * 
-	 * @link UploadField->select()
-	 */
-	public function select(SS_HTTPRequest $request)
-	{
-		/*
-		$uploadField = $this->getUploadField();
-		return $uploadField->handleSelect($request);
-		*/
-		$uploadField = $this->getUploadField();
-		return UploadField_SelectHandler::create($this, $uploadField->getFolderName());
-	}
+        return $return;
+    }
 
+    /**
+     * Pass select request to UploadField.
+     * 
+     * @link UploadField->select()
+     */
+    public function select(SS_HTTPRequest $request)
+    {
+        /*
+        $uploadField = $this->getUploadField();
+        return $uploadField->handleSelect($request);
+        */
+        $uploadField = $this->getUploadField();
 
-	/**
-	 * Pass getRelationAutosetClass request to UploadField
-	 * Used by select dialog
-	 * 
-	 * @link UploadField->getRelationAutosetClass()
-	 */
-	public function getRelationAutosetClass($default = 'File')
-	{
-		$uploadField = $this->getUploadField();
-		return $uploadField->getRelationAutosetClass($default);
-	}
-	
+        return UploadField_SelectHandler::create($this, $uploadField->getFolderName());
+    }
 
-	/**
-	 * Pass getAllowedMaxFileNumber request to UploadField
-	 * Used by select dialog
-	 * 
-	 * @link UploadField->getAllowedMaxFileNumber()
-	 */
-	public function getAllowedMaxFileNumber()
-	{
-		$uploadField = $this->getUploadField();
-		return $uploadField->getAllowedMaxFileNumber();
-	}
+    /**
+     * Pass getRelationAutosetClass request to UploadField
+     * Used by select dialog.
+     * 
+     * @link UploadField->getRelationAutosetClass()
+     */
+    public function getRelationAutosetClass($default = 'File')
+    {
+        $uploadField = $this->getUploadField();
 
+        return $uploadField->getRelationAutosetClass($default);
+    }
 
-	/**
-	 * Retrieve Files to be attached
-	 * and generated DataObjects for each one
-	 * 
-	 * @param SS_HTTPRequest $request
-	 * @return SS_HTTPResponse
-	 */
-	public function attach(SS_HTTPRequest $request)
-	{
-    $uploadField     = $this->getUploadField();
-    $attachResponses = $uploadField->attach($request);
-    $attachResponses = json_decode($attachResponses->getBody(), true);
+    /**
+     * Pass getAllowedMaxFileNumber request to UploadField
+     * Used by select dialog.
+     * 
+     * @link UploadField->getAllowedMaxFileNumber()
+     */
+    public function getAllowedMaxFileNumber()
+    {
+        $uploadField = $this->getUploadField();
 
-    $fileRelationName = $uploadField->getName();
-    $recordClass      = $this->gridField->list->dataClass;
-    $return           = array();
+        return $uploadField->getAllowedMaxFileNumber();
+    }
 
-		foreach ($attachResponses as $attachResponse)
-		{
-			// create record
-			$record = Object::create($recordClass);
-			$record->write();
-			$record->extend("onBulkUpload", $this->gridField);
+    /**
+     * Retrieve Files to be attached
+     * and generated DataObjects for each one.
+     * 
+     * @param SS_HTTPRequest $request
+     *
+     * @return SS_HTTPResponse
+     */
+    public function attach(SS_HTTPRequest $request)
+    {
+        $uploadField = $this->getUploadField();
+        $attachResponses = $uploadField->attach($request);
+        $attachResponses = json_decode($attachResponses->getBody(), true);
 
-			// attach file
-			$record->{"{$fileRelationName}ID"} = $attachResponse['id'];					
-			$record->write();
+        $fileRelationName = $uploadField->getName();
+        $recordClass = $this->gridField->list->dataClass;
+        $return = array();
 
-			// attached record to gridField relation
-			$this->gridField->list->add($record->ID);
+        foreach ($attachResponses as $attachResponse) {
+            // create record
+            $record = Object::create($recordClass);
+            $record->write();
+            $record->extend('onBulkUpload', $this->gridField);
 
-			// JS Template Data
-			$responseData = $this->newRecordJSTemplateData($record, $attachResponse);
+            // attach file
+            $record->{"{$fileRelationName}ID"} = $attachResponse['id'];
+            $record->write();
 
-			// add to returned dataset
-			array_push($return, $responseData);
-		}
+            // attached record to gridField relation
+            $this->gridField->list->add($record->ID);
 
-		$response = new SS_HTTPResponse(Convert::raw2json($return));
-		$this->contentTypeNegotiation($response);
+            // JS Template Data
+            $responseData = $this->newRecordJSTemplateData($record, $attachResponse);
 
-		return $response;
-	}
+            // add to returned dataset
+            array_push($return, $responseData);
+        }
 
+        $response = new SS_HTTPResponse(Convert::raw2json($return));
+        $this->contentTypeNegotiation($response);
 
-	/**
-	 * Pass fileexists request to UploadField
-	 * 
-	 * @link UploadField->fileexists()
-	 */
-	public function fileexists(SS_HTTPRequest $request)
-	{
-		$uploadField = $this->getUploadField();
-		return $uploadField->fileexists($request);
-	}
+        return $response;
+    }
 
+    /**
+     * Pass fileexists request to UploadField.
+     * 
+     * @link UploadField->fileexists()
+     */
+    public function fileexists(SS_HTTPRequest $request)
+    {
+        $uploadField = $this->getUploadField();
 
-	/**
-	 * @param string $action
-	 * @return string
-	 */
-	public function Link($action = null) {
-		return Controller::join_links($this->gridField->Link(), '/bulkupload/', $action);
-	}
+        return $uploadField->fileexists($request);
+    }
 
-	/**
-	 * Sets response 'Content-Type' depending on browser capabilities
-	 * e.g. IE needs text/plain for iframe transport
-	 * https://github.com/blueimp/jQuery-File-Upload/issues/1795
-	 * @param  SS_HTTPResponse $response HTTP Response to set content-type on
-	 */
-	protected function contentTypeNegotiation(&$response)
-	{
-		if (isset($_SERVER['HTTP_ACCEPT']) && ((strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) || $_SERVER['HTTP_ACCEPT'] === '*/*' ))
-		{
-			$response->addHeader('Content-Type', 'application/json');
-		}else{
-			$response->addHeader('Content-Type', 'text/plain');
-		}
-	}
+    /**
+     * @param string $action
+     *
+     * @return string
+     */
+    public function Link($action = null)
+    {
+        return Controller::join_links($this->gridField->Link(), '/bulkupload/', $action);
+    }
+
+    /**
+     * Sets response 'Content-Type' depending on browser capabilities
+     * e.g. IE needs text/plain for iframe transport
+     * https://github.com/blueimp/jQuery-File-Upload/issues/1795.
+     *
+     * @param SS_HTTPResponse $response HTTP Response to set content-type on
+     */
+    protected function contentTypeNegotiation(&$response)
+    {
+        if (isset($_SERVER['HTTP_ACCEPT']) && ((strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) || $_SERVER['HTTP_ACCEPT'] === '*/*')) {
+            $response->addHeader('Content-Type', 'application/json');
+        } else {
+            $response->addHeader('Content-Type', 'text/plain');
+        }
+    }
 }
