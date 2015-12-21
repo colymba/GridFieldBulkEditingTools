@@ -28,6 +28,14 @@ class GridFieldBulkUpload_Request extends RequestHandler
 	 */
 	protected $controller;
 	
+	/**
+	 * @var String Folder to display in "Select files" list.
+	 * Defaults to listing all files regardless of folder.
+	 * The folder path should be relative to the webroot.
+	 * See {@link FileField->folderName} to set the upload target instead.
+	 * @example admin/folder/subfolder
+	 */
+	protected $displayFolderName;
 
 	/**
 	 * RequestHandler allowed actions
@@ -73,6 +81,20 @@ class GridFieldBulkUpload_Request extends RequestHandler
 		return $this->component->bulkUploadField($this->gridField);
 	}
 
+	/**
+	 * @param String
+	 */
+	public function setDisplayFolderName($name) {
+		$this->displayFolderName = $name;
+		return $this;
+	}
+
+	/**
+	 * @return String
+	 */
+	public function getDisplayFolderName() {
+		return $this->displayFolderName;
+	}
 	
 	/**
 	 * Process upload through UploadField,
