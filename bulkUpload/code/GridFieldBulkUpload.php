@@ -7,14 +7,16 @@
 class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandler
 {
     /**
-     * component configuration.
-     * 
+     * Component configuration.
+     *
      * 'fileRelationName' => field name of the $has_one File/Image relation
+     * 'objectClassName' => overrides the automatic DataObject class detection from gridfield->dataClass with a custom class name
      *
      * @var array
      */
     protected $config = array(
     'fileRelationName' => null,
+    'objectClassName' => null
     );
 
     /**
@@ -22,11 +24,11 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
      * These options are passed on directly to the UploadField
      * via {@link UploadField::setConfig()} api.
      *
-     * Defaults are:	 * 
+     * Defaults are:	 *
      * 'sequentialUploads' => false : process uploads 1 after the other rather than all at once
      * 'canAttachExisting' => true : displays "From files" button in the UploadField
      * 'canPreviewFolder'  => true : displays the upload location in the UploadField
-     * 
+     *
      * @var array
      */
     protected $ufConfig = array(
@@ -38,10 +40,10 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
     /**
      * UploadField setup function calls.
      * List of setup functions to call on {@link UploadField} with the value to pass.
-     * 
+     *
      * e.g. array('setFolderName' => 'bulkUpload') will result in:
      * $uploadField->setFolderName('bulkUpload')
-     * 
+     *
      * @var array
      */
     protected $ufSetup = array(
@@ -51,10 +53,10 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
     /**
      * UploadField Validator setup function calls.
      * List of setup functions to call on {@link Upload::validator} with the value to pass.
-     * 
+     *
      * e.g. array('setAllowedMaxFileSize' => 10) will result in:
      * $uploadField->getValidator()->setAllowedMaxFileSize(10)
-     * 
+     *
      * @var array
      */
     protected $ufValidatorSetup = array(
@@ -63,13 +65,17 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 
     /**
      * Component constructor.
-     * 
+     *
      * @param string $fileRelationName
      */
-    public function __construct($fileRelationName = null)
+    public function __construct($fileRelationName = null, $objectClassName = null)
     {
         if ($fileRelationName != null) {
             $this->setConfig('fileRelationName', $fileRelationName);
+        }
+
+        if ($objectClassName != null) {
+            $this->setConfig('objectClassName', $objectClassName);
         }
     }
 
@@ -79,7 +85,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 
     /**
      * Set a component configuration parameter.
-     * 
+     *
      * @param string $reference
      * @param mixed  $value
      */
@@ -106,7 +112,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 
     /**
      * Set an UploadField configuration parameter.
-     * 
+     *
      * @param string $reference
      * @param mixed  $value
      */
@@ -119,7 +125,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 
     /**
      * Set an UploadField setup function call.
-     * 
+     *
      * @param string $function
      * @param mixed  $param
      */
@@ -132,7 +138,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 
     /**
      * Set an UploadField Validator setup function call.
-     * 
+     *
      * @param string $function
      * @param mixed  $param
      */
@@ -145,7 +151,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 
     /**
      * Returns one $config reference or the full $config.
-     * 
+     *
      * @param string $reference $congif parameter to return
      *
      * @return mixed
@@ -161,7 +167,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 
     /**
      * Returns one $ufConfig reference or the full config.
-     * 
+     *
      * @param string $reference $ufConfig parameter to return
      *
      * @return mixed
@@ -177,7 +183,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 
     /**
      * Returns one $ufSetup reference or the full config.
-     * 
+     *
      * @param string $reference $ufSetup parameter to return
      *
      * @return mixed
@@ -193,7 +199,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 
     /**
      * Returns one $ufValidatorSetup reference or the full config.
-     * 
+     *
      * @param string $reference $ufValidatorSetup parameter to return
      *
      * @return mixed
@@ -210,7 +216,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
     /**
      * Get the first has_one Image/File relation from the GridField managed DataObject
      * i.e. 'MyImage' => 'Image' will return 'MyImage'.
-     * 
+     *
      * @return string Name of the $has_one relation
      */
     public function getDefaultFileRelationName($gridField)
@@ -232,7 +238,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
     /**
      * Returns the name of the Image/File field name from the managed record
      * Either as set in the component config or the default one.
-     * 
+     *
      * @return string
      */
     public function getFileRelationName($gridField)
@@ -315,7 +321,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 
     /**
      * HTML to be embedded into the GridField.
-     * 
+     *
      * @param GridField $gridField
      *
      * @return array
@@ -392,7 +398,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 
     /**
      * Component URL handlers.
-     * 
+     *
      * @param GridField $gridField
      *
      * @return array
@@ -406,7 +412,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 
     /**
      * Pass control over to the RequestHandler.
-     * 
+     *
      * @param GridField      $gridField
      * @param SS_HTTPRequest $request
      *

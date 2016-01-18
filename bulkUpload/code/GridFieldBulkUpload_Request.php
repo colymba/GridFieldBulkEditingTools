@@ -47,7 +47,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
 
     /**
      * Handler's constructor.
-     * 
+     *
      * @param GridFIeld            $gridField
      * @param GridField_URLHandler $component
      * @param Controller           $controller
@@ -62,7 +62,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
 
     /**
      * Return the original component's UploadField.
-     * 
+     *
      * @return UploadField UploadField instance as defined in the component
      */
     public function getUploadField()
@@ -83,7 +83,11 @@ class GridFieldBulkUpload_Request extends RequestHandler
     public function upload(SS_HTTPRequest $request)
     {
         //create record
-        $recordClass = $this->gridField->list->dataClass;
+        if ($this->component->getConfig('objectClassName')) {
+            $recordClass = $this->component->getConfig('objectClassName');
+        } else {
+            $recordClass = $this->gridField->list->dataClass;
+        }
         $record = Object::create($recordClass);
         $record->write();
 
@@ -105,7 +109,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
         $uploadResponse = Convert::json2array($uploadResponse->getBody());
         $uploadResponse = array_shift($uploadResponse);
 
-        // Attach the file to record.				
+        // Attach the file to record.
         $record->{"{$fileRelationName}ID"} = $uploadResponse['id'];
         $record->write();
 
@@ -124,7 +128,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
     /**
      * Updates the Upload/Attach response from the UploadField
      * with the new DataObject records for the JS template.
-     * 
+     *
      * @param DataObject $record         Newly create DataObject record
      * @param array      $uploadResponse Upload or Attach response from UploadField
      *
@@ -171,7 +175,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
 
     /**
      * Pass select request to UploadField.
-     * 
+     *
      * @link UploadField->select()
      */
     public function select(SS_HTTPRequest $request)
@@ -188,7 +192,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
     /**
      * Pass getRelationAutosetClass request to UploadField
      * Used by select dialog.
-     * 
+     *
      * @link UploadField->getRelationAutosetClass()
      */
     public function getRelationAutosetClass($default = 'File')
@@ -201,7 +205,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
     /**
      * Pass getAllowedMaxFileNumber request to UploadField
      * Used by select dialog.
-     * 
+     *
      * @link UploadField->getAllowedMaxFileNumber()
      */
     public function getAllowedMaxFileNumber()
@@ -214,7 +218,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
     /**
      * Retrieve Files to be attached
      * and generated DataObjects for each one.
-     * 
+     *
      * @param SS_HTTPRequest $request
      *
      * @return SS_HTTPResponse
@@ -257,7 +261,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
 
     /**
      * Pass fileexists request to UploadField.
-     * 
+     *
      * @link UploadField->fileexists()
      */
     public function fileexists(SS_HTTPRequest $request)

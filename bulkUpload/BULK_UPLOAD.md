@@ -3,21 +3,22 @@ A component for uploading images and/or files in bulk into `DataObject` managed 
 
 ## Usage 1
 Simplest usage, add the component to your `GridFieldConfig` as below. The component will find the first `Image` or `File` has_one relation to use on the managed `DataObject`.
-		
+
 		$config->addComponent(new GridFieldBulkUpload());
 
 ## Usage 2
-You can specify which `Image` or `File` field to use.
+You can specify which `Image` or `File` field to use and a specific `DataObject` class name to use.
 $fileRelationName (string, optional): The name of the `Image` or `File` has_one field to use (If your relation is set has 'MyImage' => 'Image', the parameter should be 'MyImage')
-		
-		$config->addComponent(new GridFieldBulkUpload($fileRelationName));
+$objectClassName (string, optional): The class name of the `DataObject` to create (Usefull if for example your `GridField` holds `DataObject`s of different classes, like when used with the `GridFieldAddNewMultiClass` component.)
+
+		$config->addComponent(new GridFieldBulkUpload($fileRelationName, $objectClassName));
 
 ## Configuration
 ### Component configuration
 The component's option can be configurated through the `setConfig` functions like this:
 
     $config->getComponentByType('GridFieldBulkUpload')->setConfig($reference, $value);
-		
+
 The available configuration options are:
 * 'fileRelationName' : sets the name of the `Image` or `File` has_one field to use (i.e. 'MyImage')
 
