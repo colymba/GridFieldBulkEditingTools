@@ -10,13 +10,13 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
      * Component configuration.
      *
      * 'fileRelationName' => field name of the $has_one File/Image relation
-     * 'objectClassName' => overrides the automatic DataObject class detection from gridfield->dataClass with a custom class name
+     * 'recordClassName' => overrides the automatic DataObject class detection from gridfield->dataClass with a custom class name
      *
      * @var array
      */
     protected $config = array(
     'fileRelationName' => null,
-    'objectClassName' => null
+    'recordClassName' => null
     );
 
     /**
@@ -68,14 +68,14 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
      *
      * @param string $fileRelationName
      */
-    public function __construct($fileRelationName = null, $objectClassName = null)
+    public function __construct($fileRelationName = null, $recordClassName = null)
     {
         if ($fileRelationName != null) {
             $this->setConfig('fileRelationName', $fileRelationName);
         }
 
-        if ($objectClassName != null) {
-            $this->setConfig('objectClassName', $objectClassName);
+        if ($recordClassName != null) {
+            $this->setConfig('recordClassName', $recordClassName);
         }
     }
 
@@ -214,6 +214,17 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
     }
 
     /**
+     * Returns the class name of container `DataObject` record.
+     * Either as set in the component config or fron the `Gridfield` `dataClass.
+     *
+     * @return string
+     */
+    public function getRecordClassName($gridField)
+    {
+        return $this->getConfig('recordClassName') ? $this->getConfig('recordClassName') : $gridField->list->dataClass;
+    }
+
+    /**
      * Get the first has_one Image/File relation from the GridField managed DataObject
      * i.e. 'MyImage' => 'Image' will return 'MyImage'.
      *
@@ -221,7 +232,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
      */
     public function getDefaultFileRelationName($gridField)
     {
-        $recordClass = $gridField->list->dataClass;
+        $recordClass = $this->getRecordClassName($gridField);
         $hasOneFields = Config::inst()->get($recordClass, 'has_one', Config::INHERITED);
 
         $imageField = null;
@@ -257,7 +268,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
      */
     public function getFileRelationClassName($gridField)
     {
-        $recordClass = $gridField->list->dataClass;
+        $recordClass = $this->getRecordClassName($gridField);
         $hasOneFields = Config::inst()->get($recordClass, 'has_one', Config::INHERITED);
 
         $fieldName = $this->getFileRelationName($gridField);

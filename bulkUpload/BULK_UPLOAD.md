@@ -9,9 +9,9 @@ Simplest usage, add the component to your `GridFieldConfig` as below. The compon
 ## Usage 2
 You can specify which `Image` or `File` field to use and a specific `DataObject` class name to use.
 $fileRelationName (string, optional): The name of the `Image` or `File` has_one field to use (If your relation is set has 'MyImage' => 'Image', the parameter should be 'MyImage')
-$objectClassName (string, optional): The class name of the `DataObject` to create (Usefull if for example your `GridField` holds `DataObject`s of different classes, like when used with the `GridFieldAddNewMultiClass` component.)
+$recordClassName (string, optional): The class name of the `DataObject` to create (Usefull if for example your `GridField` holds `DataObject`s of different classes, like when used with the `GridFieldAddNewMultiClass` component.)
 
-		$config->addComponent(new GridFieldBulkUpload($fileRelationName, $objectClassName));
+		$config->addComponent(new GridFieldBulkUpload($fileRelationName, $recordClassName));
 
 ## Configuration
 ### Component configuration

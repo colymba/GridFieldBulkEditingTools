@@ -83,11 +83,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
     public function upload(SS_HTTPRequest $request)
     {
         //create record
-        if ($this->component->getConfig('objectClassName')) {
-            $recordClass = $this->component->getConfig('objectClassName');
-        } else {
-            $recordClass = $this->gridField->list->dataClass;
-        }
+        $recordClass = $this->component->getRecordClassName($this->gridField);
         $record = Object::create($recordClass);
         $record->write();
 
@@ -230,7 +226,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
         $attachResponses = json_decode($attachResponses->getBody(), true);
 
         $fileRelationName = $uploadField->getName();
-        $recordClass = $this->gridField->list->dataClass;
+        $recordClass = $this->component->getRecordClassName($this->gridField);
         $return = array();
 
         foreach ($attachResponses as $attachResponse) {
