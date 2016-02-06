@@ -182,7 +182,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
         */
         $uploadField = $this->getUploadField();
 
-        return UploadField_SelectHandler::create($this, $uploadField->getFolderName());
+        return UploadField_SelectHandler::create($uploadField, $uploadField->getFolderName());
     }
 
     /**
