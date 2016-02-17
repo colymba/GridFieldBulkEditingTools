@@ -1,7 +1,7 @@
 <?php
 /**
  * Bulk action handler for editing records.
- * 
+ *
  * @author colymba
  */
 class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
@@ -43,7 +43,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
     /**
      * Return a form for all the selected DataObjects
      * with their respective editable fields.
-     * 
+     *
      * @return Form Selected DataObjects editable fields
      */
     public function bulkEditForm()
@@ -99,7 +99,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
         $toggle = LiteralField::create('bulkEditToggle', '<span id="bulkEditToggle">'._t('GRIDFIELD_BULKMANAGER_EDIT_HANDLER.TOGGLE_ALL_LINK', 'Show/Hide all').'</span>');
         $recordsFieldList->push($toggle);
 
-        //fetch fields for each record and push to fieldList		
+        //fetch fields for each record and push to fieldList
         foreach ($recordList as $id) {
             $record = DataObject::get_by_id($modelClass, $id);
             $recordEditingFields = $this->getRecordEditingFields($record);
@@ -128,7 +128,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
         }
 
         //override form action URL back to bulkEditForm
-        //and add record ids GET var		
+        //and add record ids GET var
         $bulkEditForm->setAttribute(
             'action',
             $this->Link('bulkEditForm?records[]='.implode('&', $recordList))
@@ -140,7 +140,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
     /**
      * Return's a form with only one record's fields
      * Used for bulkEditForm subForm requests via ajax.
-     * 
+     *
      * @return Form Currently being edited form
      */
     public function recordEditForm()
@@ -184,7 +184,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
      * with all filtering done ready to be included in the main form.
      *
      * @uses DataObject::getCMSFields()
-     * 
+     *
      * @param DataObject $record The record to get the fields from
      *
      * @return array The record's editable fields
@@ -211,7 +211,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
      * and escape each field with unique name.
      *
      * See {@link GridFieldBulkManager} component for filtering config.
-     * 
+     *
      * @param FieldList $fields Record's CMS Fields
      * @param int       $id     Record's ID, used fir unique name
      *
@@ -244,7 +244,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 
     /**
      * Escape a fieldName with a unique prefix.
-     * 
+     *
      * @param int    $recordID Record id from who the field belongs
      * @param string $name     Field name
      *
@@ -257,7 +257,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 
     /**
      * Un-escape a previously escaped field name.
-     * 
+     *
      * @param string $fieldName Escaped field name
      *
      * @return array|false Fasle if the fieldName was not escaped. Or Array map with record 'id' and field 'name'
@@ -279,7 +279,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 
     /**
      * Creates and return the bulk editing interface.
-     * 
+     *
      * @return string Form's HTML
      */
     public function index()
@@ -312,7 +312,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
     /**
      * Handles bulkEditForm submission
      * and parses and saves each records data.
-     * 
+     *
      * @param array $data Sumitted form data
      * @param Form  $form Form
      */
