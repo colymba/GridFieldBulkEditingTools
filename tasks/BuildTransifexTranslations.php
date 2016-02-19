@@ -10,12 +10,12 @@
  *
  * @see https://github.com/silverstripe/silverstripe-buildtools/blob/master/src/GenerateJavascriptI18nTask.php
  */
-include_once 'phing/Task.php';
-
 // Ignore this file if phing is not installed
 if (!class_exists('Task')) {
     return;
 }
+
+include_once 'phing/Task.php';
 
 class BuildTransifexTranslations extends Task
 {
