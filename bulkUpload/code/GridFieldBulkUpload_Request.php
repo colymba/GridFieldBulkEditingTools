@@ -33,7 +33,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
      * @var array
      */
     private static $allowed_actions = array(
-        'upload', 'select', 'attach', 'fileexists',
+        'upload', 'attach', 'fileexists', 'select'
     );
 
     /**
@@ -42,7 +42,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
      * @var array
      */
     private static $url_handlers = array(
-        '$Action!' => '$Action',
+        '$Action!' => '$Action'
     );
 
     /**
@@ -170,22 +170,6 @@ class GridFieldBulkUpload_Request extends RequestHandler
     }
 
     /**
-     * Pass select request to UploadField.
-     *
-     * @link UploadField->select()
-     */
-    public function select(SS_HTTPRequest $request)
-    {
-        /*
-        $uploadField = $this->getUploadField();
-        return $uploadField->handleSelect($request);
-        */
-        $uploadField = $this->getUploadField();
-
-        return UploadField_SelectHandler::create($uploadField, $uploadField->getFolderName());
-    }
-
-    /**
      * Pass getRelationAutosetClass request to UploadField
      * Used by select dialog.
      *
@@ -253,6 +237,20 @@ class GridFieldBulkUpload_Request extends RequestHandler
         $this->contentTypeNegotiation($response);
 
         return $response;
+    }
+
+    /**
+     * Pass select request to UploadField.
+     *
+     * @link UploadField->select()
+     */
+    public function select(SS_HTTPRequest $request)
+    {
+
+        $uploadField = $this->getUploadField();
+        $uploadField->setRequest($request);
+
+        return $uploadField->handleSelect($request);
     }
 
     /**

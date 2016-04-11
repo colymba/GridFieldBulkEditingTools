@@ -290,7 +290,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
     public function bulkUploadField($gridField)
     {
         $fileRelationName = $this->getFileRelationName($gridField);
-        $uploadField = UploadField::create($fileRelationName, '')
+        $uploadField = BulkUploadField::create($gridField, $fileRelationName, '')
             ->setForm($gridField->getForm())
 
             ->setConfig('previewMaxWidth', 20)
@@ -417,7 +417,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
     public function getURLHandlers($gridField)
     {
         return array(
-            'bulkupload' => 'handleBulkUpload',
+            'bulkupload' => 'handleBulkUpload'
         );
     }
 
