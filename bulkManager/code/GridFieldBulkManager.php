@@ -44,7 +44,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
           ),
           'unLink' => array(
               'label' => _t('GRIDFIELD_BULK_MANAGER.UNLINK_SELECT_LABEL', 'UnLink'),
-              'handler' => 'GridFieldBulkActionUnLinkHandler',
+              'handler' => 'GridFieldBulkActionUnlinkHandler',
               'config' => array(
                         'isAjax' => true,
                         'icon' => 'chain--minus',
