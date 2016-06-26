@@ -110,7 +110,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
         $record->write();
 
         // attached record to gridField relation
-        $this->gridField->list->add($record->ID);
+        $this->gridField->list->add($record);
 
         // JS Template Data
         $responseData = $this->newRecordJSTemplateData($record, $uploadResponse);
