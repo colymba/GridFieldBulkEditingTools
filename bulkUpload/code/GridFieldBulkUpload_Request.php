@@ -107,10 +107,9 @@ class GridFieldBulkUpload_Request extends RequestHandler
 
         // Attach the file to record.
         $record->{"{$fileRelationName}ID"} = $uploadResponse['id'];
-        $record->write();
 
         // attached record to gridField relation
-        $this->gridField->list->add($record->ID);
+        $this->gridField->list->add($record);
 
         // JS Template Data
         $responseData = $this->newRecordJSTemplateData($record, $uploadResponse);
@@ -221,10 +220,9 @@ class GridFieldBulkUpload_Request extends RequestHandler
 
             // attach file
             $record->{"{$fileRelationName}ID"} = $attachResponse['id'];
-            $record->write();
 
             // attached record to gridField relation
-            $this->gridField->list->add($record->ID);
+            $this->gridField->list->add($record);
 
             // JS Template Data
             $responseData = $this->newRecordJSTemplateData($record, $attachResponse);
