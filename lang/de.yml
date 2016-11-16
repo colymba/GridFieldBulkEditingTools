@@ -18,3 +18,4 @@ de:
     TOGGLE_ALL_LINK: Alle Anzeigen/Verbergen
     SAVE_BTN_LABEL: Alle speichern
     CANCEL_BTN_LABEL: Abbrechen
+    SAVE_RESULT_TEXT: '{count} {class} erfolgreich gespeichert.'
