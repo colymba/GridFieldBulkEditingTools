@@ -12,7 +12,7 @@ class GridFieldBulkImageUpload extends GridFieldBulkUpload
    * Component constructor.
    *
    * @deprecated 2.0 "GridFieldBulkImageUpload" is deprecated, use {@link GridFieldBulkUpload} class instead.
-   * 
+   *
    * @param string $fileRelationName
    */
   public function __construct($fileRelationName = null)

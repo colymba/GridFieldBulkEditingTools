@@ -25,7 +25,7 @@
         toggleFields.each(function()
         {
           var $this = $(this);
-          
+
           if ( state === 'open' && !$this.hasClass('ui-state-active') )
           {
             $this.click();
@@ -34,14 +34,14 @@
           if ( state === 'close' && $this.hasClass('ui-state-active') )
           {
             $this.click();
-          } 
+          }
         });
 
         this.data('state', state);
       }
     });
-    
-    
+
+
     /**
      * Contains each rocrds editing fields,
      * tracks changes and updates...
@@ -57,6 +57,6 @@
         }
       }
     });
-    
+
   });
 }(jQuery));

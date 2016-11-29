@@ -1,7 +1,7 @@
 <?php
 /**
  * Bulk action handler for deleting records.
- * 
+ *
  * @author colymba
  */
 class GridFieldBulkActionDeleteHandler extends GridFieldBulkActionHandler
@@ -24,7 +24,7 @@ class GridFieldBulkActionDeleteHandler extends GridFieldBulkActionHandler
 
     /**
      * Delete the selected records passed from the delete bulk action.
-     * 
+     *
      * @param SS_HTTPRequest $request
      *
      * @return SS_HTTPResponse List of deleted records ID

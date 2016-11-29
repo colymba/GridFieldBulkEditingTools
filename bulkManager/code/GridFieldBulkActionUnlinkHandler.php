@@ -1,7 +1,7 @@
 <?php
 /**
  * Bulk action handler for unlinking records.
- * 
+ *
  * @author colymba
  */
 class GridFieldBulkActionUnlinkHandler extends GridFieldBulkActionHandler
@@ -24,7 +24,7 @@ class GridFieldBulkActionUnlinkHandler extends GridFieldBulkActionHandler
 
     /**
      * Unlink the selected records passed from the unlink bulk action.
-     * 
+     *
      * @param SS_HTTPRequest $request
      *
      * @return SS_HTTPResponse List of affected records ID
