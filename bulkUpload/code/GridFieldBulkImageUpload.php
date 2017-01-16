@@ -1,4 +1,10 @@
 <?php
+
+namespace Colymba\BulkUpload;
+
+use Colymba\BulkUpload\GridFieldBulkUpload;
+use SilverStripe\Dev\Deprecation;
+
 /**
  * Legacy GridFieldBulkImageUpload component.
  *
@@ -9,16 +15,19 @@
 class GridFieldBulkImageUpload extends GridFieldBulkUpload
 {
     /**
-   * Component constructor.
-   *
-   * @deprecated 2.0 "GridFieldBulkImageUpload" is deprecated, use {@link GridFieldBulkUpload} class instead.
-   * 
-   * @param string $fileRelationName
-   */
-  public function __construct($fileRelationName = null)
-  {
-      Deprecation::notice('2.0', '"GridFieldBulkImageUpload" is deprecated, use "GridFieldBulkUpload" class instead.');
+     * Component constructor.
+     *
+     * @deprecated 2.0 "GridFieldBulkImageUpload" is deprecated, use {@link GridFieldBulkUpload} class instead.
+     *
+     * @param string $fileRelationName
+     */
+    public function __construct($fileRelationName = null)
+    {
+        Deprecation::notice(
+            '2.0',
+            '"GridFieldBulkImageUpload" is deprecated, use "GridFieldBulkUpload" class instead.'
+        );
 
-      return new GridFieldBulkUpload($fileRelationName);
-  }
+        return new GridFieldBulkUpload($fileRelationName);
+    }
 }

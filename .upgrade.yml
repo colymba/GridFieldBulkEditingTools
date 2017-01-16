@@ -1,0 +1,10 @@
+mappings:
+  GridFieldBulkActionDeleteHandler: Colymba\BulkManager\GridFieldBulkActionDeleteHandler
+  GridFieldBulkActionEditHandler: Colymba\BulkManager\GridFieldBulkActionEditHandler
+  GridFieldBulkActionHandler: Colymba\BulkManager\GridFieldBulkActionHandler
+  GridFieldBulkActionUnlinkHandler: Colymba\BulkManager\GridFieldBulkActionUnlinkHandler
+  GridFieldBulkManager: Colymba\BulkManager\GridFieldBulkManager
+  BulkUploadField: Colymba\BulkUpload\BulkUploadField
+  GridFieldBulkImageUpload: Colymba\BulkUpload\GridFieldBulkImageUpload
+  GridFieldBulkUpload: Colymba\BulkUpload\GridFieldBulkUpload
+  GridFieldBulkUpload_Request: Colymba\BulkUpload\GridFieldBulkUpload_Request

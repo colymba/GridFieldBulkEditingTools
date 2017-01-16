@@ -3,14 +3,18 @@ Perform actions on multiple records straight from the GridField. Comes with *unl
 
 ## Usage
 Simply add component to your `GridFieldConfig`
-		
-		$config->addComponent(new GridFieldBulkManager());
-		
+
+```php
+$config->addComponent(new \Colymba\BulkManager\GridFieldBulkManager());
+```
+
 ## Configuration
 The component's options can be configurated individually or in bulk through the 'config' functions like this:
 
-    $config->getComponentByType('GridFieldBulkManager')->setConfig($reference, $value);
-		
+```php
+$config->getComponentByType('Colymba\\BulkManager\\GridFieldBulkManager')->setConfig($reference, $value);
+```
+
 ### $config overview
 The available configuration options are:
 * 'editableFields' : array of string referencing specific CMS fields available for editing
@@ -21,7 +25,11 @@ You can remove or add individual action or replace them all via `addBulkAction()
 ### Adding a custom action
 To add a custom bulk action to the list use:
 
-    $config->getComponentByType('GridFieldBulkManager')->addBulkAction('actionName', 'Dropdown label', 'ActionHandlerClassName', $frontEndConfig)
+```php
+$config
+    ->getComponentByType('Colymba\\BulkManager\\GridFieldBulkManager')
+    ->addBulkAction('actionName', 'Dropdown label', 'ActionHandlerClassName', $frontEndConfig)
+```
 
 You can omit the handler's class name and the front-end config array, those will default to:
 * `'GridFieldBulkAction'.ucfirst($name).'Handler'`
