@@ -73,7 +73,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
         $actions->push(
             FormAction::create('doSave', _t('GRIDFIELD_BULKMANAGER_EDIT_HANDLER.SAVE_BTN_LABEL', 'Save all'))
                 ->setAttribute('id', 'bulkEditingSaveBtn')
-                ->addExtraClass('ss-ui-action-constructive')
+                ->addExtraClass('btn btn-success')
                 ->setAttribute('data-icon', 'accept')
                 ->setUseButtonTag(true)
         );
@@ -81,7 +81,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
         $actions->push(
             FormAction::create('Cancel', _t('GRIDFIELD_BULKMANAGER_EDIT_HANDLER.CANCEL_BTN_LABEL', 'Cancel'))
                 ->setAttribute('id', 'bulkEditingUpdateCancelBtn')
-                ->addExtraClass('ss-ui-action-destructive cms-panel-link')
+                ->addExtraClass('btn btn-danger cms-panel-link')
                 ->setAttribute('data-icon', 'decline')
                 ->setAttribute('href', $one_level_up->Link)
                 ->setUseButtonTag(true)

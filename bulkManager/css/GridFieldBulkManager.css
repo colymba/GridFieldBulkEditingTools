@@ -1,10 +1,12 @@
-.cms table.ss-gridfield-table tr.bulkManagerOptions th.bulkmanagerselect {
+.cms table.grid-field__table tr.bulkManagerOptions th.bulkmanagerheading {
+  padding-left: 40px; }
+.cms table.grid-field__table tr.bulkManagerOptions th.bulkmanagerselect {
   text-align: center; }
-  .cms table.ss-gridfield-table tr.bulkManagerOptions th.bulkmanagerselect input {
+  .cms table.grid-field__table tr.bulkManagerOptions th.bulkmanagerselect input {
     margin-left: 0; }
-.cms table.ss-gridfield-table tr.bulkManagerOptions .title {
+.cms table.grid-field__table tr.bulkManagerOptions .title {
   margin: 0 0 2px 2px; }
-.cms table.ss-gridfield-table tr.bulkManagerOptions .dropdown {
+.cms table.grid-field__table tr.bulkManagerOptions .dropdown {
   display: inline-block;
   border: none;
   box-shadow: none;
@@ -12,17 +14,17 @@
   margin: 0;
   color: #000;
   vertical-align: top; }
-.cms table.ss-gridfield-table tr.bulkManagerOptions .doBulkActionButton .ui-button-text {
+.cms table.grid-field__table tr.bulkManagerOptions .doBulkActionButton .ui-button-text {
   padding: 6px 0 5px 2.1em; }
-  .cms table.ss-gridfield-table tr.bulkManagerOptions .doBulkActionButton .ui-button-text .ui-button-text {
+  .cms table.grid-field__table tr.bulkManagerOptions .doBulkActionButton .ui-button-text .ui-button-text {
     padding: 0; }
-.cms table.ss-gridfield-table tr.bulkManagerOptions .doBulkActionButton .loading .ui-icon {
+.cms table.grid-field__table tr.bulkManagerOptions .doBulkActionButton .loading .ui-icon {
   background: transparent url(../../framework/images/network-save.gif) no-repeat 0 0; }
-.cms table.ss-gridfield-table tbody .col-bulkSelect {
+.cms table.grid-field__table tbody .col-bulkSelect {
   width: 25px;
   padding: 0 10px;
   text-align: center; }
-.cms table.ss-gridfield-table tbody td a.tempDisabledEditLink {
+.cms table.grid-field__table tbody td a.tempDisabledEditLink {
   background: url("../../framework/admin/images/btn-icon/document--pencil.png") no-repeat 2px 0px;
   display: inline-block;
   width: 20px;
@@ -32,3 +34,5 @@
   vertical-align: middle;
   background-position: 2px 0px;
   background-repeat: no-repeat no-repeat; }
+
+/*# sourceMappingURL=GridFieldBulkManager.css.map */

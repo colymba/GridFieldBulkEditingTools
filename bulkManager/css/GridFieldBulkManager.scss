@@ -1,7 +1,11 @@
-.cms table.ss-gridfield-table 
+.cms table.grid-field__table
 {
   tr.bulkManagerOptions
   {
+    th.bulkmanagerheading {
+        padding-left: 40px;
+    }
+
     th.bulkmanagerselect
     {
       text-align: center;
@@ -17,7 +21,7 @@
       margin: 0 0 2px 2px;
     }
 
-    .dropdown 
+    .dropdown
     {
       display: inline-block;
       border: none;

@@ -299,16 +299,16 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
 
         $dropDownActionsList = DropdownField::create('bulkActionName', '')
             ->setSource($actionsListSource)
-            ->setAttribute('class', 'bulkActionName no-change-track')
+            ->addExtraClass('bulkActionName no-change-track no-chosen')
             ->setAttribute('id', '');
 
         $templateData = array(
-            'Menu' => $dropDownActionsList->FieldHolder(),
+            'Menu' => $dropDownActionsList,
             'Button' => array(
                 'Label' => _t('GRIDFIELD_BULK_MANAGER.ACTION_BTN_LABEL', 'Go'),
                 'DataURL' => $gridField->Link('bulkAction'),
                 'Icon' => $this->config['actions'][$firstAction]['config']['icon'],
-                'DataConfig' => htmlspecialchars(json_encode($actionsConfig), ENT_QUOTES, 'UTF-8'),
+                'DataConfig' => json_encode($actionsConfig),
             ),
             'Select' => array(
                 'Label' => _t('GRIDFIELD_BULK_MANAGER.SELECT_ALL_LABEL', 'Select all'),
@@ -350,13 +350,13 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
      * but have more specific path defined
      *
      * @param GridField      $gridField
-     * @param SS_HTTPRequest $request
+     * @param HTTPRequest $request
      *
      * @return mixed
      */
     public function handleBulkAction($gridField, $request)
     {
-        $controller = $gridField->getForm()->Controller();
+        $controller = $gridField->getForm()->getController();
 
         foreach ($this->config['actions'] as $name => $data) {
             $handlerClass = $data['handler'];

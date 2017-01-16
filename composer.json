@@ -20,7 +20,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-feature/ss4-compat": "3.x-dev"
+            "dev-master": "3.x-dev"
         }
     },
     "autoload": {
