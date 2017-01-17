@@ -5,14 +5,14 @@ Perform actions on multiple records straight from the GridField. Comes with *unl
 Simply add component to your `GridFieldConfig`
 
 ```php
-$config->addComponent(new \Colymba\BulkManager\GridFieldBulkManager());
+$config->addComponent(new \Colymba\BulkManager\BulkManager());
 ```
 
 ## Configuration
 The component's options can be configurated individually or in bulk through the 'config' functions like this:
 
 ```php
-$config->getComponentByType('Colymba\\BulkManager\\GridFieldBulkManager')->setConfig($reference, $value);
+$config->getComponentByType('Colymba\\BulkManager\\BulkManager')->setConfig($reference, $value);
 ```
 
 ### $config overview
@@ -27,7 +27,7 @@ To add a custom bulk action to the list use:
 
 ```php
 $config
-    ->getComponentByType('Colymba\\BulkManager\\GridFieldBulkManager')
+    ->getComponentByType('Colymba\\BulkManager\\BulkManager')
     ->addBulkAction('actionName', 'Dropdown label', 'ActionHandlerClassName', $frontEndConfig)
 ```
 
@@ -36,9 +36,9 @@ You can omit the handler's class name and the front-end config array, those will
 * `$config = array( 'isAjax' => true, 'icon' => 'accept', 'isDestructive' => false )`
 
 #### Custom action handler
-When creating your own bulk action `RequestHandler`, you should extend `GridFieldBulkActionHandler` which will expose 2 usefull functions `getRecordIDList()` and `getRecords()` returning either an array with the selected records IDs or a `DataList` of the selected records.
+When creating your own bulk action `RequestHandler`, you should extend `Colymba\BulkManager\BulkAction\Handler` which will expose 2 useful functions `getRecordIDList()` and `getRecords()` returning either an array with the selected records IDs or a `DataList` of the selected records.
 
-Make sure to define your `$allowed_actions` and `$url_handlers` on your custom bulk action handler. See `GridFieldBulkActionEditHandler`, `GridFieldBulkActionDeleteHandler` and `GridFieldBulkActionUnlinkHandler` for examples.
+Make sure to define your `$allowed_actions` and `$url_handlers` on your custom bulk action handler. See `Handler`, `DeleteHandler` and `UnlinkHandler` for examples.
 
 #### Front-end config
 The last `addBulkAction()` parameter lets you pass an array with configuration options for the UI/UX:

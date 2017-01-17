@@ -28,7 +28,9 @@ Set of SilverStripe 4 GridField components to facilitate bulk file upload & reco
 * Download and copy module in SilverStripe root directory
 
 ## 3.0.0 deprecations
-The 3.x versions of this module require SilverStripe 4.x+, and PHP 5.5 or above.
+The 3.x versions of this module require SilverStripe 4.x+, and PHP 5.5 or above:
+
+* Namespaces are implemented, and some class names have changed (see `.upgrade.yml` for mapping)
 
 ## 2.0.0 deprecations
 Major deprections in latest 2.0.0 release:
@@ -38,19 +40,23 @@ Major deprections in latest 2.0.0 release:
 ## Bulk Upload
 Upload multiple images or files at once into DataObjects. Perfect for galleries and the like.
 
-    $config->addComponent(new \Colymba\BulkUpload\GridFieldBulkUpload());
+```php
+$config->addComponent(new \Colymba\BulkUpload\BulkUploader());
+```
 
 See [BULK_UPLOAD.md](bulkUpload/BULK_UPLOAD.md) for detailed configuration.
 
 ## Bulk Manager
 Perform actions on multiple records straight from the GridField
 
-    $config->addComponent(new \Colymba\BulkManager\GridFieldBulkManager());
+```php
+$config->addComponent(new \Colymba\BulkManager\BulkManager());
+```
 
 See [BULK_MANAGER.md](bulkManager/BULK_MANAGER.md) for detailed configuration.
 
 ## Interdependencies
-The `GridFieldBulkUpload` component makes use of `GridFieldBulkManager` to allow quick editing of the newly uploaded files. Although not nescessary for the component to work, adding `Colymba\BulkManager\GridFieldBulkManager` too to your `GridFieldConfig` will give you this advantage.
+The `BulkUploader` component makes use of `BulkManager` to allow quick editing of the newly uploaded files. Although not nescessary for the component to work, adding `Colymba\BulkManager\BulkManager` too to your `GridFieldConfig` will give you this advantage.
 
 #### @TODO
 * Add individual actions for each upload (update + cancel)

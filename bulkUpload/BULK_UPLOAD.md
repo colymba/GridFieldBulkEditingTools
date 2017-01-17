@@ -5,7 +5,7 @@ A component for uploading images and/or files in bulk into `DataObject` managed 
 Simplest usage, add the component to your `GridFieldConfig` as below. The component will find the first `Image` or `File` has_one relation to use on the managed `DataObject`.
 
 ```php
-$config->addComponent(new \Colymba\BulkUpload\GridFieldBulkUpload());
+$config->addComponent(new \Colymba\BulkUpload\BulkUploader());
 ```
 
 ## Usage 2
@@ -14,7 +14,7 @@ $fileRelationName (string, optional): The name of the `Image` or `File` has_one 
 $recordClassName (string, optional): The class name of the `DataObject` to create (Usefull if for example your `GridField` holds `DataObject`s of different classes, like when used with the `GridFieldAddNewMultiClass` component.)
 
 ```php
-$config->addComponent(new \Colymba\BulkUpload\GridFieldBulkUpload($fileRelationName, $recordClassName));
+$config->addComponent(new \Colymba\BulkUpload\BulkUploader($fileRelationName, $recordClassName));
 ```
 
 ## Configuration
@@ -22,7 +22,7 @@ $config->addComponent(new \Colymba\BulkUpload\GridFieldBulkUpload($fileRelationN
 The component's option can be configurated through the `setConfig` functions like this:
 
 ```php
-$config->getComponentByType('GridFieldBulkUpload')->setConfig($reference, $value);
+$config->getComponentByType('Colymba\\BulkUpload\\BulkUploader')->setConfig($reference, $value);
 ```
 
 The available configuration options are:
@@ -37,7 +37,7 @@ The underlying `UploadField` can be configured via a set of APIs:
 For example, to set the upload folder, which is set by calling `setFolderName` on the `UploadField`, and setting the upload method as sequential, you would use the following:
 
 ```php
-$config->getComponentByType('Colymba\\BulkUpload\\GridFieldBulkUpload')
+$config->getComponentByType('Colymba\\BulkUpload\\BulkUploader')
     ->setUfSetup('setFolderName', 'myFolder')
     ->setUfConfig('sequentialUploads', true);
 ```
@@ -46,4 +46,4 @@ Please see the [`UploadField` api](http://api.silverstripe.org/master/class-Uplo
 
 
 ## Bulk Editing
-To get a quick edit shortcut to all the newly upload files, please also add the `Colymba\BulkUpload\GridFieldBulkManager` component to your `GridFieldConfig`.
+To get a quick edit shortcut to all the newly upload files, please also add the `Colymba\BulkManager\BulkManager` component to your `GridFieldConfig`.

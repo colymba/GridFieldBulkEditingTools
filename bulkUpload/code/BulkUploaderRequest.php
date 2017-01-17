@@ -17,7 +17,7 @@ use SilverStripe\ORM\DataObject;
  *
  * @author colymba
  */
-class GridFieldBulkUpload_Request extends RequestHandler
+class BulkUploaderRequest extends RequestHandler
 {
     /**
      * Gridfield instance.
@@ -29,7 +29,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
     /**
      * Bulk upload component.
      *
-     * @var GridFieldBulkUpload
+     * @var BulkUploader
      */
     protected $component;
 

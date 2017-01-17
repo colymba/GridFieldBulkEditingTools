@@ -1,8 +1,8 @@
 <?php
 
-namespace Colymba\BulkManager;
+namespace Colymba\BulkManager\BulkAction;
 
-use Colymba\BulkManager\GridFieldBulkActionHandler;
+use Colymba\BulkManager\BulkAction\Handler;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Core\Convert;
@@ -12,7 +12,7 @@ use SilverStripe\Core\Convert;
  *
  * @author colymba
  */
-class GridFieldBulkActionDeleteHandler extends GridFieldBulkActionHandler
+class DeleteHandler extends Handler
 {
     /**
      * RequestHandler allowed actions.

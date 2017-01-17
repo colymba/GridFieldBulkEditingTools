@@ -19,7 +19,7 @@ use SilverStripe\View\Requirements;
  *
  * @author colymba
  */
-class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, GridField_URLHandler
+class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, GridField_URLHandler
 {
     /**
      * component configuration.
@@ -50,7 +50,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
             $this->config['actions'] = array(
                 'bulkEdit' => array(
                     'label' => _t('GRIDFIELD_BULK_MANAGER.EDIT_SELECT_LABEL', 'Edit'),
-                    'handler' => 'Colymba\\BulkManager\\GridFieldBulkActionEditHandler',
+                    'handler' => 'Colymba\\BulkManager\\BulkAction\\EditHandler',
                     'config' => array(
                         'isAjax' => false,
                         'icon' => 'pencil',
@@ -59,7 +59,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
                 ),
                 'unLink' => array(
                     'label' => _t('GRIDFIELD_BULK_MANAGER.UNLINK_SELECT_LABEL', 'UnLink'),
-                    'handler' => 'Colymba\\BulkManager\\GridFieldBulkActionUnlinkHandler',
+                    'handler' => 'Colymba\\BulkManager\\BulkAction\\UnlinkHandler',
                     'config' => array(
                         'isAjax' => true,
                         'icon' => 'chain--minus',
@@ -68,7 +68,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
                 ),
                 'delete' => array(
                     'label' => _t('GRIDFIELD_BULK_MANAGER.DELETE_SELECT_LABEL', 'Delete'),
-                    'handler' => 'Colymba\\BulkManager\\GridFieldBulkActionDeleteHandler',
+                    'handler' => 'Colymba\\BulkManager\\BulkAction\\DeleteHandler',
                     'config' => array(
                         'isAjax' => true,
                         'icon' => 'decline',
@@ -147,7 +147,7 @@ class GridFieldBulkManager implements GridField_HTMLProvider, GridField_ColumnPr
         }
 
         if (!$handler) {
-            $handler = 'Colymba\\BulkManager\\GridFieldBulkAction' . ucfirst($name) . 'Handler';
+            $handler = 'Colymba\\BulkManager\\BulkAction\\' . ucfirst($name) . 'Handler';
         }
 
         if (!ClassInfo::exists($handler)) {

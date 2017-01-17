@@ -1,8 +1,8 @@
 <?php
 
-namespace Colymba\BulkManager;
+namespace Colymba\BulkManager\BulkAction;
 
-use Colymba\BulkManager\GridFieldBulkActionHandler;
+use Colymba\BulkManager\BulkAction\Handler;
 use SilverStripe\Control\Controller;
 use SilverStripe\Core\Convert;
 use SilverStripe\Control\HTTPResponse;
@@ -19,7 +19,7 @@ use SilverStripe\View\Requirements;
  *
  * @author colymba
  */
-class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
+class EditHandler extends Handler
 {
     /**
      * RequestHandler allowed actions.
@@ -230,7 +230,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
      * based on component's config
      * and escape each field with unique name.
      *
-     * See {@link GridFieldBulkManager} component for filtering config.
+     * See {@link BulkManager} component for filtering config.
      *
      * @param FieldList $fields Record's CMS Fields
      * @param int       $id     Record's ID, used fir unique name

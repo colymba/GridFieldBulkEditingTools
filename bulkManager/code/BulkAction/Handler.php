@@ -1,6 +1,6 @@
 <?php
 
-namespace Colymba\BulkManager;
+namespace Colymba\BulkManager\BulkAction;
 
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\RequestHandler;
@@ -16,7 +16,7 @@ use SilverStripe\View\ArrayData;
  *
  * @author colymba
  */
-class GridFieldBulkActionHandler extends RequestHandler
+class Handler extends RequestHandler
 {
     /**
      * Related GridField instance.
