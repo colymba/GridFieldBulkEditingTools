@@ -7,7 +7,7 @@
       /**
        * Makes sure the component is at the top :)
        */
-      $('.bulkUpload').entwine({
+      $('.bulkUploader').entwine({
         onmatch: function(){
           var $tr = this.parents('thead').find('tr'),
               $component = this.clone(),

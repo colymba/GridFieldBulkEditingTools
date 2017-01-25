@@ -12,6 +12,8 @@ use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Dev\Deprecation;
 use SilverStripe\ORM\DataObject;
 
+use SilverStripe\AssetAdmin\Controller\AssetAdmin;
+
 /**
  * Handles request from the GridFieldBulkUpload component.
  *
@@ -93,7 +95,7 @@ class BulkUploaderRequest extends RequestHandler
      *
      * @return string json
      */
-    public function upload(HTTPRequest $request)
+    /*public function upload(HTTPRequest $request)
     {
         //create record
         $recordClass = $this->component->getRecordClassName($this->gridField);
@@ -102,10 +104,6 @@ class BulkUploaderRequest extends RequestHandler
 
         // passes the current gridfield-instance to a call-back method on the new object
         $record->extend('onBulkUpload', $this->gridField);
-        if ($record->hasMethod('onBulkImageUpload')) {
-            Deprecation::notice('2.0', '"onBulkImageUpload" callback is deprecated, use "onBulkUpload" instead.');
-            $record->extend('onBulkImageUpload', $this->gridField);
-        }
 
         //get uploadField and process upload
         $uploadField = $this->getUploadField();
@@ -131,6 +129,38 @@ class BulkUploaderRequest extends RequestHandler
         $this->contentTypeNegotiation($response);
 
         return $response;
+    }*/
+
+    public function upload(HTTPRequest $request)
+    {
+        // 1. DataObject
+        //create record
+        $recordClass = $this->component->getRecordClassName($this->gridField);
+        $record = Object::create($recordClass);
+        $record->write();
+
+        // passes the current gridfield-instance to a call-back method on the new object
+        $record->extend('onBulkUpload', $this->gridField);
+
+        // 2. File Upload
+        $assetAdmin = AssetAdmin::singleton();
+        $uploadResponse = $assetAdmin->apiCreateFile($request);
+        $file = null;
+        
+        if ($uploadResponse->getStatusCode() == 200)
+        {
+            $responseData = Convert::json2array($uploadResponse->getBody());
+            $responseData = array_shift($responseData);
+        }
+
+        // 3. Add File to Record
+        $fileRelationName = $this->component->getFileRelationName($this->gridField);
+        $record->{"{$fileRelationName}ID"} = $responseData['id'];
+
+        // 4. Add to Gridfield List
+        $this->gridField->list->add($record);
+
+        return $uploadResponse;
     }
 
     /**

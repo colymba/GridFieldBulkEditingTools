@@ -3,7 +3,8 @@
 namespace Colymba\BulkUpload;
 
 use SilverStripe\Control\Controller;
-use SilverStripe\Forms\UploadField;
+//use SilverStripe\Forms\UploadField;
+use SilverStripe\AssetAdmin\Forms\UploadField;
 
 /**
  * Custom UploadField used to override Link()
