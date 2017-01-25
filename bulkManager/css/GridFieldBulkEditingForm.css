@@ -31,12 +31,14 @@
       text-shadow: none; }
   .bulkEditingFieldHolder.updated .ui-accordion-header {
     background-color: #a4ca3a;
-    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #a4ca3a), color-stop(100%, #59781d));
-    background-image: -webkit-linear-gradient(top, #a4ca3a 0%, #59781d 100%);
-    background-image: -moz-linear-gradient(top, #a4ca3a 0%, #59781d 100%);
-    background-image: -o-linear-gradient(top, #a4ca3a 0%, #59781d 100%);
-    background-image: -ms-linear-gradient(top, #a4ca3a 0%, #59781d 100%);
-    background-image: linear-gradient(top, #a4ca3a 0%, #59781d 100%); }
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #a4ca3a), color-stop(100%, #59781D));
+    background-image: -webkit-linear-gradient(top, #a4ca3a 0%, #59781D 100%);
+    background-image: -moz-linear-gradient(top, #a4ca3a 0%, #59781D 100%);
+    background-image: -o-linear-gradient(top, #a4ca3a 0%, #59781D 100%);
+    background-image: -ms-linear-gradient(top, #a4ca3a 0%, #59781D 100%);
+    background-image: linear-gradient(top, #a4ca3a 0%, #59781D 100%); }
     .bulkEditingFieldHolder.updated .ui-accordion-header a {
       color: #fff;
       text-shadow: none; }
+
+/*# sourceMappingURL=GridFieldBulkEditingForm.css.map */

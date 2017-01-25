@@ -1,10 +1,23 @@
 <?php
+
+namespace Colymba\BulkUpload;
+
+use SilverStripe\Assets\Image;
+use SilverStripe\Core\Convert;
+use SilverStripe\Core\Object;
+use SilverStripe\Control\Controller;
+use SilverStripe\Control\RequestHandler;
+use SilverStripe\Control\HTTPRequest;
+use SilverStripe\Control\HTTPResponse;
+use SilverStripe\Dev\Deprecation;
+use SilverStripe\ORM\DataObject;
+
 /**
  * Handles request from the GridFieldBulkUpload component.
  *
  * @author colymba
  */
-class GridFieldBulkUpload_Request extends RequestHandler
+class BulkUploaderRequest extends RequestHandler
 {
     /**
      * Gridfield instance.
@@ -16,7 +29,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
     /**
      * Bulk upload component.
      *
-     * @var GridFieldBulkUpload
+     * @var BulkUploader
      */
     protected $component;
 
@@ -48,7 +61,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
     /**
      * Handler's constructor.
      *
-     * @param GridFIeld            $gridField
+     * @param GridField            $gridField
      * @param GridField_URLHandler $component
      * @param Controller           $controller
      */
@@ -76,11 +89,11 @@ class GridFieldBulkUpload_Request extends RequestHandler
      * adds record to GrifField relation list
      * and return image/file data and record edit form.
      *
-     * @param SS_HTTPRequest $request
+     * @param HTTPRequest $request
      *
      * @return string json
      */
-    public function upload(SS_HTTPRequest $request)
+    public function upload(HTTPRequest $request)
     {
         //create record
         $recordClass = $this->component->getRecordClassName($this->gridField);
@@ -114,7 +127,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
         // JS Template Data
         $responseData = $this->newRecordJSTemplateData($record, $uploadResponse);
 
-        $response = new SS_HTTPResponse(Convert::raw2json(array($responseData)));
+        $response = new HTTPResponse(Convert::raw2json(array($responseData)));
         $this->contentTypeNegotiation($response);
 
         return $response;
@@ -133,16 +146,19 @@ class GridFieldBulkUpload_Request extends RequestHandler
     {
         // fetch uploadedFile record and sort out previewURL
         // update $uploadResponse datas in case changes happened onAfterWrite()
-        $uploadedFile = DataObject::get_by_id($this->component->getFileRelationClassName($this->gridField), $uploadResponse['id']);
+        $uploadedFile = DataObject::get_by_id(
+            $this->component->getFileRelationClassName($this->gridField),
+            $uploadResponse['id']
+        );
 
         if ($uploadedFile) {
             $uploadResponse['name'] = $uploadedFile->Name;
             $uploadResponse['url'] = $uploadedFile->getURL();
 
             if ($uploadedFile instanceof Image) {
-                $uploadResponse['thumbnail_url'] = $uploadedFile->CroppedImage(30, 30)->getURL();
+                $uploadResponse['thumbnail_url'] = $uploadedFile->Fill(30, 30)->getURL();
             } else {
-                $uploadResponse['thumbnail_url'] = $uploadedFile->Icon();
+                $uploadResponse['thumbnail_url'] = $uploadedFile->IconTag();
             }
 
             // check if our new record has a Title, if not create one automatically
@@ -173,8 +189,10 @@ class GridFieldBulkUpload_Request extends RequestHandler
      * Used by select dialog.
      *
      * @link UploadField->getRelationAutosetClass()
+     * @param  string $default
+     * @return string
      */
-    public function getRelationAutosetClass($default = 'File')
+    public function getRelationAutosetClass($default = 'SilverStripe\\Assets\\File')
     {
         $uploadField = $this->getUploadField();
 
@@ -186,6 +204,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
      * Used by select dialog.
      *
      * @link UploadField->getAllowedMaxFileNumber()
+     * @return int|null
      */
     public function getAllowedMaxFileNumber()
     {
@@ -198,11 +217,11 @@ class GridFieldBulkUpload_Request extends RequestHandler
      * Retrieve Files to be attached
      * and generated DataObjects for each one.
      *
-     * @param SS_HTTPRequest $request
+     * @param HTTPRequest $request
      *
-     * @return SS_HTTPResponse
+     * @return HTTPResponse
      */
-    public function attach(SS_HTTPRequest $request)
+    public function attach(HTTPRequest $request)
     {
         $uploadField = $this->getUploadField();
         $attachResponses = $uploadField->attach($request);
@@ -231,7 +250,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
             array_push($return, $responseData);
         }
 
-        $response = new SS_HTTPResponse(Convert::raw2json($return));
+        $response = new HTTPResponse(Convert::raw2json($return));
         $this->contentTypeNegotiation($response);
 
         return $response;
@@ -242,7 +261,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
      *
      * @link UploadField->select()
      */
-    public function select(SS_HTTPRequest $request)
+    public function select(HTTPRequest $request)
     {
 
         $uploadField = $this->getUploadField();
@@ -256,7 +275,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
      *
      * @link UploadField->fileexists()
      */
-    public function fileexists(SS_HTTPRequest $request)
+    public function fileexists(HTTPRequest $request)
     {
         $uploadField = $this->getUploadField();
 
@@ -278,11 +297,15 @@ class GridFieldBulkUpload_Request extends RequestHandler
      * e.g. IE needs text/plain for iframe transport
      * https://github.com/blueimp/jQuery-File-Upload/issues/1795.
      *
-     * @param SS_HTTPResponse $response HTTP Response to set content-type on
+     * @param HTTPResponse $response HTTP Response to set content-type on
      */
     protected function contentTypeNegotiation(&$response)
     {
-        if (isset($_SERVER['HTTP_ACCEPT']) && ((strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) || $_SERVER['HTTP_ACCEPT'] === '*/*')) {
+        if (isset($_SERVER['HTTP_ACCEPT'])
+            && ((strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false)
+                || $_SERVER['HTTP_ACCEPT'] === '*/*'
+            )
+        ) {
             $response->addHeader('Content-Type', 'application/json');
         } else {
             $response->addHeader('Content-Type', 'text/plain');

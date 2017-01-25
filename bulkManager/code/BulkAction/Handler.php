@@ -1,12 +1,22 @@
 <?php
+
+namespace Colymba\BulkManager\BulkAction;
+
+use SilverStripe\Control\Controller;
+use SilverStripe\Control\RequestHandler;
+use SilverStripe\Forms\GridField\GridFieldDetailForm;
+use SilverStripe\Forms\GridField\GridFieldDetailForm_ItemRequest;
+use SilverStripe\ORM\DataList;
+use SilverStripe\View\ArrayData;
+
 /**
  * Base class to extend for all custom bulk action handlers
  * Gives access to the GridField, Component and Controller
  * and implements useful functions like {@link getRecordIDList()} and {@link getRecords()}.
- * 
+ *
  * @author colymba
  */
-class GridFieldBulkActionHandler extends RequestHandler
+class Handler extends RequestHandler
 {
     /**
      * Related GridField instance.
@@ -30,7 +40,7 @@ class GridFieldBulkActionHandler extends RequestHandler
     protected $controller;
 
     /**
-     * @param GridFIeld            $gridField
+     * @param GridField            $gridField
      * @param GridField_URLHandler $component
      * @param Controller           $controller
      */
@@ -44,7 +54,7 @@ class GridFieldBulkActionHandler extends RequestHandler
 
     /**
      * Returns the URL for this RequestHandler.
-     * 
+     *
      * @author SilverStripe
      *
      * @see GridFieldDetailForm_ItemRequest
@@ -62,7 +72,7 @@ class GridFieldBulkActionHandler extends RequestHandler
      * Traverse up nested requests until we reach the first that's not a GridFieldDetailForm or GridFieldDetailForm_ItemRequest.
      * The opposite of {@link Controller::curr()}, required because
      * Controller::$controller_stack is not directly accessible.
-     * 
+     *
      * @return Controller
      */
     protected function getToplevelController()
@@ -78,11 +88,11 @@ class GridFieldBulkActionHandler extends RequestHandler
     /**
      * Edited version of the GridFieldEditForm function
      * adds the 'Bulk Upload' at the end of the crums.
-     * 
+     *
      * CMS-specific functionality: Passes through navigation breadcrumbs
      * to the template, and includes the currently edited record (if any).
      * see {@link LeftAndMain->Breadcrumbs()} for details.
-     * 
+     *
      * @author SilverStripe original Breadcrumbs() method
      *
      * @see GridFieldDetailForm_ItemRequest
@@ -99,16 +109,16 @@ class GridFieldBulkActionHandler extends RequestHandler
 
         $items = $this->controller->Breadcrumbs($unlinked);
         $items->push(new ArrayData(array(
-                'Title' => 'Bulk Editing',
-                'Link' => false,
-            )));
+            'Title' => 'Bulk Editing',
+            'Link' => false,
+        )));
 
         return $items;
     }
 
     /**
      * Returns the list of record IDs selected in the front-end.
-     * 
+     *
      * @return array List of IDs
      */
     public function getRecordIDList()
@@ -120,7 +130,7 @@ class GridFieldBulkActionHandler extends RequestHandler
 
     /**
      * Returns a DataList of the records selected in the front-end.
-     * 
+     *
      * @return DataList List of records
      */
     public function getRecords()

@@ -1,10 +1,24 @@
 <?php
+
+namespace Colymba\BulkUpload;
+
+use Colymba\BulkUpload\BulkUploaderRequest;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Dev\Deprecation;
+use SilverStripe\Forms\FormAction;
+use SilverStripe\Forms\GridField\GridField_HTMLProvider;
+use SilverStripe\Forms\GridField\GridField_URLHandler;
+use SilverStripe\ORM\DataModel;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\View\ArrayData;
+use SilverStripe\View\Requirements;
+
 /**
  * GridField component for uploading images in bulk.
  *
  * @author colymba
  */
-class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandler
+class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
 {
     /**
      * Component configuration.
@@ -15,8 +29,8 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
      * @var array
      */
     protected $config = array(
-    'fileRelationName' => null,
-    'recordClassName' => null
+        'fileRelationName' => null,
+        'recordClassName' => null
     );
 
     /**
@@ -24,7 +38,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
      * These options are passed on directly to the UploadField
      * via {@link UploadField::setConfig()} api.
      *
-     * Defaults are:	 *
+     * Defaults are:
      * 'sequentialUploads' => false : process uploads 1 after the other rather than all at once
      * 'canAttachExisting' => true : displays "From files" button in the UploadField
      * 'canPreviewFolder'  => true : displays the upload location in the UploadField
@@ -33,8 +47,8 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
      */
     protected $ufConfig = array(
         'sequentialUploads' => false,
-    'canAttachExisting' => true,
-    'canPreviewFolder' => true,
+        'canAttachExisting' => true,
+        'canPreviewFolder' => true,
     );
 
     /**
@@ -47,7 +61,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
      * @var array
      */
     protected $ufSetup = array(
-    'setFolderName' => 'bulkUpload',
+        'setFolderName' => 'bulkUpload',
     );
 
     /**
@@ -60,13 +74,14 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
      * @var array
      */
     protected $ufValidatorSetup = array(
-    'setAllowedMaxFileSize' => null,
+        'setAllowedMaxFileSize' => null,
     );
 
     /**
      * Component constructor.
      *
      * @param string $fileRelationName
+     * @param string $recordClassName
      */
     public function __construct($fileRelationName = null, $recordClassName = null)
     {
@@ -92,7 +107,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
     public function setConfig($reference, $value)
     {
         if (in_array($reference, array('folderName', 'maxFileSize', 'sequentialUploads', 'canAttachExisting', 'canPreviewFolder'))) {
-            Deprecation::notice('2.1.0', "GridFieldBulkUpload 'setConfig()' doesn't support '$reference' anymore. Please use 'setUfConfig()', 'setUfSetup()' or 'setUfValidatorSetup()' instead.");
+            Deprecation::notice('2.1.0', "BulkUploader 'setConfig()' doesn't support '$reference' anymore. Please use 'setUfConfig()', 'setUfSetup()' or 'setUfValidatorSetup()' instead.");
 
             if ($reference === 'folderName') {
                 $this->setUfSetup('setFolderName', $value);
@@ -228,6 +243,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
      * Get the first has_one Image/File relation from the GridField managed DataObject
      * i.e. 'MyImage' => 'Image' will return 'MyImage'.
      *
+     * @param  GridField $gridField
      * @return string Name of the $has_one relation
      */
     public function getDefaultFileRelationName($gridField)
@@ -237,7 +253,10 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 
         $imageField = null;
         foreach ($hasOneFields as $field => $type) {
-            if ($type === 'Image' ||  $type === 'File' || is_subclass_of($type, 'File')) {
+            if ($type === 'SilverStripe\\Assets\\Image'
+                ||  $type === 'SilverStripe\\Assets\\File'
+                || is_subclass_of($type, 'SilverStripe\\Assets\\File')
+            ) {
                 $imageField = $field;
                 break;
             }
@@ -250,6 +269,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
      * Returns the name of the Image/File field name from the managed record
      * Either as set in the component config or the default one.
      *
+     * @param  GridField $gridField
      * @return string
      */
     public function getFileRelationName($gridField)
@@ -264,6 +284,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
      * i.e. 'MyImage' => 'Image' will return 'Image'
      * i.e. 'MyImage' => 'File' will return 'File'.
      *
+     * @param  GridField $gridField
      * @return string file relation className
      */
     public function getFileRelationClassName($gridField)
@@ -275,7 +296,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
         if ($fieldName) {
             return $hasOneFields[$fieldName];
         } else {
-            return 'File';
+            return 'SilverStripe\\Assets\\File';
         }
     }
 
@@ -299,7 +320,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
 
             ->setRecord(DataObject::create()) // avoid UploadField to get auto-config from the Page (e.g fix allowedMaxFileNumber)
 
-            ->setTemplate('GridFieldBulkUploadField')
+            ->setTemplate('BulkUploadField')
             ->setDownloadTemplateName('colymba-bulkuploaddownloadtemplate')
 
             ->setConfig('url', $gridField->Link('bulkupload/upload'))
@@ -308,20 +329,20 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
             ->setConfig('urlFileExists', $gridField->Link('bulkupload/fileexists'))
             ;
 
-    //set UploadField config
-    foreach ($this->ufConfig as $key => $val) {
-        $uploadField->setConfig($key, $val);
-    }
+        //set UploadField config
+        foreach ($this->ufConfig as $key => $val) {
+            $uploadField->setConfig($key, $val);
+        }
 
-    //UploadField setup
-    foreach ($this->ufSetup as $fn => $param) {
-        $uploadField->{$fn}($param);
-    }
+        //UploadField setup
+        foreach ($this->ufSetup as $fn => $param) {
+            $uploadField->{$fn}($param);
+        }
 
-    //UploadField Validator setup
-    foreach ($this->ufValidatorSetup as $fn => $param) {
-        $uploadField->getValidator()->{$fn}($param);
-    }
+        //UploadField Validator setup
+        foreach ($this->ufValidatorSetup as $fn => $param) {
+            $uploadField->getValidator()->{$fn}($param);
+        }
 
         return $uploadField;
     }
@@ -345,7 +366,7 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
         }
 
         // check BulkManager exists
-        $bulkManager = $gridField->getConfig()->getComponentsByType('GridFieldBulkManager');
+        $bulkManager = $gridField->getConfig()->getComponentsByType('Colymba\\BulkManager\\BulkManager');
 
         // upload management buttons
         $finishButton = FormAction::create('Finish', _t('GRIDFIELD_BULK_UPLOAD.FINISH_BTN_LABEL', 'Finish'))
@@ -369,10 +390,10 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
             $bulkManager_actions = $bulkManager_config['actions'];
             if (array_key_exists('bulkedit', $bulkManager_actions)) {
                 $editAllButton = FormAction::create('EditAll', _t('GRIDFIELD_BULK_UPLOAD.EDIT_ALL_BTN_LABEL', 'Edit all'))
-                                        ->addExtraClass('bulkUploadEditButton')
-                                        ->setAttribute('data-icon', 'pencil')
-                                        ->setAttribute('data-url', $gridField->Link('bulkupload/edit'))
-                                        ->setUseButtonTag(true);
+                    ->addExtraClass('bulkUploadEditButton')
+                    ->setAttribute('data-icon', 'pencil')
+                    ->setAttribute('data-url', $gridField->Link('bulkupload/edit'))
+                    ->setUseButtonTag(true);
             } else {
                 $editAllButton = '';
             }
@@ -389,17 +410,17 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
         $uploadField->ClearErrorButton = $clearErrorButton;
 
         $data = ArrayData::create(array(
-      'Colspan' => count($gridField->getColumns()),
-      'UploadField' => $uploadField->Field(), // call ->Field() to get requirements in right order
+            'Colspan' => count($gridField->getColumns()),
+            'UploadField' => $uploadField->Field(), // call ->Field() to get requirements in right order
         ));
 
-        Requirements::css(BULKEDITTOOLS_UPLOAD_PATH.'/css/GridFieldBulkUpload.css');
-        Requirements::javascript(BULKEDITTOOLS_UPLOAD_PATH.'/javascript/GridFieldBulkUpload.js');
-        Requirements::javascript(BULKEDITTOOLS_UPLOAD_PATH.'/javascript/GridFieldBulkUpload_downloadtemplate.js');
-        Requirements::add_i18n_javascript(BULKEDITTOOLS_PATH.'/lang/js');
+        Requirements::css(BULKEDITTOOLS_UPLOAD_PATH . '/css/GridFieldBulkUpload.css');
+        Requirements::javascript(BULKEDITTOOLS_UPLOAD_PATH . '/javascript/GridFieldBulkUpload.js');
+        Requirements::javascript(BULKEDITTOOLS_UPLOAD_PATH . '/javascript/GridFieldBulkUpload_downloadtemplate.js');
+        Requirements::add_i18n_javascript(BULKEDITTOOLS_PATH . '/lang/js');
 
         return array(
-            'header' => $data->renderWith('GridFieldBulkUpload'),
+            'header' => $data->renderWith('Colymba\\BulkUpload\\BulkUploader'),
         );
     }
 
@@ -425,14 +446,14 @@ class GridFieldBulkUpload implements GridField_HTMLProvider, GridField_URLHandle
      * Pass control over to the RequestHandler.
      *
      * @param GridField      $gridField
-     * @param SS_HTTPRequest $request
+     * @param HTTPRequest $request
      *
      * @return mixed
      */
     public function handleBulkUpload($gridField, $request)
     {
-        $controller = $gridField->getForm()->Controller();
-        $handler = new GridFieldBulkUpload_Request($gridField, $this, $controller);
+        $controller = $gridField->getForm()->getController();
+        $handler = new BulkUploaderRequest($gridField, $this, $controller);
 
         return $handler->handleRequest($request, DataModel::inst());
     }

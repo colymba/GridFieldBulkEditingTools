@@ -1,10 +1,25 @@
 <?php
+
+namespace Colymba\BulkManager\BulkAction;
+
+use Colymba\BulkManager\BulkAction\Handler;
+use SilverStripe\Control\Controller;
+use SilverStripe\Core\Convert;
+use SilverStripe\Control\HTTPResponse;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\Form;
+use SilverStripe\Forms\FormAction;
+use SilverStripe\Forms\LiteralField;
+use SilverStripe\Forms\ToggleCompositeField;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\View\Requirements;
+
 /**
  * Bulk action handler for editing records.
- * 
+ *
  * @author colymba
  */
-class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
+class EditHandler extends Handler
 {
     /**
      * RequestHandler allowed actions.
@@ -23,9 +38,9 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
      * @var array
      */
     private static $url_handlers = array(
-    'bulkEdit/bulkEditForm' => 'bulkEditForm',
-    'bulkEdit/recordEditForm' => 'recordEditForm',
-    'bulkEdit' => 'index',
+        'bulkEdit/bulkEditForm' => 'bulkEditForm',
+        'bulkEdit/recordEditForm' => 'recordEditForm',
+        'bulkEdit' => 'index',
     );
 
     /**
@@ -43,7 +58,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
     /**
      * Return a form for all the selected DataObjects
      * with their respective editable fields.
-     * 
+     *
      * @return Form Selected DataObjects editable fields
      */
     public function bulkEditForm()
@@ -58,7 +73,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
         $actions->push(
             FormAction::create('doSave', _t('GRIDFIELD_BULKMANAGER_EDIT_HANDLER.SAVE_BTN_LABEL', 'Save all'))
                 ->setAttribute('id', 'bulkEditingSaveBtn')
-                ->addExtraClass('ss-ui-action-constructive')
+                ->addExtraClass('btn btn-success')
                 ->setAttribute('data-icon', 'accept')
                 ->setUseButtonTag(true)
         );
@@ -66,7 +81,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
         $actions->push(
             FormAction::create('Cancel', _t('GRIDFIELD_BULKMANAGER_EDIT_HANDLER.CANCEL_BTN_LABEL', 'Cancel'))
                 ->setAttribute('id', 'bulkEditingUpdateCancelBtn')
-                ->addExtraClass('ss-ui-action-destructive cms-panel-link')
+                ->addExtraClass('btn btn-danger cms-panel-link')
                 ->setAttribute('data-icon', 'decline')
                 ->setAttribute('href', $one_level_up->Link)
                 ->setUseButtonTag(true)
@@ -82,9 +97,10 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
         $singleton = singleton($modelClass);
         $titleModelClass = (($editingCount > 1) ? $singleton->i18n_plural_name() : $singleton->i18n_singular_name());
 
-    //some cosmetics
-    $headerText = _t('GRIDFIELD_BULKMANAGER_EDIT_HANDLER.HEADER_TEXT',
-        'Editing {count} {class}',
+        //some cosmetics
+        $headerText = _t(
+            'GRIDFIELD_BULKMANAGER_EDIT_HANDLER.HEADER_TEXT',
+            'Editing {count} {class}',
             array(
                 'count' => $editingCount,
                 'class' => $titleModelClass,
@@ -96,16 +112,19 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
         );
         $recordsFieldList->push($header);
 
-        $toggle = LiteralField::create('bulkEditToggle', '<span id="bulkEditToggle">'._t('GRIDFIELD_BULKMANAGER_EDIT_HANDLER.TOGGLE_ALL_LINK', 'Show/Hide all').'</span>');
+        $toggle = LiteralField::create(
+            'bulkEditToggle',
+            '<span id="bulkEditToggle">' . _t('GRIDFIELD_BULKMANAGER_EDIT_HANDLER.TOGGLE_ALL_LINK', 'Show/Hide all') . '</span>'
+        );
         $recordsFieldList->push($toggle);
 
-        //fetch fields for each record and push to fieldList		
+        //fetch fields for each record and push to fieldList
         foreach ($recordList as $id) {
             $record = DataObject::get_by_id($modelClass, $id);
             $recordEditingFields = $this->getRecordEditingFields($record);
 
             $toggleField = ToggleCompositeField::create(
-                'RecordFields_'.$id,
+                'RecordFields_' . $id,
                 $record->getTitle(),
                 $recordEditingFields
             )
@@ -128,7 +147,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
         }
 
         //override form action URL back to bulkEditForm
-        //and add record ids GET var		
+        //and add record ids GET var
         $bulkEditForm->setAttribute(
             'action',
             $this->Link('bulkEditForm?records[]='.implode('&', $recordList))
@@ -140,7 +159,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
     /**
      * Return's a form with only one record's fields
      * Used for bulkEditForm subForm requests via ajax.
-     * 
+     *
      * @return Form Currently being edited form
      */
     public function recordEditForm()
@@ -184,7 +203,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
      * with all filtering done ready to be included in the main form.
      *
      * @uses DataObject::getCMSFields()
-     * 
+     *
      * @param DataObject $record The record to get the fields from
      *
      * @return array The record's editable fields
@@ -192,7 +211,8 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
     private function getRecordEditingFields(DataObject $record)
     {
         $tempForm = Form::create(
-            $this, 'TempEditForm',
+            $this,
+            'TempEditForm',
             $record->getCMSFields(),
             FieldList::create()
         );
@@ -210,8 +230,8 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
      * based on component's config
      * and escape each field with unique name.
      *
-     * See {@link GridFieldBulkManager} component for filtering config.
-     * 
+     * See {@link BulkManager} component for filtering config.
+     *
      * @param FieldList $fields Record's CMS Fields
      * @param int       $id     Record's ID, used fir unique name
      *
@@ -222,7 +242,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
         $config = $this->component->getConfig();
         $editableFields = $config['editableFields'];
 
-    // get all dataFields or just the ones allowed in config
+        // get all dataFields or just the ones allowed in config
         if ($editableFields) {
             $dataFields = array();
 
@@ -244,7 +264,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 
     /**
      * Escape a fieldName with a unique prefix.
-     * 
+     *
      * @param int    $recordID Record id from who the field belongs
      * @param string $name     Field name
      *
@@ -252,12 +272,12 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
      */
     protected function escapeFieldName($recordID, $name)
     {
-        return 'record_'.$recordID.'_'.$name;
+        return 'record_' . $recordID . '_' . $name;
     }
 
     /**
      * Un-escape a previously escaped field name.
-     * 
+     *
      * @param string $fieldName Escaped field name
      *
      * @return array|false Fasle if the fieldName was not escaped. Or Array map with record 'id' and field 'name'
@@ -271,35 +291,38 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
             return false;
         } else {
             return array(
-          'id' => $parts[1],
-          'name' => $parts[2],
+                'id' => $parts[1],
+                'name' => $parts[2],
             );
         }
     }
 
     /**
      * Creates and return the bulk editing interface.
-     * 
+     *
      * @return string Form's HTML
      */
     public function index()
     {
         $form = $this->bulkEditForm();
-        $form->setTemplate('LeftAndMain_EditForm');
+        $form->setTemplate([
+            'type' => 'Includes',
+            'SilverStripe\\Admin\\LeftAndMain_EditForm',
+        ]);
         $form->addExtraClass('center cms-content');
         $form->setAttribute('data-pjax-fragment', 'CurrentForm Content');
 
-        Requirements::javascript(BULKEDITTOOLS_MANAGER_PATH.'/javascript/GridFieldBulkEditingForm.js');
-        Requirements::css(BULKEDITTOOLS_MANAGER_PATH.'/css/GridFieldBulkEditingForm.css');
-        Requirements::add_i18n_javascript(BULKEDITTOOLS_PATH.'/lang/js');
+        Requirements::javascript(BULKEDITTOOLS_MANAGER_PATH . '/javascript/GridFieldBulkEditingForm.js');
+        Requirements::css(BULKEDITTOOLS_MANAGER_PATH . '/css/GridFieldBulkEditingForm.css');
+        Requirements::add_i18n_javascript(BULKEDITTOOLS_PATH . '/lang/js');
 
         if ($this->request->isAjax()) {
-            $response = new SS_HTTPResponse(
+            $response = new HTTPResponse(
                 Convert::raw2json(array('Content' => $form->forAjaxTemplate()->getValue()))
             );
             $response->addHeader('X-Pjax', 'Content');
             $response->addHeader('Content-Type', 'text/json');
-            $response->addHeader('X-Title', 'SilverStripe - Bulk '.$this->gridField->list->dataClass.' Editing');
+            $response->addHeader('X-Title', 'SilverStripe - Bulk ' . $this->gridField->list->dataClass . ' Editing');
 
             return $response;
         } else {
@@ -312,7 +335,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
     /**
      * Handles bulkEditForm submission
      * and parses and saves each records data.
-     * 
+     *
      * @param array $data Sumitted form data
      * @param Form  $form Form
      */
@@ -340,7 +363,8 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
         foreach ($formsData as $recordID => $recordData) {
             $record = DataObject::get_by_id($className, $recordID);
             $recordForm = Form::create(
-                $this, 'RecordForm',
+                $this,
+                'RecordForm',
                 $record->getCMSFields(),
                 FieldList::create()
             );
@@ -358,8 +382,9 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
 
         //compose form message
         $messageModelClass = (($done > 1) ? $singleton->i18n_plural_name() : $singleton->i18n_singular_name());
-        $message = _t('GRIDFIELD_BULKMANAGER_EDIT_HANDLER.SAVE_RESULT_TEXT',
-        '{count} {class} saved successfully.',
+        $message = _t(
+            'GRIDFIELD_BULKMANAGER_EDIT_HANDLER.SAVE_RESULT_TEXT',
+            '{count} {class} saved successfully.',
             array(
                 'count' => $done,
                 'class' => $messageModelClass,
@@ -368,7 +393,7 @@ class GridFieldBulkActionEditHandler extends GridFieldBulkActionHandler
         $form->sessionMessage($message, 'good');
 
         //return back to form
-        return Controller::curr()->redirect($this->Link('?records[]='.implode('&records[]=', $ids)));
+        return Controller::curr()->redirect($this->Link('?records[]=' . implode('&records[]=', $ids)));
         //return Controller::curr()->redirect($form->Backlink); //returns to gridField
     }
 }

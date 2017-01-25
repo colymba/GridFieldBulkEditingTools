@@ -1,10 +1,18 @@
 <?php
+
+namespace Colymba\BulkManager\BulkAction;
+
+use Colymba\BulkManager\BulkAction\Handler;
+use SilverStripe\Control\HTTPRequest;
+use SilverStripe\Control\HTTPResponse;
+use SilverStripe\Core\Convert;
+
 /**
  * Bulk action handler for deleting records.
- * 
+ *
  * @author colymba
  */
-class GridFieldBulkActionDeleteHandler extends GridFieldBulkActionHandler
+class DeleteHandler extends Handler
 {
     /**
      * RequestHandler allowed actions.
@@ -24,12 +32,12 @@ class GridFieldBulkActionDeleteHandler extends GridFieldBulkActionHandler
 
     /**
      * Delete the selected records passed from the delete bulk action.
-     * 
-     * @param SS_HTTPRequest $request
      *
-     * @return SS_HTTPResponse List of deleted records ID
+     * @param HTTPRequest $request
+     *
+     * @return HTTPResponse List of deleted records ID
      */
-    public function delete(SS_HTTPRequest $request)
+    public function delete(HTTPRequest $request)
     {
         $ids = array();
 
@@ -38,7 +46,7 @@ class GridFieldBulkActionDeleteHandler extends GridFieldBulkActionHandler
             $record->delete();
         }
 
-        $response = new SS_HTTPResponse(Convert::raw2json(array(
+        $response = new HTTPResponse(Convert::raw2json(array(
             'done' => true,
             'records' => $ids,
         )));

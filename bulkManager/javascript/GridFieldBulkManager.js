@@ -1,5 +1,5 @@
-(function($) {	
-	$.entwine('ss', function($) {		
+(function($) {
+	$.entwine('ss', function($) {
 
 		$.entwine('colymba', function($) {
 
@@ -34,14 +34,14 @@
         onunmatch: function(){}
       });
 
-		  
+
 		  /**
 		   * Bulkselect table cell behaviours
 		   */
 			$('td.col-bulkSelect').entwine({
 				onmatch: function(){
 				},
-				onunmatch: function(){				
+				onunmatch: function(){
 				},
 				onmouseover: function(){
 					//disable default row click behaviour -> avoid navigation to edit form when clicking the checkbox
@@ -59,20 +59,20 @@
 				}
 			});
 
-			
+
 			/**
 			 * Individual select checkbox behaviour
 			 */
 			$('td.col-bulkSelect input').entwine({
 				onmatch: function(){
 				},
-				onunmatch: function(){				
+				onunmatch: function(){
 				},
 				onclick: function(e) {
-					$(this).parents('.ss-gridfield-table').find('input.bulkSelectAll').prop('checked', '');
+					$(this).parents('.grid-field__table').find('input.bulkSelectAll').prop('checked', '');
 				}
 			});
-			
+
 
 			/**
 			 * Bulkselect checkbox behaviours
@@ -80,35 +80,35 @@
 	    $('input.bulkSelectAll').entwine({
 	      onmatch: function(){
 				},
-				onunmatch: function(){				
+				onunmatch: function(){
 				},
 	      onclick: function()
 	      {
 	        var state = $(this).prop('checked');
-	        $(this).parents('.ss-gridfield-table')
+	        $(this).parents('.grid-field__table')
 	        			 .find('td.col-bulkSelect input')
 	        			 .prop('checked', state)
 	        			 .trigger('change');
 	      },
 	      getSelectRecordsID: function()
 	      {
-	      	return $(this).parents('.ss-gridfield-table')
+	      	return $(this).parents('.grid-field__table')
 					      				.find('td.col-bulkSelect input:checked')
-					      				.map(function() {  
+					      				.map(function() {
 					      					return parseInt( $(this).data('record') )
 					      				})
 											  .get();
 	      }
 	    });
 
-	    
+
 	    /**
 	     * Bulk action dropdown behaviours
 	     */
 			$('select.bulkActionName').entwine({
 				onmatch: function(){
 				},
-				onunmatch: function(){				
+				onunmatch: function(){
 				},
 				onchange: function(e)
 				{
@@ -136,10 +136,10 @@
 					else{
 						$btn.removeClass('ss-ui-action-destructive');
 					}
-					
-				} 
+
+				}
 			});
-			
+
 
 			/**
 			 * bulk action button behaviours
@@ -147,7 +147,7 @@
 			$('.doBulkActionButton').entwine({
 				onmatch: function(){
 				},
-				onunmatch: function(){				
+				onunmatch: function(){
 				},
 				getActionURL: function(action, url)
 				{
@@ -176,13 +176,13 @@
           var $parent = $(this).parents('.bulkManagerOptions'),
               action  = $parent.find('select.bulkActionName').val(),
               ids     = $(this).parents('.bulkManagerOptions').find('input.bulkSelectAll:first').getSelectRecordsID()
-							;							
+							;
 
-					this.doBulkAction(action, ids);					
+					this.doBulkAction(action, ids);
 				},
 
 				doBulkAction: function(action, ids, callbackFunction, callbackContext)
-				{					
+				{
           var $parent = $(this).parents('.bulkManagerOptions'),
               $btn    = $parent.find('a.doBulkActionButton'),
 
@@ -190,7 +190,7 @@
               url     = this.getActionURL(action, $(this).data('url')),
               data    = { records: ids }
 							;
-							
+
 					if ( ids.length <= 0 )
 					{
 						alert( ss.i18n._t('GRIDFIELD_BULK_MANAGER.BULKACTION_EMPTY_SELECT') );
@@ -207,10 +207,10 @@
 								callbackFunction.call(callbackContext, false);
 							}
 							return false;
-						}					
-					}	
+						}
+					}
 
-					$btn.addClass('loading');				
+					$btn.addClass('loading');
 
 					if ( config[action]['isAjax'] )
 					{
@@ -219,7 +219,7 @@
 							data: data,
 							type: "POST",
 							context: $(this)
-						}).done(function(data, textStatus, jqXHR) {	            
+						}).done(function(data, textStatus, jqXHR) {
 	            $btn.removeClass('loading');
 	            if ( callbackFunction && callbackContext )
 							{
@@ -239,7 +239,7 @@
 				}
 			});
 
-			
-		});	
+
+		});
 	});
 }(jQuery));

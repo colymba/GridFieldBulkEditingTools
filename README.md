@@ -5,7 +5,7 @@ GridField Bulk Editing Tools
 [![Latest Unstable Version](https://poser.pugx.org/colymba/gridfield-bulk-editing-tools/v/unstable.svg)](https://github.com/colymba/GridFieldBulkEditingTools/tree/master)
 [![License](https://poser.pugx.org/colymba/gridfield-bulk-editing-tools/license.svg)](#license-bsd-simplified)
 
-Set of SilverStripe 3 GridField components to facilitate bulk file upload & record editing.
+Set of SilverStripe 4 GridField components to facilitate bulk file upload & record editing.
 
 ![preview](screenshots/preview.png)
 
@@ -16,37 +16,47 @@ Set of SilverStripe 3 GridField components to facilitate bulk file upload & reco
 [More screenshots here.](screenshots)
 
 ## Requirements
-* SilverStripe 3.1 (version master / 2.+ / 1.+)
+* SilverStripe 4.0 (version master / 3.+)
+* SilverStripe 3.1 (version 2.+ / 1.+)
 * Silverstripe 3.0 (version [0.5](https://github.com/colymba/GridFieldBulkEditingTools/tree/0.5))
 
 ## Installation
 ### Composer
-* `composer require "colymba/gridfield-bulk-editing-tools:*"`
+* `composer require colymba/gridfield-bulk-editing-tools`
 
 ### Manual
 * Download and copy module in SilverStripe root directory
 
+## 3.0.0 deprecations
+The 3.x versions of this module require SilverStripe 4.x+, and PHP 5.5 or above:
+
+* Namespaces are implemented, and some class names have changed (see `.upgrade.yml` for mapping)
+
 ## 2.0.0 deprecations
-Major depractions in latest 2.0.0 release:
+Major deprections in latest 2.0.0 release:
 * The `GridFieldBulkImageUpload` has been renamed to `GridFieldBulkUpload`.
 * `onBulkImageUpload` callback has been renamed to `onBulkUpload`
 
 ## Bulk Upload
 Upload multiple images or files at once into DataObjects. Perfect for galleries and the like.
 
-    $config->addComponent(new GridFieldBulkUpload());
+```php
+$config->addComponent(new \Colymba\BulkUpload\BulkUploader());
+```
 
 See [BULK_UPLOAD.md](bulkUpload/BULK_UPLOAD.md) for detailed configuration.
 
 ## Bulk Manager
 Perform actions on multiple records straight from the GridField
 
-    $config->addComponent(new GridFieldBulkManager());
+```php
+$config->addComponent(new \Colymba\BulkManager\BulkManager());
+```
 
 See [BULK_MANAGER.md](bulkManager/BULK_MANAGER.md) for detailed configuration.
 
 ## Interdependencies
-The `GridFieldBulkUpload` component makes use of `GridFieldBulkManager` to allow quick editing of the newly uploaded files. Although not nescessary for the component to work, adding `GridFieldBulkManager` too to your `GridFieldConfig` will give you this advantage.
+The `BulkUploader` component makes use of `BulkManager` to allow quick editing of the newly uploaded files. Although not nescessary for the component to work, adding `Colymba\BulkManager\BulkManager` too to your `GridFieldConfig` will give you this advantage.
 
 #### @TODO
 * Add individual actions for each upload (update + cancel)
@@ -69,5 +79,5 @@ Redistribution and use in source and binary forms, with or without modification,
  * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
  * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
  * Neither the name of Thierry Francois, colymba nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
- 
+
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.

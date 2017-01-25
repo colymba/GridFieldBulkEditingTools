@@ -1,22 +1,32 @@
 {
-	"name": "colymba/gridfield-bulk-editing-tools",
-	"type": "silverstripe-module",
-	"description": "SilverStripe 3 GridField component to upload images and edit records in bulk",
-	"homepage": "https://github.com/colymba/GridFieldBulkEditingTools",
-	"keywords": ["silverstripe", "bulk upload", "image upload", "gridfield bulk upload"],
-	"license": "BSD Simplified",
-	"authors": [{
-			"name": "Thierry Francois",
-			"homepage": "http://colymba.com"
-    },{
-      "name": "GitHub contributors",
-      "homepage": "https://github.com/colymba/GridFieldBulkEditingTools/contributors"
-  }],
-  "repositories": [{
-    "type": "vcs",
-    "url": "git@github.com:colymba/GridFieldBulkEditingTools.git"
-  }],
-	"require": {
-    "silverstripe/framework": ">=3.1"
-	}
+    "name": "colymba/gridfield-bulk-editing-tools",
+    "type": "silverstripe-module",
+    "description": "SilverStripe 3 GridField component to upload images and edit records in bulk",
+    "homepage": "https://github.com/colymba/GridFieldBulkEditingTools",
+    "keywords": ["silverstripe", "bulk upload", "image upload", "gridfield bulk upload"],
+    "license": "BSD Simplified",
+    "authors": [
+        {
+            "name": "Thierry Francois",
+            "homepage": "http://colymba.com"
+        },
+        {
+            "name": "GitHub contributors",
+            "homepage": "https://github.com/colymba/GridFieldBulkEditingTools/contributors"
+        }
+    ],
+    "require": {
+        "silverstripe/framework": "^4.0@dev"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.x-dev"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Colymba\\BulkManager\\": "bulkManager/code/",
+            "Colymba\\BulkUpload\\": "bulkUpload/code/"
+        }
+    }
 }

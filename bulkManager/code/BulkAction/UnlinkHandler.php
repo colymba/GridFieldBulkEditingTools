@@ -1,10 +1,18 @@
 <?php
+
+namespace Colymba\BulkManager\BulkAction;
+
+use Colymba\BulkManager\BulkAction\Handler;
+use SilverStripe\Core\Convert;
+use SilverStripe\Control\HTTPRequest;
+use SilverStripe\Control\HTTPResponse;
+
 /**
  * Bulk action handler for unlinking records.
- * 
+ *
  * @author colymba
  */
-class GridFieldBulkActionUnlinkHandler extends GridFieldBulkActionHandler
+class UnlinkHandler extends Handler
 {
     /**
      * RequestHandler allowed actions.
@@ -24,17 +32,17 @@ class GridFieldBulkActionUnlinkHandler extends GridFieldBulkActionHandler
 
     /**
      * Unlink the selected records passed from the unlink bulk action.
-     * 
-     * @param SS_HTTPRequest $request
      *
-     * @return SS_HTTPResponse List of affected records ID
+     * @param HTTPRequest $request
+     *
+     * @return HTTPResponse List of affected records ID
      */
-    public function unLink(SS_HTTPRequest $request)
+    public function unLink(HTTPRequest $request)
     {
         $ids = $this->getRecordIDList();
         $this->gridField->list->removeMany($ids);
 
-        $response = new SS_HTTPResponse(Convert::raw2json(array(
+        $response = new HTTPResponse(Convert::raw2json(array(
             'done' => true,
             'records' => $ids,
         )));
