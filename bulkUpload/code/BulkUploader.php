@@ -249,7 +249,7 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
     public function getDefaultFileRelationName($gridField)
     {
         $recordClass = $this->getRecordClassName($gridField);
-        $hasOneFields = Config::inst()->get($recordClass, 'has_one', Config::INHERITED);
+        $hasOneFields = Config::inst()->get($recordClass, 'has_one');
 
         $imageField = null;
         foreach ($hasOneFields as $field => $type) {
@@ -290,7 +290,7 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
     public function getFileRelationClassName($gridField)
     {
         $recordClass = $this->getRecordClassName($gridField);
-        $hasOneFields = Config::inst()->get($recordClass, 'has_one', Config::INHERITED);
+        $hasOneFields = Config::inst()->get($recordClass, 'has_one');
 
         $fieldName = $this->getFileRelationName($gridField);
         if ($fieldName) {
