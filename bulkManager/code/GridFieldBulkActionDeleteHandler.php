@@ -1,7 +1,7 @@
 <?php
 /**
  * Bulk action handler for deleting records.
- * 
+ *
  * @author colymba
  */
 class GridFieldBulkActionDeleteHandler extends GridFieldBulkActionHandler
@@ -24,7 +24,7 @@ class GridFieldBulkActionDeleteHandler extends GridFieldBulkActionHandler
 
     /**
      * Delete the selected records passed from the delete bulk action.
-     * 
+     *
      * @param SS_HTTPRequest $request
      *
      * @return SS_HTTPResponse List of deleted records ID
@@ -34,8 +34,10 @@ class GridFieldBulkActionDeleteHandler extends GridFieldBulkActionHandler
         $ids = array();
 
         foreach ($this->getRecords() as $record) {
-            array_push($ids, $record->ID);
-            $record->delete();
+            if ($record->canDelete()) {
+                array_push($ids, $record->ID);
+                $record->delete();
+            }
         }
 
         $response = new SS_HTTPResponse(Convert::raw2json(array(
