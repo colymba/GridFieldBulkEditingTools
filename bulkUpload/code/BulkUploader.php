@@ -8,7 +8,6 @@ use SilverStripe\Dev\Deprecation;
 use SilverStripe\Forms\FormAction;
 use SilverStripe\Forms\GridField\GridField_HTMLProvider;
 use SilverStripe\Forms\GridField\GridField_URLHandler;
-use SilverStripe\ORM\DataModel;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\View\ArrayData;
 use SilverStripe\View\Requirements;
@@ -466,6 +465,6 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
         $controller = $gridField->getForm()->getController();
         $handler = new \Colymba\BulkUpload\BulkUploaderRequest($gridField, $this, $controller);
 
-        return $handler->handleRequest($request, DataModel::inst());
+        return $handler->handleRequest($request);
     }
 }
