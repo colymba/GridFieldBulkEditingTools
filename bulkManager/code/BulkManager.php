@@ -10,7 +10,6 @@ use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\GridField\GridField_HTMLProvider;
 use SilverStripe\Forms\GridField\GridField_ColumnProvider;
 use SilverStripe\Forms\GridField\GridField_URLHandler;
-use SilverStripe\ORM\DataModel;
 use SilverStripe\View\ArrayData;
 use SilverStripe\View\Requirements;
 
@@ -368,7 +367,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
                         //print_r('matched ' . $handlerClass . ' to ' . $rule);
                         $handler = Injector::inst()->create($handlerClass, $gridField, $this, $controller);
 
-                        return $handler->handleRequest($request, DataModel::inst());
+                        return $handler->handleRequest($request);
                     }
                 }
             }

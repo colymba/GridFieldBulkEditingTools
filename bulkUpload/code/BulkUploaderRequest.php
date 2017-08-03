@@ -136,7 +136,7 @@ class BulkUploaderRequest extends RequestHandler
         // 1. DataObject
         //create record
         $recordClass = $this->component->getRecordClassName($this->gridField);
-        $record = Object::create($recordClass);
+        $record = $recordClass::create();
         $record->write();
 
         // passes the current gridfield-instance to a call-back method on the new object
