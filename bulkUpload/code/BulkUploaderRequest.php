@@ -3,13 +3,12 @@
 namespace Colymba\BulkUpload;
 
 use SilverStripe\Assets\Image;
-use SilverStripe\Core\Convert;
-use SilverStripe\Core\Object;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\RequestHandler;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
-use SilverStripe\Dev\Deprecation;
+use SilverStripe\Core\Convert;
+use SilverStripe\Core\Injector\Injector;
 use SilverStripe\ORM\DataObject;
 
 use SilverStripe\AssetAdmin\Controller\AssetAdmin;
@@ -99,7 +98,7 @@ class BulkUploaderRequest extends RequestHandler
     {
         //create record
         $recordClass = $this->component->getRecordClassName($this->gridField);
-        $record = Object::create($recordClass);
+        $record = Injector::inst()->create($recordClass);
         $record->write();
 
         // passes the current gridfield-instance to a call-back method on the new object
@@ -263,7 +262,7 @@ class BulkUploaderRequest extends RequestHandler
 
         foreach ($attachResponses as $attachResponse) {
             // create record
-            $record = Object::create($recordClass);
+            $record = Injector::inst()->create($recordClass);
             $record->write();
             $record->extend('onBulkUpload', $this->gridField);
 
