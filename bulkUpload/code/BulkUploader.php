@@ -429,7 +429,7 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
 
         Requirements::css('colymba/gridfield-bulk-editing-tools: client/dist/bulk-upload/css/GridFieldBulkUpload.css');
         Requirements::javascript('colymba/gridfield-bulk-editing-tools: client/dist/bulk-upload/javascript/GridFieldBulkUpload.js');
-        Requirements::add_i18n_javascript('colymba/gridfield-bulk-editing-tools: client/dist/bulk-upload/lang/js');
+        Requirements::add_i18n_javascript('colymba/gridfield-bulk-editing-tools: client/dist/lang/js');
 
         return array(
             'header' => $data->renderWith('Colymba\\BulkUpload\\BulkUploader'),
