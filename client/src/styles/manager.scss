@@ -48,7 +48,7 @@
 
       .loading .ui-icon
       {
-        background: transparent url(../../framework/images/network-save.gif) no-repeat 0 0;
+          //background: transparent url(../../framework/images/network-save.gif) no-repeat 0 0;
       }
     }
   }// .bulkManagerOptions
@@ -60,7 +60,7 @@
       width: 25px;
       text-align: center;
     }
-
+    /*
     td a.tempDisabledEditLink
     {
       background: url('../../framework/admin/images/btn-icon/document--pencil.png') no-repeat 2px 0px;
@@ -72,6 +72,6 @@
       vertical-align: middle;
       background-position: 2px 0px;
       background-repeat: no-repeat no-repeat;
-    }
+    }*/
   }
 }
