@@ -22,7 +22,11 @@
     "extra": {
         "branch-alias": {
             "dev-master": "3.x-dev"
-        }
+        },
+        "expose": [
+            "client/dist",
+            "client/lang"
+        ]
     },
     "autoload": {
         "psr-4": {
