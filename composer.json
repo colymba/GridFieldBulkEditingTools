@@ -26,8 +26,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Colymba\\BulkManager\\": "bulkManager/code/",
-            "Colymba\\BulkUpload\\": "bulkUpload/code/"
+            "Colymba\\BulkManager\\": "src/BulkManager/",
+            "Colymba\\BulkUpload\\": "src/BulkUploader/"
         }
     }
 }
