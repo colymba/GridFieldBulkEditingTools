@@ -312,9 +312,9 @@ class EditHandler extends Handler
         $form->addExtraClass('center cms-content');
         $form->setAttribute('data-pjax-fragment', 'CurrentForm Content');
 
-        Requirements::javascript(BULKEDITTOOLS_MANAGER_PATH . '/javascript/GridFieldBulkEditingForm.js');
-        Requirements::css(BULKEDITTOOLS_MANAGER_PATH . '/css/GridFieldBulkEditingForm.css');
-        Requirements::add_i18n_javascript(BULKEDITTOOLS_PATH . '/lang/js');
+        Requirements::javascript('colymba/gridfield-bulk-editing-tools:client/dist/js/bulkTools.js');
+        Requirements::css('colymba/gridfield-bulk-editing-tools:client/dist/styles/bulkTools.css');
+        Requirements::add_i18n_javascript('colymba/gridfield-bulk-editing-tools:lang');
 
         if ($this->request->isAjax()) {
             $response = new HTTPResponse(
