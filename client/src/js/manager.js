@@ -112,29 +112,44 @@
 				},
 				onchange: function(e)
 				{
-	        var value   = $(this).val(),
-	            $parent = $(this).parents('.bulkManagerOptions'),
-	            $btn    = $parent.find('.doBulkActionButton'),
-	            config  = $btn.data('config'),
-	            $icon   = $parent.find('.doBulkActionButton .ui-icon')
-							;
+					var value   = $(this).val(),
+						$parent = $(this).parents('.bulkManagerOptions'),
+						$btn    = $parent.find('.doBulkActionButton'),
+						config  = $btn.data('config');
 
 					$.each( config, function( configKey, configData )
 					{
 						if ( configKey != value )
 						{
-							$icon.removeClass('btn-icon-'+configData['icon']);
+							$btn.removeClass(configData['buttonClasses']);
 						}
 					});
-					$icon.addClass('btn-icon-'+config[value]['icon']);
+					$btn.addClass(config[value]['buttonClasses']).addClass('btn-outline-secondary');
 
 
-					if ( config[value]['isDestructive'] )
+					if ( config[value]['icon'] )
 					{
-						$btn.addClass('ss-ui-action-destructive');
+						var $img = $btn.find('img');
+
+						if ($img.length)
+						{
+							$img.attr('src', config[value]['icon']);
+						}
+						else{
+							$btn.prepend('<img src="'+config[value]['icon']+'" alt="" />');
+						}
 					}
 					else{
-						$btn.removeClass('ss-ui-action-destructive');
+						$btn.find('img').remove();
+					}
+
+
+					if ( config[value]['destructive'] )
+					{
+						$btn.addClass('btn-outline-danger');
+					}
+					else{
+						$btn.removeClass('btn-outline-danger');
 					}
 
 				}
@@ -198,7 +213,7 @@
 					}
 
 					//if ( $btn.hasClass('ss-ui-action-destructive') )
-					if ( config[action]['isDestructive'] )
+					if ( config[action]['destructive'] )
 					{
 						if( !confirm(ss.i18n._t('GRIDFIELD_BULK_MANAGER.CONFIRM_DESTRUCTIVE_ACTION')) )
 						{
@@ -212,7 +227,7 @@
 
 					$btn.addClass('loading');
 
-					if ( config[action]['isAjax'] )
+					if ( config[action]['xhr'] )
 					{
 						$.ajax({
 							url: url,

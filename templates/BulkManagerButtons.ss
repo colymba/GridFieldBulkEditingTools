@@ -8,8 +8,8 @@
                 $Menu
                 <a data-url="$Button.DataURL"
                     data-config="$Button.DataConfig"
-                    class="doBulkActionButton btn btn-primary"
-                    data-icon="$Button.Icon">
+                    class="doBulkActionButton btn btn-outline-secondary $Button.Classes">
+                    <% if $Button.Icon %><img src="$Button.Icon" alt="" /><% end_if %>
                     $Button.Label
                 </a>
                 <label class="form-check-label">
