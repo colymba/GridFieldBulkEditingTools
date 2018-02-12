@@ -287,7 +287,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
         $templateData = new ArrayData($templateData);
 
         return array(
-            'header' => $templateData->renderWith('BulkManagerButtons'),
+            'header' => $templateData->renderWith('Colymba\\BulkManager\\BulkManagerButtons'),
         );
     }
 
