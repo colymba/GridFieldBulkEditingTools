@@ -28,20 +28,13 @@ To add a custom bulk action to the list use:
 ```php
 $config
     ->getComponentByType('Colymba\\BulkManager\\BulkManager')
-    ->addBulkAction('actionName', 'Dropdown label', 'ActionHandlerClassName', $frontEndConfig)
+    ->addBulkAction('Namespace\\ClassName')
 ```
-
-You can omit the handler's class name and the front-end config array, those will default to:
-* `'GridFieldBulkAction'.ucfirst($name).'Handler'`
-* `$config = array( 'isAjax' => true, 'icon' => 'accept', 'isDestructive' => false )`
 
 #### Custom action handler
 When creating your own bulk action `RequestHandler`, you should extend `Colymba\BulkManager\BulkAction\Handler` which will expose 2 useful functions `getRecordIDList()` and `getRecords()` returning either an array with the selected records IDs or a `DataList` of the selected records.
 
-Make sure to define your `$allowed_actions` and `$url_handlers` on your custom bulk action handler. See `Handler`, `DeleteHandler` and `UnlinkHandler` for examples.
+Make sure to define the handler's `$url_segment`, from which the handler will be called and its relating `$allowed_actions` and `$url_handlers`. See `Handler`, `DeleteHandler` and `UnlinkHandler` for examples.
 
 #### Front-end config
-The last `addBulkAction()` parameter lets you pass an array with configuration options for the UI/UX:
-* `isAjax`: if true the action will be called via XHR request otherwise the browser will be redirected to the action's URL
-* `icon`: lets you define which icon to use on the button when the action is selected (SilverStripe button icon name only)
-* `isDestructive`: if true, a confirmation dialog will be shown before the action is processed
+Bulk action handler's front-end configuration is set via class properties `label`, `icon`, `buttonClasses`, `xhr` and `destructive`. See `Handler`, `DeleteHandler` and `UnlinkHandler` for reference and examples. 
