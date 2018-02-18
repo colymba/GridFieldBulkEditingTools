@@ -3,6 +3,8 @@
 namespace Colymba\BulkUpload;
 
 use Colymba\BulkUpload\BulkUploaderRequest;
+use Colymba\BulkUpload\BulkUploadField;
+
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\Deprecation;
 use SilverStripe\Forms\FormAction;
@@ -105,17 +107,7 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
      */
     public function setConfig($reference, $value)
     {
-        if (in_array($reference, array('folderName', 'maxFileSize', 'sequentialUploads', 'canAttachExisting', 'canPreviewFolder'))) {
-            Deprecation::notice('2.1.0', "BulkUploader 'setConfig()' doesn't support '$reference' anymore. Please use 'setUfConfig()', 'setUfSetup()' or 'setUfValidatorSetup()' instead.");
-
-            if ($reference === 'folderName') {
-                $this->setUfSetup('setFolderName', $value);
-            } elseif ($reference === 'maxFileSize') {
-                $this->setUfValidatorSetup('setAllowedMaxFileSize', $value);
-            } else {
-                $this->setUfConfig($reference, $value);
-            }
-        } elseif (!array_key_exists($reference, $this->config)) {
+        if (!array_key_exists($reference, $this->config)) {
             user_error("Unknown option reference: $reference", E_USER_ERROR);
         }
 
