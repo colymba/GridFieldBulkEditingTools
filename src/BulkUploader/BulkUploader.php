@@ -369,10 +369,7 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
         if (!singleton($gridField->getModelClass())->canEdit()) {
             return array();
         }
-
-        // check BulkManager exists
-        $bulkManager = $gridField->getConfig()->getComponentsByType('Colymba\\BulkManager\\BulkManager');
-
+        
         // upload management buttons
         $finishButton = FormAction::create('Finish', _t('GRIDFIELD_BULK_UPLOAD.FINISH_BTN_LABEL', 'Finish'))
             ->addExtraClass('bulkUploadFinishButton')
@@ -384,37 +381,12 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
             ->setAttribute('data-icon', 'arrow-circle-double')
             ->setUseButtonTag(true);
 
-        if (count($bulkManager)) {
-            $cancelButton = FormAction::create('Cancel', _t('GRIDFIELD_BULK_UPLOAD.CANCEL_BTN_LABEL', 'Cancel'))
-                ->addExtraClass('bulkUploadCancelButton ss-ui-action-destructive')
-                ->setAttribute('data-icon', 'decline')
-                ->setAttribute('data-url', $gridField->Link('bulkupload/cancel'))
-                ->setUseButtonTag(true);
-
-            $bulkManager_config = $bulkManager->first()->getConfig();
-            $bulkManager_actions = $bulkManager_config['actions'];
-            if (array_key_exists('bulkedit', $bulkManager_actions)) {
-                $editAllButton = FormAction::create('EditAll', _t('GRIDFIELD_BULK_UPLOAD.EDIT_ALL_BTN_LABEL', 'Edit all'))
-                    ->addExtraClass('bulkUploadEditButton')
-                    ->setAttribute('data-icon', 'pencil')
-                    ->setAttribute('data-url', $gridField->Link('bulkupload/edit'))
-                    ->setUseButtonTag(true);
-            } else {
-                $editAllButton = '';
-            }
-        } else {
-            $cancelButton = '';
-            $editAllButton = '';
-        }
-
-        // get uploadField + inject extra buttons
+        // get uploadField
         $uploadField = $this->bulkUploadField($gridField);
-        $uploadField->FinishButton = $finishButton;
-        $uploadField->CancelButton = $cancelButton;
-        $uploadField->EditAllButton = $editAllButton;
-        $uploadField->ClearErrorButton = $clearErrorButton;
 
         $data = ArrayData::create(array(
+            'Finish' => $finishButton,
+            'ClearErrors' => $clearErrorButton,
             'Colspan' => (count($gridField->getColumns())),
             'UploadField' => $uploadField->Field() // call ->Field() to get requirements in right order
         ));

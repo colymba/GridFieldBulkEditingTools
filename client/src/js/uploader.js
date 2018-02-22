@@ -78,8 +78,6 @@
         refresh: function(total, done, error)
         {
           var $info          = this.find('.colymba-bulkupload-info'),
-              $editBtn       = this.find('.bulkUploadEditButton'),
-              $cancelBtn     = this.find('.bulkUploadCancelButton'),
               $finishBtn     = this.find('.bulkUploadFinishButton'),
               $clearErrorBtn = this.find('.bulkUploadClearErrorButton')
               ;
@@ -95,8 +93,6 @@
               error
             ));
 
-            $cancelBtn.removeClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'false').removeAttr('disabled');
-
             //if there are still uploads going
             if ( (done + error) < total )
             {
@@ -109,15 +105,6 @@
             else{
               this.removeClass('loading');
               $finishBtn.removeClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'false').removeAttr('disabled');
-            }            
-
-            //if all done and OK, enable edit
-            if ( total === done )
-            {
-              $editBtn.removeClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'false').removeAttr('disabled');
-            }
-            else{
-              $editBtn.addClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'true').attr('disabled', 'true');
             }
 
             //toggle clear error button
@@ -132,8 +119,6 @@
           else{
             //if not uploading, reset + hide
             this.css({display: 'none'}).removeClass('loading');
-            $editBtn.addClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'true').attr('disabled', 'true');
-            $cancelBtn.addClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'true').attr('disabled', 'true');
             $finishBtn.addClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'true').attr('disabled', 'true');
             $clearErrorBtn.addClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'true').attr('disabled', 'true');
           }       
@@ -161,70 +146,6 @@
         }
       });
 
-
-      /**
-       * Cancel all uploads
-       * Clear the ones with warnings/error and delete dataObjects from the successful ones
-       */
-      $('.bulkUploadCancelButton:not(.ui-state-disabled)').entwine({
-        onmatch: function(){
-          this.removeClass('action');
-        },
-        onunmatch: function(){},
-        onclick: function()
-        {
-          var $bulkUpload         = this.parents('.bulkUpload'),
-              $li                 = $bulkUpload.find('li.ss-uploadfield-item'),
-              $records            = $li.filter('[data-recordid]'),
-              $other              = $li.not($records),
-              $doBulkActionButton = $bulkUpload.parents('.ss-gridfield-table').find('.doBulkActionButton'),              
-              recordsID
-              ;
-
-          $other.each(function(index, Element){
-            // skip in progress         
-            $(this).remove();
-          });
-
-          if ( $doBulkActionButton.length > 0 )
-          {
-            recordsID = $records.map(function() {  
-              return parseInt( $(this).data('recordid') )
-            }).get();
-
-            this.addClass('loading');
-            $doBulkActionButton.doBulkAction('delete', recordsID, this.cancelCallback, this);
-          }
-        },
-        cancelCallback: function(data)
-        {
-          var $bulkUpload = this.parents('.bulkUpload'),
-              $li         = $bulkUpload.find('li.ss-uploadfield-item'),
-              ids
-              ;
-
-          if ( data )
-          {
-            ids = data.records;
-
-            $li.each(function(index, Element){
-              var $this    = $(this),
-                  recordID = parseInt( $this.data('recordid') )
-                  ;
-
-              if ( ids.indexOf(recordID) !== -1 )
-              {
-                $this.remove();
-              }
-            });
-
-            $(this).parents('.ss-gridfield').entwine('.').entwine('ss').reload();
-          }
-
-          this.removeClass('loading');
-        }
-      });
-
       
       /**
        * Clear all the warning/error/finished uploads
@@ -249,33 +170,6 @@
           $(this).parents('.ss-gridfield').entwine('.').entwine('ss').reload();
           
           this.removeClass('loading');
-        }
-      });
-
-      $('.bulkUploadEditButton:not(.ui-state-disabled)').entwine({
-        onmatch: function(){
-          this.removeClass('action');
-        },
-        onunmatch: function(){},
-        onclick: function()
-        {
-          var $bulkUpload = this.parents('.bulkUpload'),
-              $li = $bulkUpload.find('li.ss-uploadfield-item'),
-              $records = $li.filter('[data-recordid]'),              
-              recordsID,
-              $doBulkActionButton = $bulkUpload.parents('.ss-gridfield-table').find('.doBulkActionButton')
-              ;
-
-          if ( $doBulkActionButton.length > 0 )
-          {
-            this.addClass('loading');
-
-            recordsID = $records.map(function() {  
-              return parseInt( $(this).data('recordid') )
-            }).get();
-
-            $doBulkActionButton.doBulkAction('bulkedit', recordsID);
-          }
         }
       });
 
