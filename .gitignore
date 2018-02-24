@@ -1,3 +1,9 @@
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
 transifexAuth.json
 **/css/bourbon
 **/.sass-cache
+node_modules/
