@@ -40,7 +40,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
     );
 
     /**
-     * GridFieldBulkManager component constructor.
+     * BulkManager component constructor.
      *
      * @param array $editableFields List of editable fields
      * @param bool  $defaultActions Use default actions list. False to start fresh.
@@ -111,7 +111,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
      * @param string $handlerClassName RequestHandler class name for this action.
      * @param string $action Specific RequestHandler action to be called.
      *
-     * @return $this Current GridFieldBulkManager instance
+     * @return $this Current BulkManager instance
      */
     public function addBulkAction($handlerClassName, $action = null)
     {
@@ -138,7 +138,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
      * @param string $handlerClassName RequestHandler class name of the action to remove.
      * @param string $urlSegment URL segment of the action to remove.
      *
-     * @return BulkManager Current GridFieldBulkManager instance
+     * @return $this Current BulkManager instance
      */
     public function removeBulkAction($handlerClassName = null, $urlSegment = null)
     {
@@ -260,7 +260,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
         Requirements::add_i18n_javascript('colymba/gridfield-bulk-editing-tools:lang');
 
         if (!count($this->config['actions'])) {
-            user_error('Trying to use GridFieldBulkManager without any bulk action.', E_USER_ERROR);
+            user_error('Trying to use BulkManager without any bulk action.', E_USER_ERROR);
         }
 
         $actionsListSource = array();
