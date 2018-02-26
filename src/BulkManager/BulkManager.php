@@ -3,14 +3,17 @@
 namespace Colymba\BulkManager;
 
 use ReflectionClass;
-use SilverStripe\Core\ClassInfo;
-use SilverStripe\Core\Config\Config;
+use SilverStripe\Control\HTTPRequest;
+use SilverStripe\Control\RequestHandler;
+use SilverStripe\Core\Injector\Injectable;
 use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\DropdownField;
-use SilverStripe\Forms\GridField\GridField_HTMLProvider;
+use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridField_ColumnProvider;
+use SilverStripe\Forms\GridField\GridField_HTMLProvider;
 use SilverStripe\Forms\GridField\GridField_URLHandler;
+use SilverStripe\ORM\DataObject;
 use SilverStripe\View\ArrayData;
 use SilverStripe\View\Requirements;
 
@@ -21,6 +24,8 @@ use SilverStripe\View\Requirements;
  */
 class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, GridField_URLHandler
 {
+    use Injectable;
+
     /**
      * component configuration.
      *
@@ -35,7 +40,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
     );
 
     /**
-     * GridFieldBulkManager component constructor.
+     * BulkManager component constructor.
      *
      * @param array $editableFields List of editable fields
      * @param bool  $defaultActions Use default actions list. False to start fresh.
@@ -47,9 +52,10 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
         }
 
         if ($defaultActions) {
-            $this->addBulkAction('Colymba\\BulkManager\\BulkAction\\EditHandler')
-                 ->addBulkAction('Colymba\\BulkManager\\BulkAction\\UnlinkHandler')
-                 ->addBulkAction('Colymba\\BulkManager\\BulkAction\\DeleteHandler');
+            $this
+                ->addBulkAction(BulkAction\EditHandler::class)
+                ->addBulkAction(BulkAction\UnlinkHandler::class)
+                ->addBulkAction(BulkAction\DeleteHandler::class);
         }
     }
 
@@ -102,26 +108,26 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
      * Lets you add custom bulk actions to the bulk manager interface.
      * Exisiting handler will be replaced
      *
-     * @param string $hanlderClassName RequestHandler class name for this action.
+     * @param string $handlerClassName RequestHandler class name for this action.
      * @param string $action Specific RequestHandler action to be called.
      *
-     * @return GridFieldBulkManager Current GridFieldBulkManager instance
+     * @return $this Current BulkManager instance
      */
-    public function addBulkAction($hanlderClassName, $action = null)
+    public function addBulkAction($handlerClassName, $action = null)
     {
-        if (!$hanlderClassName || !ClassInfo::exists($hanlderClassName)) {
-            user_error("Bulk action handler not found: $handler", E_USER_ERROR);
+        if (!class_exists($handlerClassName)) {
+            user_error("Bulk action handler not found: $handlerClassName", E_USER_ERROR);
         }
 
-        $handler = Injector::inst()->get($hanlderClassName);
+        $handler = Injector::inst()->get($handlerClassName);
         $urlSegment = $handler->config()->get('url_segment');
         if (!$urlSegment)
         {
-            $rc = new ReflectionClass($hanlderClassName);
+            $rc = new ReflectionClass($handlerClassName);
             $urlSegment = $rc->getShortName();
         }
 
-        $this->config['actions'][$urlSegment] = $hanlderClassName;
+        $this->config['actions'][$urlSegment] = $handlerClassName;
 
         return $this;
     }
@@ -129,27 +135,37 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
     /**
      * Removes a bulk actions from the bulk manager interface.
      *
-     * @param string $hanlderClassName RequestHandler class name of the action to remove.
+     * @param string $handlerClassName RequestHandler class name of the action to remove.
      * @param string $urlSegment URL segment of the action to remove.
      *
-     * @return GridFieldBulkManager Current GridFieldBulkManager instance
+     * @return $this Current BulkManager instance
      */
-    public function removeBulkAction($hanlderClassName = null, $urlSegment = null)
+    public function removeBulkAction($handlerClassName = null, $urlSegment = null)
     {
-        if (!$hanlderClassName && !$urlSegment) {
+        if (!$handlerClassName && !$urlSegment) {
             user_error("Provide either a class name or URL segment", E_USER_ERROR);
         }
 
         foreach ($this->config['actions'] as $url => $class)
         {
-            if ($hanlderClassName === $class || $urlSegment === $url)
+            if ($handlerClassName === $class || $urlSegment === $url)
             {
                 unset($this->config['actions'][$url]);
                 return $this;
             }
         }
 
-        user_error("Bulk action '$hanlderClassName' or '$urlSegment' doesn't exists.", E_USER_ERROR);
+        user_error("Bulk action '$handlerClassName' or '$urlSegment' doesn't exists.", E_USER_ERROR);
+    }
+
+    /**
+     * Return the list of bulk actions already provided
+     *
+     * @return RequestHandler[]
+     */
+    public function getBulkActions()
+    {
+        return $this->config['actions'];
     }
 
     /* **********************************************************************
@@ -203,7 +219,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
      * Set the column's HTML attributes.
      *
      * @param GridField  $gridField  Current GridField instance
-     * @param DataObject $record     Record intance for this row
+     * @param DataObject $record     Record instance for this row
      * @param string     $columnName Column's name for which we need attributes
      *
      * @return array List of HTML attributes
@@ -244,14 +260,14 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
         Requirements::add_i18n_javascript('colymba/gridfield-bulk-editing-tools:lang');
 
         if (!count($this->config['actions'])) {
-            user_error('Trying to use GridFieldBulkManager without any bulk action.', E_USER_ERROR);
+            user_error('Trying to use BulkManager without any bulk action.', E_USER_ERROR);
         }
 
         $actionsListSource = array();
         $actionsConfig = array();
 
-        foreach ($this->config['actions'] as $urlSegment => $hanlderClassName) {
-            $handler = Injector::inst()->get($hanlderClassName);
+        foreach ($this->config['actions'] as $urlSegment => $handlerClassName) {
+            $handler = Injector::inst()->get($handlerClassName);
             $handlerConfig = $handler->getConfig();
 
             $actionsListSource[$urlSegment] = $handlerConfig['label'];
@@ -325,7 +341,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
     public function handleBulkAction($gridField, $request)
     {
         $controller = $gridField->getForm()->getController();
-        
+
         $actionUrlSegment = $request->shift();
         $handlerClass = $this->config['actions'][$actionUrlSegment];
 
