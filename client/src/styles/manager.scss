@@ -2,45 +2,41 @@
 {
   tr.bulkManagerOptions
   {
-    th.bulkmanagerheading {
-        padding-left: 40px;
-    }
-
-    th.bulkmanagerselect
+    th
     {
-      text-align: center;
+      text-transform: none;
 
-      input
+      .bulkActionName
       {
-        margin-left: 0;
+        .chosen-container
+        {
+          min-width: 120px;
+        }
+
+        .chosen-container-single .chosen-single
+        {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
       }
-    }
 
-    .title
-    {
-      margin: 0 0 2px 2px;
-    }
-
-    .dropdown
-    {
-      display: inline-block;
-      border: none;
-      box-shadow: none;
-
-      padding: 0;
-      margin: 0;
-
-      color: #000;
-      vertical-align: top;
-    }
-
-    .doBulkActionButton
-    {
-      margin-left: 5px;
-
-      img
+      .doBulkActionButton
       {
-        height: 20px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+
+        height: 36px;
+        line-height: 26px;
+        margin-left: -1px;
+
+        img
+        {
+          height: 20px;
+        }
+      }
+
+      .bulkSelectAll
+      {
       }
     }
   }// .bulkManagerOptions
@@ -52,18 +48,5 @@
       width: 25px;
       text-align: center;
     }
-    /*
-    td a.tempDisabledEditLink
-    {
-      background: url('../../framework/admin/images/btn-icon/document--pencil.png') no-repeat 2px 0px;
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      text-indent: 119988px;
-      overflow: hidden;
-      vertical-align: middle;
-      background-position: 2px 0px;
-      background-repeat: no-repeat no-repeat;
-    }*/
   }
 }

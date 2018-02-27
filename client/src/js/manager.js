@@ -124,6 +124,16 @@
 							$btn.removeClass(configData['buttonClasses']);
 						}
 					});
+
+					if(!value)
+					{
+						$btn.addClass('disabled');
+						return;
+					}
+					else {
+						$btn.removeClass('disabled');
+					}
+					
 					$btn.addClass(config[value]['buttonClasses']).addClass('btn-outline-secondary');
 
 

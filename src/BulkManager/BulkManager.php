@@ -274,24 +274,23 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
             $actionsConfig[$urlSegment] = $handlerConfig;
         }
 
-        $dropDownActionsList = DropdownField::create('bulkActionName', '')
+        $dropDownActionsList = DropdownField::create(
+            'bulkActionName',
+            false
+        )
             ->setSource($actionsListSource)
-            ->addExtraClass('bulkActionName no-change-track no-chosen')
-            ->setAttribute('id', '');
-
-        reset($actionsListSource);
-        $firstAction = key($actionsListSource);
-
-        $buttonClasses = $actionsConfig[$firstAction]['buttonClasses'];
-        $buttonClasses .= ($actionsConfig[$firstAction]['destructive'] ? ' btn-outline-danger' : '');
+            ->addExtraClass('bulkActionName no-change-track form-group--no-label')
+            ->setAttribute('id', '')
+            ->setEmptyString(_t('SilverStripe\Admin\LeftAndMain.DropdownBatchActionsDefault', 'Choose an action...'));
+            
 
         $templateData = array(
-            'Menu' => $dropDownActionsList,
+            'Menu' => $dropDownActionsList->FieldHolder(),
             'Button' => array(
                 'Label' => _t('GRIDFIELD_BULK_MANAGER.ACTION_BTN_LABEL', 'Go'),
                 'DataURL' => $gridField->Link('bulkAction'),
                 'Icon' => $actionsConfig[$firstAction]['icon'],
-                'Classes' => $buttonClasses,
+                //'Classes' => $buttonClasses,
                 'DataConfig' => json_encode($actionsConfig),
             ),
             'Select' => array(
