@@ -376,17 +376,11 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
             ->setAttribute('data-icon', 'accept')
             ->setUseButtonTag(true);
 
-        $clearErrorButton = FormAction::create('ClearError', _t('GRIDFIELD_BULK_UPLOAD.CLEAR_ERROR_BTN_LABEL', 'Clear errors'))
-            ->addExtraClass('bulkUploadClearErrorButton')
-            ->setAttribute('data-icon', 'arrow-circle-double')
-            ->setUseButtonTag(true);
-
         // get uploadField
         $uploadField = $this->bulkUploadField($gridField);
 
         $data = ArrayData::create(array(
             'Finish' => $finishButton,
-            'ClearErrors' => $clearErrorButton,
             'Colspan' => (count($gridField->getColumns())),
             'UploadField' => $uploadField->Field() // call ->Field() to get requirements in right order
         ));

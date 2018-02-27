@@ -2,6 +2,5 @@
     <th class="" colspan="$Colspan">
         $UploadField
         $Finish
-        $ClearErrors
     </th>
 </tr>

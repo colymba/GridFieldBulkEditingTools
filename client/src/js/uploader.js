@@ -78,8 +78,7 @@
         refresh: function(total, done, error)
         {
           var $info          = this.find('.colymba-bulkupload-info'),
-              $finishBtn     = this.find('.bulkUploadFinishButton'),
-              $clearErrorBtn = this.find('.bulkUploadClearErrorButton')
+              $finishBtn     = this.find('.bulkUploadFinishButton')
               ;
 
           if ( total > 0 )
@@ -107,14 +106,6 @@
               $finishBtn.removeClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'false').removeAttr('disabled');
             }
 
-            //toggle clear error button
-            if ( error > 0 )
-            {
-              $clearErrorBtn.removeClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'false').removeAttr('disabled');
-            }
-            else{
-              $clearErrorBtn.addClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'true').attr('disabled', 'true');
-            }
           }
           else{
             //if not uploading, reset + hide
@@ -122,27 +113,6 @@
             $finishBtn.addClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'true').attr('disabled', 'true');
             $clearErrorBtn.addClass('ui-state-disabled ssui-button-disabled').attr('aria-disabled', 'true').attr('disabled', 'true');
           }       
-        }
-      });
-
-
-      /**
-       * Clears all updloads with warning or error
-       */
-      $('.bulkUploadClearErrorButton:not(.ui-state-disabled)').entwine({
-        onmatch: function(){
-          this.removeClass('action');
-        },
-        onunmatch: function(){},
-        onclick: function(e)
-        {
-          var $bulkUpload = this.parents('.bulkUpload'),
-              $errors = $bulkUpload.find('li.ss-uploadfield-item .ui-state-warning-text,li.ss-uploadfield-item .ui-state-error-text').parents('li')
-              ;
-
-          $($errors.get().reverse()).each(function(index, Element){            
-            $(this).remove();
-          });
         }
       });
 
