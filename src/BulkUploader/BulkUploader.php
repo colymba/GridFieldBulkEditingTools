@@ -2,7 +2,7 @@
 
 namespace Colymba\BulkUpload;
 
-use Colymba\BulkUpload\BulkUploaderRequest;
+use Colymba\BulkUpload\BulkUploadHandler;
 use Colymba\BulkUpload\BulkUploadField;
 
 use SilverStripe\Core\Config\Config;
@@ -429,7 +429,7 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
     public function handleBulkUpload($gridField, $request)
     {
         $controller = $gridField->getForm()->getController();
-        $handler = new \Colymba\BulkUpload\BulkUploaderRequest($gridField, $this, $controller);
+        $handler = new \Colymba\BulkUpload\BulkUploadHandler($gridField, $this, $controller);
 
         return $handler->handleRequest($request);
     }

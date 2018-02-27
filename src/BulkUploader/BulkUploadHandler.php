@@ -18,7 +18,7 @@ use SilverStripe\AssetAdmin\Controller\AssetAdmin;
  *
  * @author colymba
  */
-class BulkUploaderRequest extends RequestHandler
+class BulkUploadHandler extends RequestHandler
 {
     /**
      * Gridfield instance.
