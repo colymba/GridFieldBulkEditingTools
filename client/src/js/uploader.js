@@ -5,25 +5,6 @@
 		$.entwine('colymba', function($) {
 
       /**
-       * Makes sure the component is at the top :)
-       */
-      $('.bulkUploader').entwine({
-        onmatch: function(){
-          var $tr = this.parents('thead').find('tr'),
-              $component = this.clone(),
-              index = $tr.index(this)
-              ;
-          if ( index > 1 )
-          {
-            $component.insertAfter($tr.eq(0));
-            this.remove();
-          }          
-        },
-        onunmatch: function(){}
-      });
-
-
-      /**
        * Track upload progress...
        */      
       $('ul.ss-uploadfield-files').entwine({
