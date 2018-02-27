@@ -12,10 +12,8 @@ Set of SilverStripe 4 GridField components to facilitate bulk file upload & reco
 * [Bulk Upload](#bulk-upload): Upload multiple images or files at once into DataObjects
 * [Bulk Manager](#bulk-manager): Delete, Unlink, Edit (and more) multiple records at once
 
-[More screenshots here.](screenshots)
-
 ## Requirements
-* SilverStripe 4.0 (3.+)
+* SilverStripe 4.0 (master / 3.+)
 * SilverStripe 3.1 (version 2.+ / 1.+)
 * Silverstripe 3.0 (version 0.5)
 

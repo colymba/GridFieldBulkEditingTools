@@ -7,4 +7,4 @@ mappings:
   BulkUploadField: Colymba\BulkUpload\BulkUploadField
   GridFieldBulkImageUpload: Colymba\BulkUpload\GridFieldBulkImageUpload
   GridFieldBulkUpload: Colymba\BulkUpload\BulkUploader
-  GridFieldBulkUpload_Request: Colymba\BulkUpload\BulkUploadRequest
+  GridFieldBulkUpload_Request: Colymba\BulkUpload\BulkUploadHandler
