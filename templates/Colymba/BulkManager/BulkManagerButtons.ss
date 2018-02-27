@@ -1,18 +1,16 @@
-<tr class="bulkManagerOptions">
+<tr class="bulkManagerOptions form--no-dividers">
     <th colspan="$Colspan">
-        <div class="form-inline form--no-dividers form--no-label">
             
-            $Menu
+        $Menu
 
-            <a data-url="$Button.DataURL"
-                data-config="$Button.DataConfig"
-                title="<% _t('GRIDFIELD_BULK_MANAGER.COMPONENT_TITLE', 'Modify one or more entry at a time') %>"
-                class="doBulkActionButton disabled btn btn-outline-secondary">
-                <% if $Button.Icon %><img src="$Button.Icon" alt="" /><% end_if %>
-                $Button.Label
-            </a>
-
-        </div>
+        <a data-url="$Button.DataURL"
+            data-config="$Button.DataConfig"
+            title="<% _t('GRIDFIELD_BULK_MANAGER.COMPONENT_TITLE', 'Modify one or more entry at a time') %>"
+            class="doBulkActionButton disabled btn btn-outline-secondary">
+            <% if $Button.Icon %><img src="$Button.Icon" alt="" /><% end_if %>
+            $Button.Label
+        </a>
+        
     </th>
     <th>
         <label class="form-check-label">

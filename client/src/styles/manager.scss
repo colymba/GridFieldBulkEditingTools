@@ -8,6 +8,14 @@
 
       .bulkActionName
       {
+        float: left;
+
+        .form__field-holder
+        {
+          min-width: 200px;
+          margin-left: 0;
+        }
+
         .chosen-container
         {
           min-width: 120px;
