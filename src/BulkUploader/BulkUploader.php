@@ -369,18 +369,11 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
         if (!singleton($gridField->getModelClass())->canEdit()) {
             return array();
         }
-        
-        // upload management buttons
-        $finishButton = FormAction::create('Finish', _t('GRIDFIELD_BULK_UPLOAD.FINISH_BTN_LABEL', 'Finish'))
-            ->addExtraClass('bulkUploadFinishButton')
-            ->setAttribute('data-icon', 'accept')
-            ->setUseButtonTag(true);
 
         // get uploadField
         $uploadField = $this->bulkUploadField($gridField);
 
         $data = ArrayData::create(array(
-            'Finish' => $finishButton,
             'Colspan' => (count($gridField->getColumns())),
             'UploadField' => $uploadField->Field() // call ->Field() to get requirements in right order
         ));
