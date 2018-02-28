@@ -1,0 +1,17 @@
+[main]
+host = https://www.transifex.com
+
+[gridfieldbulkeditingtools.yml]
+file_filter = lang/<lang>.yml
+minimum_perc = 0
+source_file = lang/en.yml
+source_lang = en
+type = YML
+
+[gridfieldbulkeditingtools.js]
+file_filter = client/src/lang/<lang>.json
+minimum_perc = 0
+source_file = client/src/lang/en.json
+source_lang = en
+type = JSON
+
