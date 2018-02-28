@@ -48,6 +48,10 @@ $config->addComponent(new \Colymba\BulkManager\BulkManager());
 
 See [BULK_MANAGER.md](docs/en//BULK_MANAGER.md) for detailed configuration.
 
+## Tooling
+* `npm run watch` for development
+* `npm run dist` before pushing to the repo
+
 ## Translations
 
 Translations of the natural language strings are managed through a third party translation interface, transifex.com.

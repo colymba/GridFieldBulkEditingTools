@@ -1,0 +1,5 @@
+{
+    "GRIDFIELD_BULK_UPLOAD.PROGRESS_INFO": "Загружается %s файл(ов). %s завершено. %s ошибка(и).",
+    "GRIDFIELD_BULK_MANAGER.BULKACTION_EMPTY_SELECT": "Вы должны выбрать как минимум одну запись.",
+    "GRIDFIELD_BULK_MANAGER.CONFIRM_DESTRUCTIVE_ACTION": "Ваши данные будут безвозвратно удалены. Вы хотите продолжить?"
+}
