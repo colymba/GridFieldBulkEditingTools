@@ -22,7 +22,7 @@ fs.readdir(PATHS.SRC, function(err, files)
             var fileData = `if(typeof(ss) == 'undefined' || typeof(ss.i18n) == 'undefined') {
   if(typeof(console) != 'undefined') console.error('Class ss.i18n not defined');
 } else {
-  ss.i18n.addDictionary(${lang}, ${data});
+  ss.i18n.addDictionary('${lang}', ${data});
 }`;
 
             fs.writeFile(PATHS.DIST + '/' + lang + '.js', fileData, "utf8", function(err) {

@@ -257,7 +257,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
     {
         Requirements::javascript('colymba/gridfield-bulk-editing-tools:client/dist/js/bulkTools.js');
         Requirements::css('colymba/gridfield-bulk-editing-tools:client/dist/styles/bulkTools.css');
-        Requirements::add_i18n_javascript('colymba/gridfield-bulk-editing-tools:lang');
+        Requirements::add_i18n_javascript('colymba/gridfield-bulk-editing-tools:client/lang');
 
         if (!count($this->config['actions'])) {
             user_error('Trying to use BulkManager without any bulk action.', E_USER_ERROR);
