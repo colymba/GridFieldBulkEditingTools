@@ -289,9 +289,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
             'Button' => array(
                 'Label' => _t('GRIDFIELD_BULK_MANAGER.ACTION_BTN_LABEL', 'Go'),
                 'DataURL' => $gridField->Link('bulkAction'),
-                'Icon' => $actionsConfig[$firstAction]['icon'],
-                //'Classes' => $buttonClasses,
-                'DataConfig' => json_encode($actionsConfig),
+                'DataConfig' => json_encode($actionsConfig)
             ),
             'Select' => array(
                 'Label' => _t('GRIDFIELD_BULK_MANAGER.SELECT_ALL_LABEL', 'Select all'),

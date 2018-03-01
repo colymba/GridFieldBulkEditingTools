@@ -7,7 +7,6 @@
             data-config="$Button.DataConfig"
             title="<% _t('GRIDFIELD_BULK_MANAGER.COMPONENT_TITLE', 'Modify one or more entry at a time') %>"
             class="doBulkActionButton disabled btn btn-outline-secondary">
-            <% if $Button.Icon %><img src="$Button.Icon" alt="" /><% end_if %>
             $Button.Label
         </a>
         
