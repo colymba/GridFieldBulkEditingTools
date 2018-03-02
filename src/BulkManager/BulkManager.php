@@ -45,7 +45,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
      * @param array $editableFields List of editable fields
      * @param bool  $defaultActions Use default actions list. False to start fresh.
      */
-    public function __construct($editableFields = null, $defaultActions = true)
+    public function __construct($editableFields = null, $defaultActions = true, $defaultVersionedActions = false)
     {
         if ($editableFields != null) {
             $this->setConfig('editableFields', $editableFields);
@@ -56,6 +56,13 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
                 ->addBulkAction(BulkAction\EditHandler::class)
                 ->addBulkAction(BulkAction\UnlinkHandler::class)
                 ->addBulkAction(BulkAction\DeleteHandler::class);
+        } elseif ($defaultVersionedActions) {
+            $this
+                ->addBulkAction(BulkAction\EditHandler::class)
+                ->addBulkAction(BulkAction\UnlinkHandler::class)
+                ->addBulkAction(BulkAction\ArchiveHandler::class)
+                ->addBulkAction(BulkAction\UnPublishHandler::class)
+                ->addBulkAction(BulkAction\PublishHandler::class);
         }
     }
 

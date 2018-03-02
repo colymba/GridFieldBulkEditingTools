@@ -7,6 +7,9 @@ en:
     DELETE_SELECT_LABEL: Delete
     ACTION_BTN_LABEL: Go
     SELECT_ALL_LABEL: Select all
+    PUBLISH_SELECT_LABEL: Publish
+    UNPUBLISH_SELECT_LABEL: UnPublish
+    ARCHIVE_SELECT_LABEL: Archive
   GRIDFIELD_BULKMANAGER_EDIT_HANDLER:
     HEADER_TEXT: Editing {count} {class}
     TOGGLE_ALL_LINK: Show/Hide all
