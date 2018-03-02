@@ -37,6 +37,18 @@ Upload multiple images or files at once into DataObjects. Perfect for galleries 
 $config->addComponent(new \Colymba\BulkUpload\BulkUploader());
 ```
 
+### Versioned
+By default `BulkUploader` will write to the current stage (most likely Draft). To auto publish your `DataObject`, use the following param or config:
+```php
+$config->addComponent(new \Colymba\BulkUpload\BulkUploader(null, null, true));
+```
+OR
+```php
+$config->getComponentByType('Colymba\\BulkUpload\\BulkUploader')->setAutoPublishDataObject(true);
+```
+
+Your `DataObject` should `own` the `Image`/`File` relation so it is published at the same time: [See SilverStripe DataObject ownership DOC](https://github.com/silverstripe/silverstripe-framework/blob/4.0/docs/en/02_Developer_Guides/00_Model/10_Versioning.md#dataobject-ownership)
+
 See [BULK_UPLOAD.md](docs/en/BULK_UPLOAD.md) for detailed configuration.
 
 ## Bulk Manager

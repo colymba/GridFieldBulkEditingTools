@@ -35,6 +35,13 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
     );
 
     /**
+     * If true, the component will Publish Versioned DataObject
+     * if fasle they will be left as draft.
+     * @var boolean
+     */
+    protected $autoPublishDataObject = false;
+
+    /**
      * UploadField configuration.
      * These options are passed on directly to the UploadField
      * via {@link UploadField::setConfig()} api.
@@ -84,7 +91,7 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
      * @param string $fileRelationName
      * @param string $recordClassName
      */
-    public function __construct($fileRelationName = null, $recordClassName = null)
+    public function __construct($fileRelationName = null, $recordClassName = null, $autoPublishDataObject = false)
     {
         if ($fileRelationName != null) {
             $this->setConfig('fileRelationName', $fileRelationName);
@@ -93,6 +100,8 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
         if ($recordClassName != null) {
             $this->setConfig('recordClassName', $recordClassName);
         }
+
+        $this->setAutoPublishDataObject($autoPublish);
     }
 
     /* **********************************************************************
@@ -115,6 +124,25 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
 
         return $this;
     }
+
+    /**
+     * Set Versioned DataObject auto publish config
+     * @param boolean $autoPublish True to auto publish versioned dataobjects
+     */
+    public function setAutoPublishDataObject($autoPublish)
+    {
+        $this->autoPublishDataObject = $autoPublish;
+        return $this;
+    }
+
+    /**
+     * Get Versioned DataObject auto publish config
+     * @return boolean              auto publish config value
+     */
+    public function getAutoPublishDataObject()
+    {
+        return $this->autoPublishDataObject;
+    } 
 
     /**
      * Set an UploadField configuration parameter.

@@ -85,6 +85,37 @@ class BulkUploadHandler extends RequestHandler
     }
 
     /**
+     * Creates a new DataObject
+     * Add uploaded file to the Dataobject
+     * Add DataObject to Gridfield list
+     * Publish DataObject if enabled
+     * 
+     * @param integer     $fileID The newly uploaded/attached file ID
+     *
+     * @return  DataObject The new DataObject
+     */
+    protected function createDataObject($fileID)
+    {
+        $recordClass = $this->component->getRecordClassName($this->gridField);
+        $record = $recordClass::create();
+        $record->write();
+
+        $record->extend('onBulkUpload', $this->gridField);
+
+        $fileRelationName = $this->component->getFileRelationName($this->gridField);
+        $record->{"{$fileRelationName}ID"} = $fileID;
+
+        $this->gridField->list->add($record);
+
+        if ($this->component->getAutoPublishDataObject() && $record->hasExtension('Versioned'))
+        {
+            $record->publishRecursive();
+        }
+
+        return $record;
+    }
+
+    /**
      * Process upload through UploadField,
      * creates new record and link newly uploaded file
      * adds record to GrifField relation list
@@ -132,19 +163,8 @@ class BulkUploadHandler extends RequestHandler
 
     public function upload(HTTPRequest $request)
     {
-        // 1. DataObject
-        //create record
-        $recordClass = $this->component->getRecordClassName($this->gridField);
-        $record = $recordClass::create();
-        $record->write();
-
-        // passes the current gridfield-instance to a call-back method on the new object
-        $record->extend('onBulkUpload', $this->gridField);
-
-        // 2. File Upload
         $assetAdmin = AssetAdmin::singleton();
         $uploadResponse = $assetAdmin->apiCreateFile($request);
-        $file = null;
         
         if ($uploadResponse->getStatusCode() == 200)
         {
@@ -152,12 +172,7 @@ class BulkUploadHandler extends RequestHandler
             $responseData = array_shift($responseData);
         }
 
-        // 3. Add File to Record
-        $fileRelationName = $this->component->getFileRelationName($this->gridField);
-        $record->{"{$fileRelationName}ID"} = $responseData['id'];
-
-        // 4. Add to Gridfield List
-        $this->gridField->list->add($record);
+        $this->createDataObject($responseData['id']);
 
         return $uploadResponse;
     }
@@ -256,21 +271,11 @@ class BulkUploadHandler extends RequestHandler
         $attachResponses = $uploadField->attach($request);
         $attachResponses = json_decode($attachResponses->getBody(), true);
 
-        $fileRelationName = $uploadField->getName();
-        $recordClass = $this->component->getRecordClassName($this->gridField);
-        $return = array();
+       $return = array();
 
-        foreach ($attachResponses as $attachResponse) {
-            // create record
-            $record = Injector::inst()->create($recordClass);
-            $record->write();
-            $record->extend('onBulkUpload', $this->gridField);
-
-            // attach file
-            $record->{"{$fileRelationName}ID"} = $attachResponse['id'];
-
-            // attached record to gridField relation
-            $this->gridField->list->add($record);
+        foreach ($attachResponses as $attachResponse)
+        {
+            $record = $this->createDataObject($attachResponse['id']);
 
             // JS Template Data
             $responseData = $this->newRecordJSTemplateData($record, $attachResponse);
