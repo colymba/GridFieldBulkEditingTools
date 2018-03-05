@@ -42,24 +42,6 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
     protected $autoPublishDataObject = false;
 
     /**
-     * UploadField configuration.
-     * These options are passed on directly to the UploadField
-     * via {@link UploadField::setConfig()} api.
-     *
-     * Defaults are:
-     * 'sequentialUploads' => false : process uploads 1 after the other rather than all at once
-     * 'canAttachExisting' => true : displays "From files" button in the UploadField
-     * 'canPreviewFolder'  => true : displays the upload location in the UploadField
-     *
-     * @var array
-     */
-    protected $ufConfig = array(
-        'sequentialUploads' => false,
-        'canAttachExisting' => true,
-        'canPreviewFolder' => true,
-    );
-
-    /**
      * UploadField setup function calls.
      * List of setup functions to call on {@link UploadField} with the value to pass.
      *
@@ -70,19 +52,6 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
      */
     protected $ufSetup = array(
         'setFolderName' => 'bulkUpload',
-    );
-
-    /**
-     * UploadField Validator setup function calls.
-     * List of setup functions to call on {@link Upload::validator} with the value to pass.
-     *
-     * e.g. array('setAllowedMaxFileSize' => 10) will result in:
-     * $uploadField->getValidator()->setAllowedMaxFileSize(10)
-     *
-     * @var array
-     */
-    protected $ufValidatorSetup = array(
-        'setAllowedMaxFileSize' => null,
     );
 
     /**
@@ -142,19 +111,6 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
     public function getAutoPublishDataObject()
     {
         return $this->autoPublishDataObject;
-    } 
-
-    /**
-     * Set an UploadField configuration parameter.
-     *
-     * @param string $reference
-     * @param mixed  $value
-     */
-    public function setUfConfig($reference, $value)
-    {
-        $this->ufConfig[$reference] = $value;
-
-        return $this;
     }
 
     /**
@@ -166,19 +122,6 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
     public function setUfSetup($function, $param)
     {
         $this->ufSetup[$function] = $param;
-
-        return $this;
-    }
-
-    /**
-     * Set an UploadField Validator setup function call.
-     *
-     * @param string $function
-     * @param mixed  $param
-     */
-    public function setUfValidatorSetup($function, $param)
-    {
-        $this->ufValidatorSetup[$function] = $param;
 
         return $this;
     }
@@ -200,22 +143,6 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
     }
 
     /**
-     * Returns one $ufConfig reference or the full config.
-     *
-     * @param string $reference $ufConfig parameter to return
-     *
-     * @return mixed
-     */
-    public function getUfConfig($reference = false)
-    {
-        if ($reference) {
-            return $this->ufConfig[$reference];
-        } else {
-            return $this->ufConfig;
-        }
-    }
-
-    /**
      * Returns one $ufSetup reference or the full config.
      *
      * @param string $reference $ufSetup parameter to return
@@ -228,22 +155,6 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
             return $this->ufSetup[$reference];
         } else {
             return $this->ufSetup;
-        }
-    }
-
-    /**
-     * Returns one $ufValidatorSetup reference or the full config.
-     *
-     * @param string $reference $ufValidatorSetup parameter to return
-     *
-     * @return mixed
-     */
-    public function getUfValidatorSetup($reference = false)
-    {
-        if ($reference) {
-            return $this->ufValidatorSetup[$reference];
-        } else {
-            return $this->ufValidatorSetup;
         }
     }
 
@@ -333,42 +244,13 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
         $fieldName = $fileRelationName . '_' . $this->getRecordClassName($gridField) . '_BU';
         $uploadField = BulkUploadField::create($gridField, $fieldName, '')
             ->setForm($gridField->getForm())
-
-            /*->setConfig('previewMaxWidth', 20)
-            ->setConfig('previewMaxHeight', 20)
-            ->setConfig('changeDetection', false)*/
-
             ->setRecord(DataObject::create()) // avoid UploadField to get auto-config from the Page (e.g fix allowedMaxFileNumber)
-
-            /*->setTemplate('BulkUploadField')
-            ->setDownloadTemplateName('colymba-bulkuploaddownloadtemplate')
-
-            ->setConfig('url', $gridField->Link('bulkupload/upload'))
-            ->setConfig('urlSelectDialog', $gridField->Link('bulkupload/select'))
-            ->setConfig('urlAttach', $gridField->Link('bulkupload/attach'))
-            ->setConfig('urlFileExists', $gridField->Link('bulkupload/fileexists'))*/
             ;
-
-        /*
-        //set UploadField config
-        foreach ($this->ufConfig as $key => $val) {
-            $uploadField->setConfig($key, $val);
-        }
-        */
 
         //UploadField setup
         foreach ($this->ufSetup as $fn => $param) {
             $uploadField->{$fn}($param);
         }
-
-        /*
-        //UploadField Validator setup
-        foreach ($this->ufValidatorSetup as $fn => $param) {
-            $uploadField->getValidator()->{$fn}($param);
-        }
-        */
-
-
 
         $schema['data']['createFileEndpoint'] = [
             'url' => $gridField->Link('bulkupload/upload'),
