@@ -258,7 +258,7 @@ class BulkUploadHandler extends RequestHandler
     }
 
     /**
-     * Retrieve Files to be attached
+     * Retrieve File to be attached
      * and generated DataObjects for each one.
      *
      * @param HTTPRequest $request
@@ -267,25 +267,13 @@ class BulkUploadHandler extends RequestHandler
      */
     public function attach(HTTPRequest $request)
     {
-        $uploadField = $this->getUploadField();
-        $attachResponses = $uploadField->attach($request);
-        $attachResponses = json_decode($attachResponses->getBody(), true);
+        $fileID = $request->requestVar('fileID'); //why is this not POST?
+        $dataObject = $this->createDataObject($fileID);
 
-       $return = array();
-
-        foreach ($attachResponses as $attachResponse)
-        {
-            $record = $this->createDataObject($attachResponse['id']);
-
-            // JS Template Data
-            $responseData = $this->newRecordJSTemplateData($record, $attachResponse);
-
-            // add to returned dataset
-            array_push($return, $responseData);
-        }
-
-        $response = new HTTPResponse(Convert::raw2json($return));
-        $this->contentTypeNegotiation($response);
+        $response = new HTTPResponse(Convert::raw2json(array(
+            'done' => $dataObject->ID
+        )));
+        $response->addHeader('Content-Type', 'text/json');
 
         return $response;
     }

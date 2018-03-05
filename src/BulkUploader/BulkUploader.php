@@ -370,12 +370,17 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
 
 
 
-        $uploadLink = $gridField->Link('bulkupload/upload');
         $schema['data']['createFileEndpoint'] = [
-            'url' => $uploadLink,
+            'url' => $gridField->Link('bulkupload/upload'),
             'method' => 'post',
             'payloadFormat' => 'urlencoded',
         ];
+
+        $schema['data']['attachFileEndpoint'] = [
+            'url' => $gridField->Link('bulkupload/attach'),
+            'method' => 'post'
+        ];
+
         $uploadField->setSchemaData($schema);
 
         return $uploadField;
@@ -407,8 +412,8 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
             'UploadField' => $uploadField->Field() // call ->Field() to get requirements in right order
         ));
 
-        Requirements::javascript('colymba/gridfield-bulk-editing-tools:client/dist/js/bulkTools.js');
-        Requirements::css('colymba/gridfield-bulk-editing-tools:client/dist/styles/bulkTools.css');
+        Requirements::javascript('colymba/gridfield-bulk-editing-tools:client/dist/js/main.js');
+        Requirements::css('colymba/gridfield-bulk-editing-tools:client/dist/styles/main.css');
         Requirements::add_i18n_javascript('colymba/gridfield-bulk-editing-tools:client/lang');
 
         return array(

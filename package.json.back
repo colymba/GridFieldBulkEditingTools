@@ -27,10 +27,13 @@
     "url": "https://github.com/colymba/GridFieldBulkEditingTools/issues"
   },
   "homepage": "https://github.com/colymba/GridFieldBulkEditingTools",
-  "dependencies": {
-    "webpack": "^3.10"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@silverstripe/webpack-config": "^0.7"
+    "node-sass": "^4.7.2",
+    "sass-loader": "^6.0",
+    "css-loader": "^0.28",
+    "style-loader": "^0.19",
+    "extract-text-webpack-plugin": "^3.0",
+    "webpack": "^3.10.0"
   }
 }
