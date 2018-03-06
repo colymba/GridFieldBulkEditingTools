@@ -60,7 +60,7 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
      * @param string $fileRelationName
      * @param string $recordClassName
      */
-    public function __construct($fileRelationName = null, $recordClassName = null, $autoPublishDataObject = false)
+    public function __construct($fileRelationName = null, $recordClassName = null, $autoPublish = false)
     {
         if ($fileRelationName != null) {
             $this->setConfig('fileRelationName', $fileRelationName);
