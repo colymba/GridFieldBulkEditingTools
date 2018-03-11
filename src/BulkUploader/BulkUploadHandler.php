@@ -34,13 +34,6 @@ class BulkUploadHandler extends RequestHandler
     protected $component;
 
     /**
-     * Gridfield Form controller.
-     *
-     * @var Controller
-     */
-    protected $controller;
-
-    /**
      * RequestHandler allowed actions.
      *
      * @var array
@@ -65,11 +58,10 @@ class BulkUploadHandler extends RequestHandler
      * @param GridField_URLHandler $component
      * @param Controller           $controller
      */
-    public function __construct($gridField, $component, $controller)
+    public function __construct($gridField, $component)
     {
         $this->gridField = $gridField;
         $this->component = $component;
-        $this->controller = $controller;
         parent::__construct();
     }
 
