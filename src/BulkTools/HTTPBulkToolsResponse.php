@@ -111,7 +111,7 @@ class HTTPBulkToolsResponse extends HTTPResponse
 
         register_shutdown_function(array($this, 'shutdown'));
 
-        parent::__construct(null, $statusCode, $message);
+        parent::__construct(null, $statusCode);
     }
 
     /**
