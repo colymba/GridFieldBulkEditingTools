@@ -3,9 +3,11 @@
 namespace Colymba\BulkManager\BulkAction;
 
 use Colymba\BulkManager\BulkAction\Handler;
+use Colymba\BulkTools\HTTPBulkToolsResponse;
 use SilverStripe\Core\Convert;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
+use Exception;
 
 /**
  * Bulk action handler for unlinking records.
@@ -90,18 +92,22 @@ class UnlinkHandler extends Handler
      *
      * @param HTTPRequest $request
      *
-     * @return HTTPResponse List of affected records ID
+     * @return HTTPBulkToolsResponse
      */
     public function unLink(HTTPRequest $request)
     {
         $ids = $this->getRecordIDList();
-        $this->gridField->list->removeMany($ids);
+        $response = new HTTPBulkToolsResponse(true, $this->gridField);
 
-        $response = new HTTPResponse(Convert::raw2json(array(
-            'done' => true,
-            'records' => $ids,
-        )));
-        $response->addHeader('Content-Type', 'text/json');
+        try {
+            //@todo fix this. seems no ids are returned!
+            $response->addSuccessRecords($this->getRecords());
+            $this->gridField->list->removeMany($ids);
+            $response->setMessage('UnLinked records.');
+        } catch (Exception $ex) {
+            $response->setStatusCode(500);
+            $response->setMessage($ex->getMessage());
+        }
 
         return $response;
     }

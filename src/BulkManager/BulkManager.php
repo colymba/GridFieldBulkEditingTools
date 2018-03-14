@@ -349,7 +349,8 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
         $actionUrlSegment = $request->shift();
         $handlerClass = $this->config['actions'][$actionUrlSegment];
 
-        $handler = Injector::inst()->create($handlerClass, $gridField, $this, $controller);
+        $controller->pushCurrent();
+        $handler = Injector::inst()->create($handlerClass, $gridField, $this);
         if ($handler)
         {
             return $handler->handleRequest($request);

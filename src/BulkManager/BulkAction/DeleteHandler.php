@@ -3,9 +3,11 @@
 namespace Colymba\BulkManager\BulkAction;
 
 use Colymba\BulkManager\BulkAction\Handler;
+use Colymba\BulkTools\HTTPBulkToolsResponse;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Core\Convert;
+use Exception;
 
 /**
  * Bulk action handler for deleting records.
@@ -90,22 +92,28 @@ class DeleteHandler extends Handler
      *
      * @param HTTPRequest $request
      *
-     * @return HTTPResponse List of deleted records ID
+     * @return HTTPBulkToolsResponse
      */
     public function delete(HTTPRequest $request)
     {
-        $ids = array();
+        $response = new HTTPBulkToolsResponse(true, $this->gridField);
 
-        foreach ($this->getRecords() as $record) {
-            array_push($ids, $record->ID);
-            $record->delete();
+        try {
+            foreach ($this->getRecords() as $record) {
+                $response->addSuccessRecord($record);
+                $record->delete();
+            }
+
+            $doneCount = count($response->getSuccessRecords());
+            $message = sprintf(
+                'Deleted %1$d records.',
+                $doneCount
+            );
+            $response->setMessage($message);
+        } catch (Exception $ex) {
+            $response->setStatusCode(500);
+            $response->setMessage($ex->getMessage());
         }
-
-        $response = new HTTPResponse(Convert::raw2json(array(
-            'done' => true,
-            'records' => $ids,
-        )));
-        $response->addHeader('Content-Type', 'text/json');
 
         return $response;
     }

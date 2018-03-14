@@ -451,4 +451,52 @@ class EditHandler extends Handler
         return Controller::curr()->redirect($this->Link('?records[]=' . implode('&records[]=', $ids)));
         //return Controller::curr()->redirect($form->Backlink); //returns to gridField
     }
+
+    /**
+     * Traverse up nested requests until we reach the first that's not a GridFieldDetailForm or GridFieldDetailForm_ItemRequest.
+     * The opposite of {@link Controller::curr()}, required because
+     * Controller::$controller_stack is not directly accessible.
+     *
+     * @return Controller
+     */
+    protected function getToplevelController()
+    {
+        $c = Controller::curr();
+        while ($c && ($c instanceof GridFieldDetailForm_ItemRequest || $c instanceof GridFieldDetailForm)) {
+            $c = $c->getController();
+        }
+
+        return $c;
+    }
+
+    /**
+     * Edited version of the GridFieldEditForm function
+     * adds the 'Bulk Upload' at the end of the crums.
+     *
+     * CMS-specific functionality: Passes through navigation breadcrumbs
+     * to the template, and includes the currently edited record (if any).
+     * see {@link LeftAndMain->Breadcrumbs()} for details.
+     *
+     * @author SilverStripe original Breadcrumbs() method
+     *
+     * @see GridFieldDetailForm_ItemRequest
+     *
+     * @param bool $unlinked
+     *
+     * @return ArrayData
+     */
+    public function Breadcrumbs($unlinked = false)
+    {
+        if (!Controller::curr()->hasMethod('Breadcrumbs')) {
+            return;
+        }
+
+        $items = Controller::curr()->Breadcrumbs($unlinked);
+        $items->push(new ArrayData(array(
+            'Title' => 'Bulk Editing',
+            'Link' => false,
+        )));
+
+        return $items;
+    }
 }

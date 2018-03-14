@@ -3,9 +3,11 @@
 namespace Colymba\BulkManager\BulkAction;
 
 use Colymba\BulkManager\BulkAction\Handler;
+use Colymba\BulkTools\HTTPBulkToolsResponse;
 use SilverStripe\Core\Convert;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
+use Exception;
 
 /**
  * Bulk action handler for recursive archiving records.
@@ -90,31 +92,37 @@ class ArchiveHandler extends Handler
      *
      * @param HTTPRequest $request
      *
-     * @return HTTPResponse List of affected records ID
+     * @return HTTPBulkToolsResponse
      */
     public function archive(HTTPRequest $request)
     {
         $records = $this->getRecords();
-        
-        $successes = array();
-        $errors = array();
+        $response = new HTTPBulkToolsResponse(true, $this->gridField);
 
-        foreach ($records as $record)
-        {
-            $done = $record->doArchive();
-            if ($done)
+        try {
+            foreach ($records as $record)
             {
-                array_push($successes, $record->ID);
-            }else{
-                array_push($errors, array('id' => $record->ID, 'message' => $done));
+                $done = $record->doArchive();
+                if ($done)
+                {
+                    $response->addSuccessRecord($record);
+                }else{
+                    $response->addFailedRecord($record, $done);
+                }
             }
-        }
 
-        $response = new HTTPResponse(Convert::raw2json(array(
-            'done' => $successes,
-            'errors' => $errors,
-        )));
-        $response->addHeader('Content-Type', 'text/json');
+            $doneCount = count($response->getSuccessRecords());
+            $failCount = count($response->getFailedRecords());
+            $message = sprintf(
+                'Archived %1$d of %2$d records.',
+                $doneCount,
+                $doneCount + $failCount
+            );
+            $response->setMessage($message);
+        } catch (Exception $ex) {
+            $response->setStatusCode(500);
+            $response->setMessage($ex->getMessage());
+        }
 
         return $response;
     }

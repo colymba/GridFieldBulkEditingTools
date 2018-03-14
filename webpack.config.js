@@ -30,6 +30,7 @@ const config = [
   {
     name: 'js',
     entry: [
+      `${PATHS.SRC}/js/bulkTools.js`,
       `${PATHS.SRC}/js/manager.js`,
       `${PATHS.SRC}/js/managerBulkEditingForm.js`,
       `${PATHS.SRC}/js/uploader.js`
