@@ -2,6 +2,7 @@
 
 namespace Colymba\BulkUpload;
 
+use Colymba\BulkTools\HTTPBulkToolsResponse;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\RequestHandler;
 use SilverStripe\Control\HTTPRequest;
@@ -114,32 +115,41 @@ class BulkUploadHandler extends RequestHandler
         {
             $responseData = Convert::json2array($uploadResponse->getBody());
             $responseData = array_shift($responseData);
-        }
 
-        $this->createDataObject($responseData['id']);
+            $record = $this->createDataObject($responseData['id']);
+
+            $bulkToolsResponse = new HTTPBulkToolsResponse(false, $this->gridField);
+            $bulkToolsResponse->addSuccessRecord($record);
+            
+            $responseData['bulkTools'] = json_decode($bulkToolsResponse->getBody());
+            $uploadResponse->setBody(json_encode(array($responseData)));
+        }
 
         return $uploadResponse;
     }
 
     /**
      * Retrieve File to be attached
-     * and generated DataObjects for each one.
+     * and generated DataObject.
      *
      * @param HTTPRequest $request
      *
-     * @return HTTPResponse
+     * @return HTTPBulkToolsResponse
      */
     public function attach(HTTPRequest $request)
     {
         $fileID = $request->requestVar('fileID'); //why is this not POST?
         $dataObject = $this->createDataObject($fileID);
 
-        $response = new HTTPResponse(Convert::raw2json(array(
-            'done' => $dataObject->ID
-        )));
-        $response->addHeader('Content-Type', 'text/json');
-
+        $response = new HTTPBulkToolsResponse(false, $this->gridField);
+        $response->addSuccessRecord($dataObject);
         return $response;
+    }
+
+    public function getRecordRow(HTTPRequest $request)
+    {
+        $recordID = $request->requestVar('recordID');
+        print_r($recordID);
     }
 
     /**

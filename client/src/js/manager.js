@@ -206,10 +206,11 @@
 					this.doBulkAction(action, ids);
 				},
 
-				doBulkAction: function(action, ids, callbackFunction, callbackContext)
+				doBulkAction: function(action, ids)
 				{
           var $parent = $(this).parents('.bulkManagerOptions'),
               $btn    = $parent.find('a.doBulkActionButton'),
+              $msg    = $parent.find('.message'),
 
               config  = $btn.data('config'),
               url     = this.getActionURL(action, $(this).data('url')),
@@ -227,15 +228,12 @@
 					{
 						if( !confirm(ss.i18n._t('GRIDFIELD_BULK_MANAGER.CONFIRM_DESTRUCTIVE_ACTION')) )
 						{
-							if ( callbackFunction && callbackContext )
-							{
-								callbackFunction.call(callbackContext, false);
-							}
 							return false;
 						}
 					}
 
 					$btn.addClass('loading');
+					$msg.removeClass('static show error warning');
 
 					if ( config[action]['xhr'] )
 					{
@@ -244,15 +242,25 @@
 							data: data,
 							type: "POST",
 							context: $(this)
-						}).done(function(data, textStatus, jqXHR) {
-	            $btn.removeClass('loading');
-	            if ( callbackFunction && callbackContext )
-							{
-								callbackFunction.call(callbackContext, data);
+						}).always(function(data, textStatus, jqXHR) {
+							$btn.removeClass('loading');
+							
+							//if request fail, return a +4xx status code, extract json response
+							if (data.responseText) {
+								data = JSON.parse(data.responseText);
 							}
-							else{
-								$(this).parents('.ss-gridfield').entwine('.').entwine('ss').reload();
+							
+							$msg.html(data.message);
+
+							if(data.isError) {
+								$msg.addClass('static error');
+							} else if (data.isWarning) {
+								$msg.addClass('show warning');
+							} else {
+								$msg.addClass('show');
 							}
+
+							bulkTools.gridfieldRefresh($(this).parents('.ss-gridfield'), data);
 						});
 					}
 					else{

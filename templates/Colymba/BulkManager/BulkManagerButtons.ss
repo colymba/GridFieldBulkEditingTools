@@ -9,6 +9,8 @@
             class="doBulkActionButton disabled btn btn-outline-secondary">
             $Button.Label
         </a>
+
+        <div class="message notice"></div>
         
     </th>
     <th>
