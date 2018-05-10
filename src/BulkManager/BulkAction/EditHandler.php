@@ -12,6 +12,7 @@ use SilverStripe\Forms\FormAction;
 use SilverStripe\Forms\LiteralField;
 use SilverStripe\Forms\ToggleCompositeField;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\View\ArrayData;
 use SilverStripe\View\Requirements;
 
 /**
