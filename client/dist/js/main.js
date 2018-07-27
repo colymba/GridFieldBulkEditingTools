@@ -1,1 +1,475 @@
-!function(e){function t(i){if(n[i])return n[i].exports;var s=n[i]={i:i,l:!1,exports:{}};return e[i].call(s.exports,s,s.exports,t),s.l=!0,s.exports}var n={};t.m=e,t.c=n,t.d=function(e,n,i){t.o(e,n)||Object.defineProperty(e,n,{configurable:!1,enumerable:!0,get:i})},t.n=function(e){var n=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(n,"a",n),n},t.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},t.p="",t(t.s=0)}({"./client/src/js/bulkTools.js":function(e,t,n){(function(e){window.bulkTools={gridfieldRefresh:function(e,t){t.isError||(t.isDestructive?this.removeGridFieldRows(e,t.records.success):this.updateGridFieldRows(e,t.records.success),this.failedGridFieldRows(e,t.records.failed))},getGridFieldRow:function(e,t){return e.find('.ss-gridfield-item[data-id="'+t.id+'"][data-class="'+t.class+'"]')},cleanGridFieldRow:function(e){return e.removeClass("bt-deleted bt-failed bt-updated").removeAttr("bt-error")},removeGridFieldRows:function(e,t){t.forEach(function(t){this.getGridFieldRow(e,t).addClass("bt-deleted").fadeOut(2e3)},this),e.entwine(".").entwine("ss").delay(2e3).reload()},failedGridFieldRows:function(e,t){t.forEach(function(t){this.getGridFieldRow(e,t).addClass("bt-failed").attr("bt-error",t.message)},this)},updateGridFieldRows:function(t,n){t.find(".ss-gridfield-item.ss-gridfield-no-items").remove(),n.forEach(function(n){var i=this.getGridFieldRow(t,n),s=e(n.row).addClass("bt-updated");1===i.length?i.replaceWith(s):t.find(".ss-gridfield-items").prepend(s)},this)}}}).call(t,n("jquery"))},"./client/src/js/manager.js":function(e,t,n){(function(e){!function(e){e.entwine("ss",function(e){e.entwine("colymba",function(e){e(".bulkManagerOptions").entwine({onmatch:function(){var t=this.parents("thead"),n=t.find("tr"),i=[".filter-header",".sortable-header"],s=t.find(i.join(",")),o=n.index(this),a=n.length-1;s.each(function(e,t){var i=n.index(t);i<a&&(a=i)}),o>a&&n.eq(a).insertAfter(e(this))},onunmatch:function(){}}),e("td.col-bulkSelect").entwine({onmatch:function(){},onunmatch:function(){},onmouseover:function(){e(this).parents(".ss-gridfield-item").find(".edit-link").removeClass("edit-link").addClass("tempDisabledEditLink")},onmouseout:function(){e(this).parents(".ss-gridfield-item").find(".tempDisabledEditLink").addClass("edit-link").removeClass("tempDisabledEditLink")},onclick:function(t){var n=e(t.target).find("input");e(n).prop("checked")?e(n).prop("checked",!1):e(n).prop("checked",!0)}}),e("td.col-bulkSelect input").entwine({onmatch:function(){},onunmatch:function(){},onclick:function(t){e(this).parents(".grid-field__table").find("input.bulkSelectAll").prop("checked","")}}),e("input.bulkSelectAll").entwine({onmatch:function(){},onunmatch:function(){},onclick:function(){var t=e(this).prop("checked");e(this).parents(".grid-field__table").find("td.col-bulkSelect input").prop("checked",t).trigger("change")},getSelectRecordsID:function(){return e(this).parents(".grid-field__table").find("td.col-bulkSelect input:checked").map(function(){return parseInt(e(this).data("record"))}).get()}}),e("select.bulkActionName").entwine({onmatch:function(){},onunmatch:function(){},onchange:function(t){var n=e(this).val(),i=e(this).parents(".bulkManagerOptions"),s=i.find(".doBulkActionButton"),o=s.data("config");if(e.each(o,function(e,t){e!=n&&s.removeClass(t.buttonClasses)}),!n)return void s.addClass("disabled");if(s.removeClass("disabled"),s.addClass(o[n].buttonClasses).addClass("btn-outline-secondary"),o[n].icon){var a=s.find("img");a.length?a.attr("src",o[n].icon):s.prepend('<img src="'+o[n].icon+'" alt="" />')}else s.find("img").remove();o[n].destructive?s.addClass("btn-outline-danger"):s.removeClass("btn-outline-danger")}}),e(".doBulkActionButton").entwine({onmatch:function(){},onunmatch:function(){},getActionURL:function(e,t){var n=(new Date).getTime();return t=t.split("?"),e=e?"/"+e:"",t=t[1]?t[0]+e+"?"+t[1]+"&cacheBuster="+n:t[0]+e+"?cacheBuster="+n},onclick:function(t){var n=e(this).parents(".bulkManagerOptions"),i=n.find("select.bulkActionName").val(),s=e(this).parents(".bulkManagerOptions").find("input.bulkSelectAll:first").getSelectRecordsID();this.doBulkAction(i,s)},doBulkAction:function(t,n){var i=e(this).parents(".bulkManagerOptions"),s=i.find("a.doBulkActionButton"),o=i.find(".message"),a=s.data("config"),r=this.getActionURL(t,e(this).data("url")),d={records:n};return n.length<=0?void alert(ss.i18n._t("GRIDFIELD_BULK_MANAGER.BULKACTION_EMPTY_SELECT")):!(a[t].destructive&&!confirm(ss.i18n._t("GRIDFIELD_BULK_MANAGER.CONFIRM_DESTRUCTIVE_ACTION")))&&(s.addClass("loading"),o.removeClass("static show error warning"),a[t].xhr?e.ajax({url:r,data:d,type:"POST",context:e(this)}).always(function(t,n,i){s.removeClass("loading"),t.responseText&&(t=JSON.parse(t.responseText)),o.html(t.message),t.isError?o.addClass("static error"):t.isWarning?o.addClass("show warning"):o.addClass("show"),bulkTools.gridfieldRefresh(e(this).parents(".ss-gridfield"),t)}):(r=r+"&records[]="+n.join("&records[]="),window.location.href=r),void 0)}})})})}(e)}).call(t,n("jquery"))},"./client/src/js/managerBulkEditingForm.js":function(e,t,n){(function(e){!function(e){e.entwine("colymba",function(e){e("#bulkEditToggle").entwine({onmatch:function(){},onunmatch:function(){},onclick:function(t){var n=this.parents("form").find(".ss-toggle .ui-accordion-header"),i=this.data("state");i=i&&"close"!==i?"close":"open",n.each(function(){var t=e(this);"open"!==i||t.hasClass("ui-state-active")||t.click(),"close"===i&&t.hasClass("ui-state-active")&&t.click()}),this.data("state",i)}}),e(".bulkEditingFieldHolder").entwine({onmatch:function(){},onunmatch:function(){},onchange:function(){this.removeClass("updated"),this.hasClass("hasUpdate")||this.addClass("hasUpdate")}})})}(e)}).call(t,n("jquery"))},"./client/src/js/uploader.js":function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),function(e){var t=n("lib/Injector"),i=function(t){var n=e("#"+t.fieldId),i=n.parents(".ss-gridfield"),s=n.data("schema");e.ajax(s.data.attachFileEndpoint.url,{method:s.data.attachFileEndpoint.method,data:{fileID:t.file.id}}).done(function(e,t,n){bulkTools.gridfieldRefresh(i,e)})},s=function(t){var n=e("#"+t.fieldId).parents(".ss-gridfield");bulkTools.gridfieldRefresh(n,t.json.bulkTools)},o=function(e){return function(t){return function(t,n){var o=n.type,a=n.payload;switch(o){case"UPLOADFIELD_ADD_FILE":return-1!==a.fieldId.indexOf("_BU")&&a.file.id&&i(a),e(t,{type:o,payload:a});case"UPLOADFIELD_UPLOAD_SUCCESS":return-1!==a.fieldId.indexOf("_BU")&&s(a),e(t,{type:o,payload:a});default:return e(t,{type:o,payload:a})}}}};n.n(t).a.transform("bulkUploaderTransformation",function(e){e.reducer("assetAdmin",o)})}.call(t,n("jquery"))},0:function(e,t,n){n("./client/src/js/bulkTools.js"),n("./client/src/js/manager.js"),n("./client/src/js/managerBulkEditingForm.js"),e.exports=n("./client/src/js/uploader.js")},jquery:function(e,t){e.exports=jQuery},"lib/Injector":function(e,t){e.exports=Injector}});
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = "./client/src/bundles/bundle.js");
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./client/src/bundles/bundle.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__("./client/src/js/bulkTools.js");
+__webpack_require__("./client/src/js/manager.js");
+__webpack_require__("./client/src/js/managerBulkEditingForm.js");
+__webpack_require__("./client/src/js/uploader.js");
+
+/***/ }),
+
+/***/ "./client/src/js/bulkTools.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function($) {
+window.bulkTools = {
+
+  gridfieldRefresh: function gridfieldRefresh($gridfield, data) {
+    if (!data.isError) {
+      if (data.isDestructive) {
+        this.removeGridFieldRows($gridfield, data.records.success);
+      } else {
+        this.updateGridFieldRows($gridfield, data.records.success);
+      }
+
+      this.failedGridFieldRows($gridfield, data.records.failed);
+    }
+  },
+
+  getGridFieldRow: function getGridFieldRow($gridfield, record) {
+    return $gridfield.find('.ss-gridfield-item[data-id="' + record.id + '"][data-class="' + record.class + '"]');
+  },
+
+  cleanGridFieldRow: function cleanGridFieldRow($row) {
+    return $row.removeClass('bt-deleted bt-failed bt-updated').removeAttr('bt-error');
+  },
+
+  removeGridFieldRows: function removeGridFieldRows($gridfield, records) {
+    records.forEach(function (record) {
+      var $row = this.getGridFieldRow($gridfield, record);
+      $row.addClass('bt-deleted').fadeOut(2000);
+    }, this);
+    $gridfield.entwine('.').entwine('ss').delay(2000).reload();
+  },
+
+  failedGridFieldRows: function failedGridFieldRows($gridfield, records) {
+    records.forEach(function (record) {
+      var $row = this.getGridFieldRow($gridfield, record);
+      $row.addClass('bt-failed').attr('bt-error', record.message);
+    }, this);
+  },
+
+  updateGridFieldRows: function updateGridFieldRows($gridfield, records) {
+    $gridfield.find('.ss-gridfield-item.ss-gridfield-no-items').remove();
+    records.forEach(function (record) {
+      var $row = this.getGridFieldRow($gridfield, record);
+      var $newRow = $(record.row).addClass('bt-updated');
+
+      if ($row.length === 1) {
+        $row.replaceWith($newRow);
+      } else {
+        $gridfield.find('.ss-gridfield-items').prepend($newRow);
+      }
+    }, this);
+  }
+
+};
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+
+/***/ "./client/src/js/manager.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(jQuery) {(function ($) {
+	$.entwine('ss', function ($) {
+
+		$.entwine('colymba', function ($) {
+			$('.bulkManagerOptions').entwine({
+				onmatch: function onmatch() {
+					var $parent = this.parents('thead'),
+					    $tr = $parent.find('tr'),
+					    targets = ['.filter-header', '.sortable-header'],
+					    $target = $parent.find(targets.join(',')),
+					    index = $tr.index(this),
+					    newIndex = $tr.length - 1;
+
+					$target.each(function (index, Element) {
+						var idx = $tr.index(Element);
+						if (idx < newIndex) {
+							newIndex = idx;
+						}
+					});
+
+					if (index > newIndex) {
+						$tr.eq(newIndex).insertAfter($(this));
+					}
+				},
+				onunmatch: function onunmatch() {}
+			});
+
+			$('td.col-bulkSelect').entwine({
+				onmatch: function onmatch() {},
+				onunmatch: function onunmatch() {},
+				onmouseover: function onmouseover() {
+					$(this).parents('.ss-gridfield-item').find('.edit-link').removeClass('edit-link').addClass('tempDisabledEditLink');
+				},
+				onmouseout: function onmouseout() {
+					$(this).parents('.ss-gridfield-item').find('.tempDisabledEditLink').addClass('edit-link').removeClass('tempDisabledEditLink');
+				},
+				onclick: function onclick(e) {
+					var cb = $(e.target).find('input');
+					if (!$(cb).prop('checked')) $(cb).prop('checked', true);else $(cb).prop('checked', false);
+				}
+			});
+
+			$('td.col-bulkSelect input').entwine({
+				onmatch: function onmatch() {},
+				onunmatch: function onunmatch() {},
+				onclick: function onclick(e) {
+					$(this).parents('.grid-field__table').find('input.bulkSelectAll').prop('checked', '');
+				}
+			});
+
+			$('input.bulkSelectAll').entwine({
+				onmatch: function onmatch() {},
+				onunmatch: function onunmatch() {},
+				onclick: function onclick() {
+					var state = $(this).prop('checked');
+					$(this).parents('.grid-field__table').find('td.col-bulkSelect input').prop('checked', state).trigger('change');
+				},
+				getSelectRecordsID: function getSelectRecordsID() {
+					return $(this).parents('.grid-field__table').find('td.col-bulkSelect input:checked').map(function () {
+						return parseInt($(this).data('record'));
+					}).get();
+				}
+			});
+
+			$('select.bulkActionName').entwine({
+				onmatch: function onmatch() {},
+				onunmatch: function onunmatch() {},
+				onchange: function onchange(e) {
+					var value = $(this).val(),
+					    $parent = $(this).parents('.bulkManagerOptions'),
+					    $btn = $parent.find('.doBulkActionButton'),
+					    config = $btn.data('config');
+
+					$.each(config, function (configKey, configData) {
+						if (configKey != value) {
+							$btn.removeClass(configData['buttonClasses']);
+						}
+					});
+
+					if (!value) {
+						$btn.addClass('disabled');
+						return;
+					} else {
+						$btn.removeClass('disabled');
+					}
+
+					$btn.addClass(config[value]['buttonClasses']).addClass('btn-outline-secondary');
+
+					if (config[value]['icon']) {
+						var $img = $btn.find('img');
+
+						if ($img.length) {
+							$img.attr('src', config[value]['icon']);
+						} else {
+							$btn.prepend('<img src="' + config[value]['icon'] + '" alt="" />');
+						}
+					} else {
+						$btn.find('img').remove();
+					}
+
+					if (config[value]['destructive']) {
+						$btn.addClass('btn-outline-danger');
+					} else {
+						$btn.removeClass('btn-outline-danger');
+					}
+				}
+			});
+
+			$('.doBulkActionButton').entwine({
+				onmatch: function onmatch() {},
+				onunmatch: function onunmatch() {},
+				getActionURL: function getActionURL(action, url) {
+					var cacheBuster = new Date().getTime();
+					url = url.split('?');
+
+					if (action) {
+						action = '/' + action;
+					} else {
+						action = '';
+					}
+
+					if (url[1]) {
+						url = url[0] + action + '?' + url[1] + '&' + 'cacheBuster=' + cacheBuster;
+					} else {
+						url = url[0] + action + '?' + 'cacheBuster=' + cacheBuster;
+					}
+					return url;
+				},
+				onclick: function onclick(e) {
+					var $parent = $(this).parents('.bulkManagerOptions'),
+					    action = $parent.find('select.bulkActionName').val(),
+					    ids = $(this).parents('.bulkManagerOptions').find('input.bulkSelectAll:first').getSelectRecordsID();
+
+					this.doBulkAction(action, ids);
+				},
+
+				doBulkAction: function doBulkAction(action, ids) {
+					var $parent = $(this).parents('.bulkManagerOptions'),
+					    $btn = $parent.find('a.doBulkActionButton'),
+					    $msg = $parent.find('.message'),
+					    config = $btn.data('config'),
+					    url = this.getActionURL(action, $(this).data('url')),
+					    data = { records: ids };
+
+					if (ids.length <= 0) {
+						alert(ss.i18n._t('GRIDFIELD_BULK_MANAGER.BULKACTION_EMPTY_SELECT'));
+						return;
+					}
+
+					if (config[action]['destructive']) {
+						if (!confirm(ss.i18n._t('GRIDFIELD_BULK_MANAGER.CONFIRM_DESTRUCTIVE_ACTION'))) {
+							return false;
+						}
+					}
+
+					$btn.addClass('loading');
+					$msg.removeClass('static show error warning');
+
+					if (config[action]['xhr']) {
+						$.ajax({
+							url: url,
+							data: data,
+							type: "POST",
+							context: $(this)
+						}).always(function (data, textStatus, jqXHR) {
+							$btn.removeClass('loading');
+
+							if (data.responseText) {
+								data = JSON.parse(data.responseText);
+							}
+
+							$msg.html(data.message);
+
+							if (data.isError) {
+								$msg.addClass('static error');
+							} else if (data.isWarning) {
+								$msg.addClass('show warning');
+							} else {
+								$msg.addClass('show');
+							}
+
+							bulkTools.gridfieldRefresh($(this).parents('.ss-gridfield'), data);
+						});
+					} else {
+						var records = 'records[]=' + ids.join('&records[]=');
+						url = url + '&' + records;
+
+						window.location.href = url;
+					}
+				}
+			});
+		});
+	});
+})(jQuery);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+
+/***/ "./client/src/js/managerBulkEditingForm.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(jQuery) {(function ($) {
+  $.entwine('colymba', function ($) {
+    $('#bulkEditToggle').entwine({
+      onmatch: function onmatch() {},
+      onunmatch: function onunmatch() {},
+      onclick: function onclick(e) {
+        var toggleFields = this.parents('form').find('.ss-toggle .ui-accordion-header'),
+            state = this.data('state');
+
+        if (!state || state === 'close') {
+          state = 'open';
+        } else {
+          state = 'close';
+        }
+
+        toggleFields.each(function () {
+          var $this = $(this);
+
+          if (state === 'open' && !$this.hasClass('ui-state-active')) {
+            $this.click();
+          }
+
+          if (state === 'close' && $this.hasClass('ui-state-active')) {
+            $this.click();
+          }
+        });
+
+        this.data('state', state);
+      }
+    });
+
+    $('.bulkEditingFieldHolder').entwine({
+      onmatch: function onmatch() {},
+      onunmatch: function onunmatch() {},
+      onchange: function onchange() {
+        this.removeClass('updated');
+        if (!this.hasClass('hasUpdate')) {
+          this.addClass('hasUpdate');
+        }
+      }
+    });
+  });
+})(jQuery);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+
+/***/ "./client/src/js/uploader.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function(jQuery) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lib_Injector__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lib_Injector___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lib_Injector__);
+
+
+
+var bulkUploadFieldAttach = function bulkUploadFieldAttach(payload) {
+  var $uploadField = jQuery('#' + payload.fieldId);
+  var $gridfield = $uploadField.parents('.ss-gridfield');
+  var schema = $uploadField.data('schema');
+  jQuery.ajax(schema.data.attachFileEndpoint.url, {
+    method: schema.data.attachFileEndpoint.method,
+    data: {
+      fileID: payload.file.id
+    }
+  }).done(function (data, textStatus, jqXHR) {
+    bulkTools.gridfieldRefresh($gridfield, data);
+  });
+};
+
+var bulkUploadFieldUpload = function bulkUploadFieldUpload(payload) {
+  var $gridfield = jQuery('#' + payload.fieldId).parents('.ss-gridfield');
+  bulkTools.gridfieldRefresh($gridfield, payload.json.bulkTools);
+};
+
+var bulkUploadFieldReducer = function bulkUploadFieldReducer(originalReducer) {
+  return function (globalState) {
+    return function (state, _ref) {
+      var type = _ref.type,
+          payload = _ref.payload;
+
+      switch (type) {
+        case 'UPLOADFIELD_ADD_FILE':
+          {
+            if (payload.fieldId.indexOf('_BU') !== -1 && payload.file.id) {
+              bulkUploadFieldAttach(payload);
+            }
+            return originalReducer(state, { type: type, payload: payload });
+          }
+
+        case 'UPLOADFIELD_UPLOAD_SUCCESS':
+          {
+            if (payload.fieldId.indexOf('_BU') !== -1) {
+              bulkUploadFieldUpload(payload);
+            }
+            return originalReducer(state, { type: type, payload: payload });
+          }
+
+        default:
+          {
+            return originalReducer(state, { type: type, payload: payload });
+          }
+      }
+    };
+  };
+};
+
+__WEBPACK_IMPORTED_MODULE_0_lib_Injector___default.a.transform('bulkUploaderTransformation', function (updater) {
+  updater.reducer('assetAdmin', bulkUploadFieldReducer);
+});
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(0)))
+
+/***/ }),
+
+/***/ 0:
+/***/ (function(module, exports) {
+
+module.exports = jQuery;
+
+/***/ }),
+
+/***/ 1:
+/***/ (function(module, exports) {
+
+module.exports = Injector;
+
+/***/ })
+
+/******/ });
+//# sourceMappingURL=main.js.map

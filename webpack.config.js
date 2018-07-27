@@ -19,8 +19,6 @@ const PATHS = {
   MODULES: 'node_modules',
   // relative path from your css files to your other files, such as images and fonts
   FILES_PATH: '../',
-  // thirdparty folder containing copies of packages which wouldn't be available on NPM
-  THIRDPARTY: 'thirdparty',
   // the root path to your javascript source files
   SRC: Path.resolve('client/src'),
   DIST: Path.resolve('client/dist'),
@@ -29,12 +27,9 @@ const PATHS = {
 const config = [
   {
     name: 'js',
-    entry: [
-      `${PATHS.SRC}/js/bulkTools.js`,
-      `${PATHS.SRC}/js/manager.js`,
-      `${PATHS.SRC}/js/managerBulkEditingForm.js`,
-      `${PATHS.SRC}/js/uploader.js`
-    ],
+    entry: {
+      main: `${PATHS.SRC}/bundles/bundle.js`,
+    },
     output: {
       path: PATHS.DIST,
       filename: 'js/[name].js',
@@ -47,11 +42,9 @@ const config = [
   },
   {
     name: 'css',
-    entry: [
-      `${PATHS.SRC}/styles/manager.scss`,
-      `${PATHS.SRC}/styles/managerBulkEditingForm.scss`,
-      `${PATHS.SRC}/styles/uploader.scss`
-    ],
+    entry: {
+      main: `${PATHS.SRC}/styles/bundle.scss`,
+    },
     output: {
       path: PATHS.DIST,
       filename: 'styles/[name].css'
@@ -62,4 +55,7 @@ const config = [
   },
 ];
 
-module.exports = config;
+// Use WEBPACK_CHILD=js or WEBPACK_CHILD=css env var to run a single config
+module.exports = (process.env.WEBPACK_CHILD)
+  ? config.find((entry) => entry.name === process.env.WEBPACK_CHILD)
+  : module.exports = config;
