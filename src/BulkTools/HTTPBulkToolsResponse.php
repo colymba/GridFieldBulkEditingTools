@@ -4,7 +4,9 @@ namespace Colymba\BulkTools;
 
 use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Core\Convert;
+use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\ORM\ArrayList;
+use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\SS_List;
 use SilverStripe\View\HTML;
 
@@ -61,7 +63,7 @@ class HTTPBulkToolsResponse extends HTTPResponse
     protected $message = '';
 
     /**
-     * Gridfield instance.
+     * GridField instance.
      *
      * @var GridField
      */
@@ -99,7 +101,7 @@ class HTTPBulkToolsResponse extends HTTPResponse
      * Create a new bulk tools HTTP response
      *
      * @param boolean $removesRows Does the action removes rows?
-     * @param gridfield $gridfield gridfield instance that holds the records list
+     * @param GridField $gridfield gridfield instance that holds the records list
      * @param int $statusCode The numeric status code - 200, 404, etc
      * @param string $statusDescription The text to be given alongside the status code.
      *  See {@link setStatusCode()} for more information.
@@ -107,7 +109,7 @@ class HTTPBulkToolsResponse extends HTTPResponse
     public function __construct($removesRows, $gridfield, $statusCode = null)
     {
         $this->removesRows = $removesRows;
-        $this->gridfield = $gridfield;
+        $this->gridField = $gridfield;
 
         register_shutdown_function(array($this, 'shutdown'));
 
@@ -115,7 +117,7 @@ class HTTPBulkToolsResponse extends HTTPResponse
     }
 
     /**
-     * Overriden here so content-type cannot be changed
+     * Overridden here so content-type cannot be changed
      * Add a HTTP header to the response, replacing any header of the same name.
      *
      * @param string $header Example: "content-type"
@@ -147,8 +149,9 @@ class HTTPBulkToolsResponse extends HTTPResponse
     }
 
     /**
-     * Overriden here so the response body cannot be set manually
-     * 
+     * Overridden here so the response body cannot be set manually
+     *
+     * @param string $body
      * @return $this
      */
     public function setBody($body)
@@ -168,7 +171,8 @@ class HTTPBulkToolsResponse extends HTTPResponse
 
     /**
      * Set the general response message
-     * 
+     *
+     * @param string $message
      * @return $this
      */
     public function setMessage($message)
@@ -201,14 +205,14 @@ class HTTPBulkToolsResponse extends HTTPResponse
 
     /**
      * Add an ID to the successfully modified list
-     * @param interger $id the newly modified ID
+     * @param int $id the newly modified ID
      * @param string $className object class name (default to gridfield getModelClass())
      * @return $this
      */
     /*public function addSuccessID($id, $className = null)
     {
         if (!$className) {
-            $className = $this->gridfield->getModelClass();
+            $className = $this->>gridField->getModelClass();
         }
         //we use all caps ID since DO have their ID ion all caps, so createBody finds it...
         $this->successRecords[] = (object) ['ID' => (int) $id, 'ClassName' => $className];
@@ -230,7 +234,7 @@ class HTTPBulkToolsResponse extends HTTPResponse
     }*/
 
     /**
-     * Return the list of succesful records
+     * Return the list of successful records
      * @return array
      */
     public function getSuccessRecords()
@@ -280,19 +284,17 @@ class HTTPBulkToolsResponse extends HTTPResponse
      */
     protected function getRecordGridfieldRow($record)
     {
-        $total = count($this->gridfield->getList()) + count($this->successRecords);
-        $index = 0;
-        $this->gridfield->setList(new ArrayList(array($record)));
+        $this->gridField->setList(new ArrayList(array($record)));
         $rowContent = '';
 
-        foreach ($this->gridfield->getColumns() as $column) {
-            $colContent = $this->gridfield->getColumnContent($record, $column);
+        foreach ($this->gridField->getColumns() as $column) {
+            $colContent = $this->gridField->getColumnContent($record, $column);
             // Null means this columns should be skipped altogether.
             if ($colContent === null) {
                 continue;
             }
 
-            $colAttributes = $this->gridfield->getColumnAttributes($record, $column);
+            $colAttributes = $this->gridField->getColumnAttributes($record, $column);
             $rowContent .= HTML::createTag(
                 'td',
                 $colAttributes,
@@ -362,7 +364,7 @@ class HTTPBulkToolsResponse extends HTTPResponse
     }
 
     /**
-     * Catches fatal PHP eror and output something useful for the front end
+     * Catches fatal PHP error and output something useful for the front end
      */
     public function shutdown()
     {
