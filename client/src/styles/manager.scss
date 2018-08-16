@@ -1,6 +1,6 @@
 @keyframes bt_fade_out {
   from {
-    opacity: 1; 
+    opacity: 1;
   }
 
   to {
@@ -10,7 +10,7 @@
 
 @keyframes bt_loading {
   from {
-    opacity: 1; 
+    opacity: 1;
   }
 
   to {
@@ -20,7 +20,7 @@
 
 @keyframes bt_fade_border {
   from {
-    border-left-width: 6px; 
+    border-left-width: 6px;
   }
 
   to {
@@ -126,7 +126,7 @@
     {
       &.bt-deleted
       {
-        opacity: .5;
+        opacity: 0.5;
       }
 
       &.bt-failed
