@@ -16,6 +16,7 @@ use SilverStripe\Forms\GridField\GridField_URLHandler;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\View\ArrayData;
 use SilverStripe\View\Requirements;
+use SilverStripe\Control\Controller;
 
 /**
  * GridField component for editing attached models in bulk.
@@ -344,15 +345,13 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
      */
     public function handleBulkAction($gridField, $request)
     {
-        $controller = $gridField->getForm()->getController();
-
+        $controller = Controller::curr();
         $actionUrlSegment = $request->shift();
         $handlerClass = $this->config['actions'][$actionUrlSegment];
 
         $controller->pushCurrent();
         $handler = Injector::inst()->create($handlerClass, $gridField, $this);
-        if ($handler)
-        {
+        if ($handler) {
             return $handler->handleRequest($request);
         }
 
