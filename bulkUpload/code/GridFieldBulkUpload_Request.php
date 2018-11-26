@@ -84,7 +84,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
     {
         //create record
         $recordClass = $this->component->getRecordClassName($this->gridField);
-        $record = Object::create($recordClass);
+        $record = SS_Object::create($recordClass);
         $record->write();
 
         // passes the current gridfield-instance to a call-back method on the new object
@@ -215,7 +215,7 @@ class GridFieldBulkUpload_Request extends RequestHandler
 
         foreach ($attachResponses as $attachResponse) {
             // create record
-            $record = Object::create($recordClass);
+            $record = SS_Object::create($recordClass);
             $record->write();
             $record->extend('onBulkUpload', $this->gridField);
 
