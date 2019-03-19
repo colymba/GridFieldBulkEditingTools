@@ -1,4 +1,4 @@
-/* global window */
+/* global document window */
 /**
  * A quick hack to catch the uploadfield add file event
  * and send the file ID to the bulkUploader component
@@ -53,7 +53,8 @@ const bulkUploadFieldReducer = (originalReducer) => () => (state, { type, payloa
     }
   }
 };
-
-Injector.transform('bulkUploaderTransformation', (updater) => {
-  updater.reducer('assetAdmin', bulkUploadFieldReducer);
+document.addEventListener('DOMContentLoaded', () => {
+  Injector.transform('bulkUploaderTransformation', (updater) => {
+    updater.reducer('assetAdmin', bulkUploadFieldReducer);
+  });
 });
