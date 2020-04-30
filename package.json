@@ -34,7 +34,7 @@
   "homepage": "https://github.com/colymba/GridFieldBulkEditingTools",
   "dependencies": {
     "babel-polyfill": "6.7.4",
-    "jquery": "^3.2.1"
+    "jquery": "^3.5.0"
   },
   "devDependencies": {
     "@silverstripe/eslint-config": "^0.0.2",
