@@ -16,7 +16,9 @@
         }
     ],
     "require": {
-        "silverstripe/framework": "~4",
+        "silverstripe/framework": "~4"
+    },
+    "suggest": {
         "silverstripe/asset-admin": "~1"
     },
     "extra": {
