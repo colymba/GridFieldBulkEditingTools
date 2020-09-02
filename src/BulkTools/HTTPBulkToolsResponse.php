@@ -346,7 +346,7 @@ class HTTPBulkToolsResponse extends HTTPResponse
             $body['records']['failed'] = $this->failedRecords;
         }
 
-        if (count($body['records']['success']) === 0) {
+        if (isset($body['records']['success']) && count($body['records']['success']) === 0) {
             $body['isWarning'] = true;
         }
 
