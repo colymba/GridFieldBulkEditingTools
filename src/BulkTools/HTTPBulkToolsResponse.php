@@ -369,7 +369,7 @@ class HTTPBulkToolsResponse extends HTTPResponse
     public function shutdown()
     {
         $error = error_get_last();
-        if ($error !== null ) {
+        if ($error !== null && $error['type'] !== E_USER_DEPRECATED) {
             $this->setMessage($error['message']);
             $this->setStatusCode(500, $error['message']);
             $this->outputBody();
