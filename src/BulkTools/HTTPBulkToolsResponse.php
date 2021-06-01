@@ -360,4 +360,12 @@ class HTTPBulkToolsResponse extends HTTPResponse
         $this->createBody();
         parent::outputBody();
     }
+    
+    /**
+     * This empty function exists only for semver
+     */
+    public function shutdown()
+    {
+        // noop
+    }
 }
