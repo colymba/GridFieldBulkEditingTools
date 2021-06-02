@@ -334,7 +334,7 @@ class HTTPBulkToolsResponse extends HTTPResponse
             );
 
             foreach ($this->successRecords as $record) {
-                $data = array('id' => $record->ID, 'class' => $record->ClassName);
+                $data = array('id' => $record->ID, 'class' => str_replace('\\', '\\\\', $record->ClassName));
                 if (!$this->removesRows) {
                     $data['row'] = $this->getRecordGridfieldRow($record);
                 }
