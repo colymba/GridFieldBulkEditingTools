@@ -8,8 +8,7 @@ use SilverStripe\Control\RequestHandler;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Core\Convert;
-//use SilverStripe\Core\Injector\Injector;
-//use SilverStripe\ORM\DataObject;
+use SilverStripe\Versioned\RecursivePublishable;
 
 use SilverStripe\AssetAdmin\Controller\AssetAdmin;
 
@@ -90,8 +89,10 @@ class BulkUploadHandler extends RequestHandler
         
         $this->gridField->list->add($record);
 
-        if ($this->component->getAutoPublishDataObject() && $record->hasExtension('Versioned'))
-        {
+        if (
+            $this->component->getAutoPublishDataObject()
+            && $record->hasExtension(RecursivePublishable::class)
+        ) {
             $record->publishRecursive();
         }
 
