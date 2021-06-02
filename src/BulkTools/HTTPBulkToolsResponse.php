@@ -362,7 +362,7 @@ class HTTPBulkToolsResponse extends HTTPResponse
     }
     
     /**
-     * This empty function exists only for semver
+     * @deprecated 3.1.0 This function was used to catch PHP Errors and inject additional information in the response
      */
     public function shutdown()
     {
