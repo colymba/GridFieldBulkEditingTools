@@ -111,8 +111,6 @@ class HTTPBulkToolsResponse extends HTTPResponse
         $this->removesRows = $removesRows;
         $this->gridField = $gridfield;
 
-        register_shutdown_function(array($this, 'shutdown'));
-
         parent::__construct(null, $statusCode);
     }
 
@@ -362,18 +360,12 @@ class HTTPBulkToolsResponse extends HTTPResponse
         $this->createBody();
         parent::outputBody();
     }
-
+    
     /**
-     * Catches fatal PHP error and output something useful for the front end
+     * @deprecated 3.1.0 This function was used to catch PHP Errors and inject additional information in the response
      */
     public function shutdown()
     {
-        $error = error_get_last();
-        if ($error !== null ) {
-            $this->setMessage($error['message']);
-            $this->setStatusCode(500, $error['message']);
-            $this->outputBody();
-            exit();
-        }
+        // noop
     }
 }
