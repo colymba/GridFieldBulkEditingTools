@@ -104,7 +104,7 @@ class DeleteHandler extends Handler
                 $record->delete();
             }
 
-            $doneCount = count($response->getSuccessRecords());
+            $doneCount = count($response->getSuccessRecords() ?? []);
             $message = sprintf(
                 'Deleted %1$d records.',
                 $doneCount

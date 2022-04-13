@@ -86,7 +86,7 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
      */
     public function setConfig($reference, $value)
     {
-        if (!array_key_exists($reference, $this->config)) {
+        if (!array_key_exists($reference, $this->config ?? [])) {
             user_error("Unknown option reference: $reference", E_USER_ERROR);
         }
 
@@ -291,7 +291,7 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
         $uploadField = $this->bulkUploadField($gridField);
 
         $data = ArrayData::create(array(
-            'Colspan' => (count($gridField->getColumns())),
+            'Colspan' => (count($gridField->getColumns() ?? [])),
             'UploadField' => $uploadField->Field() // call ->Field() to get requirements in right order
         ));
 
