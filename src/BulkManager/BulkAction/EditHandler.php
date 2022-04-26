@@ -148,7 +148,7 @@ class EditHandler extends Handler
         $recordsFieldList = new FieldList();
         $config = $this->component->getConfig();
 
-        $editingCount = count($recordList);
+        $editingCount = count($recordList ?? []);
         $modelClass = $this->gridField->getModelClass();
         $singleton = singleton($modelClass);
         $titleModelClass = (($editingCount > 1) ? $singleton->i18n_plural_name() : $singleton->i18n_singular_name());
@@ -341,7 +341,7 @@ class EditHandler extends Handler
     protected function unEscapeFieldName($fieldName)
     {
         $parts = array();
-        $match = preg_match('/record_(\d+)_(\w+)/i', $fieldName, $parts);
+        $match = preg_match('/record_(\d+)_(\w+)/i', $fieldName ?? '', $parts);
 
         if (!$match) {
             return false;
