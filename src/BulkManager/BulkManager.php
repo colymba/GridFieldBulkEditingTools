@@ -79,7 +79,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
      */
     public function setConfig($reference, $value)
     {
-        if (!array_key_exists($reference, $this->config)) {
+        if (!array_key_exists($reference, $this->config ?? [])) {
             user_error("Unknown option reference: $reference", E_USER_ERROR);
         }
 
@@ -123,7 +123,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
      */
     public function addBulkAction($handlerClassName, $action = null)
     {
-        if (!class_exists($handlerClassName)) {
+        if (!class_exists($handlerClassName ?? '')) {
             user_error("Bulk action handler not found: $handlerClassName", E_USER_ERROR);
         }
 
@@ -188,7 +188,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
      */
     public function augmentColumns($gridField, &$columns)
     {
-        if (!in_array('BulkSelect', $columns)) {
+        if (!in_array('BulkSelect', $columns ?? [])) {
             $columns[] = 'BulkSelect';
         }
     }
@@ -267,7 +267,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
         Requirements::css('colymba/gridfield-bulk-editing-tools:client/dist/styles/main.css');
         Requirements::add_i18n_javascript('colymba/gridfield-bulk-editing-tools:client/lang');
 
-        if (!count($this->config['actions'])) {
+        if (!count($this->config['actions'] ?? [])) {
             user_error('Trying to use BulkManager without any bulk action.', E_USER_ERROR);
         }
 
@@ -302,7 +302,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
             'Select' => array(
                 'Label' => _t('GRIDFIELD_BULK_MANAGER.SELECT_ALL_LABEL', 'Select all'),
             ),
-            'Colspan' => (count($gridField->getColumns()) - 1),
+            'Colspan' => (count($gridField->getColumns() ?? []) - 1),
         );
 
         $templateData = new ArrayData($templateData);
