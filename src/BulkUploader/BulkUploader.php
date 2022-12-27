@@ -294,8 +294,8 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
             'Colspan' => (count($gridField->getColumns() ?? [])),
             'UploadField' => $uploadField->Field() // call ->Field() to get requirements in right order
         ));
-
-        Requirements::javascript('colymba/gridfield-bulk-editing-tools:client/dist/js/main.js');
+        //This one is no longer needed since the javascript is now loaded at the top of the cms
+        //Requirements::javascript('colymba/gridfield-bulk-editing-tools:client/dist/js/main.js');
         Requirements::css('colymba/gridfield-bulk-editing-tools:client/dist/styles/main.css');
         Requirements::add_i18n_javascript('colymba/gridfield-bulk-editing-tools:client/lang');
 
