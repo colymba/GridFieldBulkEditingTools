@@ -1,6 +1,6 @@
 <?php
 
-namespace Colymba\BulkUpload;
+namespace Violet88\BulkUpload;
 
 use SilverStripe\ORM\DataObject;
 use SilverStripe\View\ArrayData;
@@ -295,11 +295,11 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
         ));
         //This one is no longer needed since the javascript is now loaded at the top of the cms
         //Requirements::javascript('colymba/gridfield-bulk-editing-tools:client/dist/js/main.js');
-        Requirements::css('colymba/gridfield-bulk-editing-tools:client/dist/styles/main.css');
-        Requirements::add_i18n_javascript('colymba/gridfield-bulk-editing-tools:client/lang');
+        Requirements::css('violet88/gridfield-bulk-editing-tools:client/dist/styles/main.css');
+        Requirements::add_i18n_javascript('violet88/gridfield-bulk-editing-tools:client/lang');
 
         return array(
-            'before' => $data->renderWith('Colymba\\BulkUpload\\BulkUploader'),
+            'before' => $data->renderWith('Violet88\\BulkUpload\\BulkUploader'),
         );
     }
 

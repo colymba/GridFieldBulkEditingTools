@@ -1,6 +1,6 @@
 <?php
 
-namespace Colymba\BulkManager;
+namespace Violet88\BulkManager;
 
 use ReflectionClass;
 use SilverStripe\Control\HTTPRequest;
@@ -290,7 +290,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
             ->addExtraClass('bulkActionName no-change-track form-group--no-label')
             ->setAttribute('id', '')
             ->setEmptyString(_t('SilverStripe\Admin\LeftAndMain.DropdownBatchActionsDefault', 'Choose an action...'));
-            
+
 
         $templateData = array(
             'Menu' => $dropDownActionsList->FieldHolder(),

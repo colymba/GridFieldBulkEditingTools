@@ -1,7 +1,7 @@
 /* global window */
 import jQuery from 'jquery';
 
-jQuery.entwine('colymba', ($) => {
+jQuery.entwine('violet88', ($) => {
   /**
    * Toggle all accordion forms
    * open or closed

@@ -2,7 +2,7 @@
 import jQuery from 'jquery';
 import i18n from 'i18n';
 
-jQuery.entwine('colymba', ($) => {
+jQuery.entwine('violet88', ($) => {
   /**
    * Makes sure the component is above the headers
    */

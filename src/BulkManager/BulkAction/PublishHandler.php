@@ -1,9 +1,9 @@
 <?php
 
-namespace Colymba\BulkManager\BulkAction;
+namespace Violet88\BulkManager\BulkAction;
 
-use Colymba\BulkManager\BulkAction\Handler;
-use Colymba\BulkTools\HTTPBulkToolsResponse;
+use Violet88\BulkManager\BulkAction\Handler;
+use Violet88\BulkTools\HTTPBulkToolsResponse;
 use SilverStripe\Core\Convert;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
@@ -19,7 +19,7 @@ class PublishHandler extends Handler
     /**
      * URL segment used to call this handler
      * If none given, @BulkManager will fallback to the Unqualified class name
-     * 
+     *
      * @var string
      */
     private static $url_segment = 'publish';
@@ -42,14 +42,14 @@ class PublishHandler extends Handler
 
     /**
      * Front-end label for this handler's action
-     * 
+     *
      * @var string
      */
     protected $label = 'Publish';
 
     /**
      * Front-end icon path for this handler's action.
-     * 
+     *
      * @var string
      */
     protected $icon = '';
@@ -57,22 +57,22 @@ class PublishHandler extends Handler
     /**
      * Extra classes to add to the bulk action button for this handler
      * Can also be used to set the button font-icon e.g. font-icon-trash
-     * 
+     *
      * @var string
      */
     protected $buttonClasses = 'font-icon-rocket';
-    
+
     /**
      * Whether this handler should be called via an XHR from the front-end
-     * 
+     *
      * @var boolean
      */
     protected $xhr = true;
-    
+
     /**
      * Set to true is this handler will destroy any data.
      * A warning and confirmation will be shown on the front-end.
-     * 
+     *
      * @var boolean
      */
     protected $destructive = false;
@@ -123,7 +123,7 @@ class PublishHandler extends Handler
             $response->setStatusCode(500);
             $response->setMessage($ex->getMessage());
         }
-        
+
         return $response;
     }
 }
