@@ -263,9 +263,9 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
      */
     public function getHTMLFragments($gridField)
     {
-        Requirements::javascript('colymba/gridfield-bulk-editing-tools:client/dist/js/main.js');
-        Requirements::css('colymba/gridfield-bulk-editing-tools:client/dist/styles/main.css');
-        Requirements::add_i18n_javascript('colymba/gridfield-bulk-editing-tools:client/lang');
+        Requirements::javascript('violet88/gridfield-bulk-editing-tools:client/dist/js/main.js');
+        Requirements::css('violet88/gridfield-bulk-editing-tools:client/dist/styles/main.css');
+        Requirements::add_i18n_javascript('violet88/gridfield-bulk-editing-tools:client/lang');
 
         if (!count($this->config['actions'] ?? [])) {
             user_error('Trying to use BulkManager without any bulk action.', E_USER_ERROR);
@@ -308,7 +308,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
         $templateData = new ArrayData($templateData);
 
         return array(
-            'header' => $templateData->renderWith('Colymba\\BulkManager\\BulkManagerButtons'),
+            'header' => $templateData->renderWith('Violet88\\BulkManager\\BulkManagerButtons'),
         );
     }
 
