@@ -1,6 +1,6 @@
 <?php
 
-namespace Colymba\BulkTools;
+namespace Violet88\BulkTools;
 
 use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Core\Convert;
@@ -360,7 +360,7 @@ class HTTPBulkToolsResponse extends HTTPResponse
         $this->createBody();
         parent::outputBody();
     }
-    
+
     /**
      * @deprecated 3.1.0 This function was used to catch PHP Errors and inject additional information in the response
      */

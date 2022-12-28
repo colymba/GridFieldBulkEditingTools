@@ -1,6 +1,6 @@
 <?php
 
-namespace Colymba\BulkManager\BulkAction;
+namespace Violet88\BulkManager\BulkAction;
 
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\RequestHandler;
@@ -21,7 +21,7 @@ class Handler extends RequestHandler
     /**
      * URL segment used to call this handler
      * If none given, @BulkManager will fallback to the Unqualified class name
-     * 
+     *
      * @var string
      */
     private static $url_segment = null;
@@ -42,14 +42,14 @@ class Handler extends RequestHandler
 
     /**
      * Front-end label for this handler's action
-     * 
+     *
      * @var string
      */
     protected $label = 'Action';
 
     /**
      * Front-end icon path for this handler's action.
-     * 
+     *
      * @var string
      */
     protected $icon = '';
@@ -57,22 +57,22 @@ class Handler extends RequestHandler
     /**
      * Extra classes to add to the bulk action button for this handler
      * Can also be used to set the button font-icon e.g. font-icon-trash
-     * 
+     *
      * @var string
      */
     protected $buttonClasses = '';
-    
+
     /**
      * Whether this handler should be called via an XHR from the front-end
-     * 
+     *
      * @var boolean
      */
     protected $xhr = true;
-    
+
     /**
      * Set to true is this handler will destroy any data.
      * A warning and confirmation will be shown on the front-end.
-     * 
+     *
      * @var boolean
      */
     protected $destructive = false;
@@ -108,7 +108,7 @@ class Handler extends RequestHandler
 
     /**
      * Set if hanlder performs destructive actions
-     * 
+     *
      * @param boolean destructive If true, a warning will be shown on the front-end
      * @return RequestHandler
      */
@@ -117,10 +117,10 @@ class Handler extends RequestHandler
         $this->destructive = $destructive;
         return $this;
     }
-    
+
     /**
      * True if the  hanlder performs destructive actions
-     * 
+     *
      * @return boolean
      */
     public function getDestructive()
@@ -130,11 +130,11 @@ class Handler extends RequestHandler
 
     /**
      * Set if handler is called via XHR
-     * 
+     *
      * @param boolean xhr If true the handler will be called via an XHR from front-end
      * @return RequestHandler
      */
-    
+
     public function setXhr($xhr)
     {
         $this->xhr = $xhr;

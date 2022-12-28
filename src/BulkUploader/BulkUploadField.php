@@ -1,6 +1,6 @@
 <?php
 
-namespace Colymba\BulkUpload;
+namespace Violet88\BulkUpload;
 
 use SilverStripe\Control\Controller;
 //use SilverStripe\Forms\UploadField;
