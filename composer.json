@@ -34,5 +34,11 @@
             "Violet88\\BulkManager\\": "src/BulkManager/",
             "Violet88\\BulkUpload\\": "src/BulkUploader/"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "silverstripe/vendor-plugin": true
+        }
     }
 }
