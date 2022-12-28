@@ -294,7 +294,7 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
             'UploadField' => $uploadField->Field() // call ->Field() to get requirements in right order
         ));
         //This one is no longer needed since the javascript is now loaded at the top of the cms
-        //Requirements::javascript('colymba/gridfield-bulk-editing-tools:client/dist/js/main.js');
+        //Requirements::javascript('violet88/gridfield-bulk-editing-tools:client/dist/js/main.js');
         Requirements::css('violet88/gridfield-bulk-editing-tools:client/dist/styles/main.css');
         Requirements::add_i18n_javascript('violet88/gridfield-bulk-editing-tools:client/lang');
 
