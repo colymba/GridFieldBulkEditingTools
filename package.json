@@ -1,12 +1,11 @@
 {
   "name": "colymba-gridfield-bulk-editing-tools",
-  "version": "3.0.0",
   "description": "Bulk upload and record editing for SilverStripe CMS",
   "engines": {
-    "node": ">=6.x"
+    "node": "^18.x"
   },
   "scripts": {
-    "build": "yarn && yarn lint && NODE_ENV=production webpack -p --bail --progress",
+    "build": "yarn && yarn lint && rm -rf client/dist/* && NODE_ENV=production webpack --mode production --bail --progress",
     "dev": "NODE_ENV=development webpack --progress",
     "watch": "NODE_ENV=development webpack --watch --progress",
     "css": "WEBPACK_CHILD=css npm run build",
@@ -33,18 +32,18 @@
   },
   "homepage": "https://github.com/colymba/GridFieldBulkEditingTools",
   "dependencies": {
-    "babel-polyfill": "6.7.4",
-    "jquery": "^3.5.0"
+    "core-js": "^3.26.0"
   },
   "devDependencies": {
-    "@silverstripe/eslint-config": "^0.0.2",
-    "@silverstripe/webpack-config": "^0.7",
-    "expose-loader": "^0.7.4",
-    "sass-loader": "^6.0.7"
+    "@silverstripe/eslint-config": "^1.0.0-alpha6",
+    "@silverstripe/webpack-config": "^2.0.0-alpha5",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^5.0.0"
   },
-  "babel": {
-    "plugins": [
-      "transform-object-rest-spread"
-    ]
-  }
+  "resolutions": {
+    "colors": "1.4.0"
+  },
+  "browserslist": [
+    "defaults"
+  ]
 }
