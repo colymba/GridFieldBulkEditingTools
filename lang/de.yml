@@ -1,14 +1,18 @@
 de:
+  GRIDFIELD_BULK_UPLOAD: null
   GRIDFIELD_BULK_MANAGER:
-    COMPONENT_TITLE: Einen oder mehrere Einträge gleichzeitig bearbeiten
+    COMPONENT_TITLE: 'Einen oder mehrere Einträge gleichzeitig bearbeiten'
     EDIT_SELECT_LABEL: Bearbeiten
-    UNLINK_SELECT_LABEL: Verbindung entfernen
+    UNLINK_SELECT_LABEL: 'Verbindung entfernen'
     DELETE_SELECT_LABEL: Löschen
     ACTION_BTN_LABEL: Los
-    SELECT_ALL_LABEL: Alle auswählen
+    SELECT_ALL_LABEL: 'Alle auswählen'
+    PUBLISH_SELECT_LABEL: ''
+    UNPUBLISH_SELECT_LABEL: ''
+    ARCHIVE_SELECT_LABEL: ''
   GRIDFIELD_BULKMANAGER_EDIT_HANDLER:
-    HEADER_TEXT: Bearbeite {count} {class}
-    TOGGLE_ALL_LINK: Alle Anzeigen/Verbergen
-    SAVE_BTN_LABEL: Alle speichern
+    HEADER_TEXT: 'Bearbeite {count} {class}'
+    TOGGLE_ALL_LINK: 'Alle Anzeigen/Verbergen'
+    SAVE_BTN_LABEL: 'Alle speichern'
     CANCEL_BTN_LABEL: Abbrechen
     SAVE_RESULT_TEXT: '{count} {class} erfolgreich gespeichert.'

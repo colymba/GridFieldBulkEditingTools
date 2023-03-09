@@ -70,7 +70,7 @@ See [BULK_MANAGER.md](docs/en//BULK_MANAGER.md) for detailed configuration.
 
 Translations of the natural language strings are managed through a third party translation interface, transifex.com.
 
-Please use [https://www.transifex.com/projects/p/gridfieldbulkeditingtools/](https://www.transifex.com/projects/p/gridfieldbulkeditingtools/) to contribute translations, rather than sending pull requests with YAML/JS files.
+Please use https://www.transifex.com/silverstripe/silverstripe-gridfield-bulk-editing-tools to contribute translations, rather than sending pull requests with YAML/JS files.
 
 ## License and Copyright
 
