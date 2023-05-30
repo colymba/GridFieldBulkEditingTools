@@ -1,13 +1,13 @@
 fi:
   GRIDFIELD_BULK_MANAGER:
-    COMPONENT_TITLE: Muokkaa yhtä tai useampaa merkintää kerrallaan.
+    COMPONENT_TITLE: 'Muokkaa yhtä tai useampaa merkintää kerrallaan.'
     EDIT_SELECT_LABEL: Muokkaa
     UNLINK_SELECT_LABEL: Erota
     DELETE_SELECT_LABEL: Poista
     ACTION_BTN_LABEL: Suorita
-    SELECT_ALL_LABEL: Valitse kaikki
+    SELECT_ALL_LABEL: 'Valitse kaikki'
   GRIDFIELD_BULKMANAGER_EDIT_HANDLER:
-    HEADER_TEXT: Muokkaa {count} {class}
-    TOGGLE_ALL_LINK: Näytä/Piilota kaikki
-    SAVE_BTN_LABEL: Tallenna kaikki
+    HEADER_TEXT: 'Muokkaa {count} {class}'
+    TOGGLE_ALL_LINK: 'Näytä/Piilota kaikki'
+    SAVE_BTN_LABEL: 'Tallenna kaikki'
     CANCEL_BTN_LABEL: Peruuta

@@ -1,14 +1,14 @@
 fr:
   GRIDFIELD_BULK_MANAGER:
-    COMPONENT_TITLE: Modifier une ou plusieurs entrée à la fois.
+    COMPONENT_TITLE: 'Modifier une ou plusieurs entrée à la fois.'
     EDIT_SELECT_LABEL: Editer
     UNLINK_SELECT_LABEL: Dissocier
     DELETE_SELECT_LABEL: Supprimer
     ACTION_BTN_LABEL: Go
-    SELECT_ALL_LABEL: Sélectionner tout
+    SELECT_ALL_LABEL: 'Sélectionner tout'
   GRIDFIELD_BULKMANAGER_EDIT_HANDLER:
-    HEADER_TEXT: Edition de {count} {class}
-    TOGGLE_ALL_LINK: Afficher/Masquer tout
-    SAVE_BTN_LABEL: Sauvegarder tout
+    HEADER_TEXT: 'Edition de {count} {class}'
+    TOGGLE_ALL_LINK: 'Afficher/Masquer tout'
+    SAVE_BTN_LABEL: 'Sauvegarder tout'
     CANCEL_BTN_LABEL: Annuler
     SAVE_RESULT_TEXT: '{count} {class} sauvegardés avec succès.'
