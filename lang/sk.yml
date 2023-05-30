@@ -1,14 +1,14 @@
 sk:
   GRIDFIELD_BULK_MANAGER:
-    COMPONENT_TITLE: Uprav jednu alebo viac položiek súčasne.
+    COMPONENT_TITLE: 'Uprav jednu alebo viac položiek súčasne.'
     EDIT_SELECT_LABEL: Upraviť
-    UNLINK_SELECT_LABEL: Odstrániť zo zoznamu
+    UNLINK_SELECT_LABEL: 'Odstrániť zo zoznamu'
     DELETE_SELECT_LABEL: Zmazať
     ACTION_BTN_LABEL: Vykonaj
-    SELECT_ALL_LABEL: Označiť všetky
+    SELECT_ALL_LABEL: 'Označiť všetky'
   GRIDFIELD_BULKMANAGER_EDIT_HANDLER:
-    HEADER_TEXT: Upravujem {count} {class}
-    TOGGLE_ALL_LINK: Zobraziť/Skryť všetko
-    SAVE_BTN_LABEL: Uložiť všetko
+    HEADER_TEXT: 'Upravujem {count} {class}'
+    TOGGLE_ALL_LINK: 'Zobraziť/Skryť všetko'
+    SAVE_BTN_LABEL: 'Uložiť všetko'
     CANCEL_BTN_LABEL: Zrušiť
     SAVE_RESULT_TEXT: '{count} {class} úspešne uložené.'
