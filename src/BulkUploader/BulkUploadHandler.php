@@ -114,7 +114,7 @@ class BulkUploadHandler extends RequestHandler
         
         if ($uploadResponse->getStatusCode() == 200)
         {
-            $responseData = Convert::json2array($uploadResponse->getBody());
+            $responseData = json_decode($uploadResponse->getBody(), true);
             $responseData = array_shift($responseData);
 
             $record = $this->createDataObject($responseData['id']);
