@@ -1,17 +1,14 @@
 [main]
 host = https://www.transifex.com
 
-[gridfieldbulkeditingtools.yml]
+[o:silverstripe:p:silverstripe-gridfield-bulk-editing-tools:r:master]
 file_filter = lang/<lang>.yml
-minimum_perc = 0
 source_file = lang/en.yml
 source_lang = en
-type = YML
+type        = YML
 
-[gridfieldbulkeditingtools.js]
+[o:silverstripe:p:silverstripe-gridfield-bulk-editing-tools:r:master-js]
 file_filter = client/src/lang/<lang>.json
-minimum_perc = 0
 source_file = client/src/lang/en.json
 source_lang = en
-type = JSON
-
+type        = KEYVALUEJSON
