@@ -1,4 +1,5 @@
 /* global window, alert, confirm */
+/* eslint-disable func-names, no-alert, no-restricted-globals  */
 import jQuery from 'jquery';
 import i18n from 'i18n';
 
@@ -30,7 +31,6 @@ jQuery.entwine('colymba', ($) => {
     },
   });
 
-
   /**
    * Bulkselect table cell behaviours
    */
@@ -54,7 +54,7 @@ jQuery.entwine('colymba', ($) => {
       } else {
         $(cb).prop('checked', false);
       }
-    }
+    },
   });
 
   /**
@@ -67,7 +67,7 @@ jQuery.entwine('colymba', ($) => {
     },
     onclick() {
       $(this).parents('.grid-field__table').find('input.bulkSelectAll').prop('checked', '');
-    }
+    },
   });
 
   /**
@@ -88,9 +88,8 @@ jQuery.entwine('colymba', ($) => {
           return parseInt($(this).data('record'), 10);
         })
         .get();
-    }
+    },
   });
-
 
   /**
    * Bulk action dropdown behaviours
@@ -129,15 +128,13 @@ jQuery.entwine('colymba', ($) => {
         $btn.find('img').remove();
       }
 
-
       if (config[value].destructive) {
         $btn.addClass('btn-outline-danger');
       } else {
         $btn.removeClass('btn-outline-danger');
       }
-    }
+    },
   });
-
 
   /**
    * bulk action button behaviours
@@ -198,7 +195,7 @@ jQuery.entwine('colymba', ($) => {
           url,
           data: inputData,
           type: 'POST',
-          context: $(this)
+          context: $(this),
         }).always(function (data) {
           let returnData = data;
           $btn.removeClass('loading');
@@ -228,6 +225,6 @@ jQuery.entwine('colymba', ($) => {
       }
 
       return true;
-    }
+    },
   });
 });

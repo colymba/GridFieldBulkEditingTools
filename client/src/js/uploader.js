@@ -16,8 +16,8 @@ const bulkUploadFieldAttach = (payload) => {
   jQuery.ajax(schema.data.attachFileEndpoint.url, {
     method: schema.data.attachFileEndpoint.method, // doesn't seem to change anything
     data: {
-      fileID: payload.file.id
-    }
+      fileID: payload.file.id,
+    },
   }).done((data) => {
     bulkTools.gridfieldRefresh($gridfield, data);
     // bulkTools.removeUploadItem($gridfield, null, payload.file.id);//bad! can't dispath in Reducer

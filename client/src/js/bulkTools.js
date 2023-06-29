@@ -1,4 +1,5 @@
 /* global window */
+/* eslint-disable func-names */
 import jQuery from 'jquery';
 
 jQuery.entwine('ss', ($) => {

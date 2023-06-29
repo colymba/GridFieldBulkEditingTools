@@ -1,4 +1,5 @@
 /* global window */
+/* eslint-disable func-names */
 import jQuery from 'jquery';
 
 jQuery.entwine('colymba', ($) => {
@@ -30,9 +31,8 @@ jQuery.entwine('colymba', ($) => {
       });
 
       this.data('state', state);
-    }
+    },
   });
-
 
   /**
    * Contains each rocrds editing fields,
@@ -44,6 +44,6 @@ jQuery.entwine('colymba', ($) => {
       if (!this.hasClass('hasUpdate')) {
         this.addClass('hasUpdate');
       }
-    }
+    },
   });
 });
