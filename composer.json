@@ -16,12 +16,12 @@
         }
     ],
     "require": {
-        "silverstripe/framework": "~4",
-        "silverstripe/asset-admin": "~1"
+        "silverstripe/framework": "^5",
+        "silverstripe/asset-admin": "^2"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.x-dev"
+            "dev-master": "4.x-dev"
         },
         "expose": [
             "client/dist",

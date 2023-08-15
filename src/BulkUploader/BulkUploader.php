@@ -5,13 +5,12 @@ namespace Colymba\BulkUpload;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\View\ArrayData;
 
-use SilverStripe\Dev\Deprecation;
-use SilverStripe\Forms\FormAction;
 use SilverStripe\View\Requirements;
 use SilverStripe\Control\Controller;
 use SilverStripe\Core\Config\Config;
 use Colymba\BulkUpload\BulkUploadField;
 use Colymba\BulkUpload\BulkUploadHandler;
+use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Forms\GridField\GridField_URLHandler;
 use SilverStripe\Forms\GridField\GridField_HTMLProvider;
 
@@ -334,7 +333,7 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
     {
         $controller = Controller::curr();
         $controller->pushCurrent();
-        $handler = new \Colymba\BulkUpload\BulkUploadHandler($gridField, $this);
+        $handler = new BulkUploadHandler($gridField, $this);
 
         return $handler->handleRequest($request);
     }

@@ -3,7 +3,6 @@
 namespace Colymba\BulkTools;
 
 use SilverStripe\Control\HTTPResponse;
-use SilverStripe\Core\Convert;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\DataObject;
@@ -348,7 +347,7 @@ class HTTPBulkToolsResponse extends HTTPResponse
             $body['isWarning'] = true;
         }
 
-        $this->body = Convert::raw2json($body);
+        $this->body = json_encode($body);
     }
 
     /**
@@ -359,13 +358,5 @@ class HTTPBulkToolsResponse extends HTTPResponse
     {
         $this->createBody();
         parent::outputBody();
-    }
-    
-    /**
-     * @deprecated 3.1.0 This function was used to catch PHP Errors and inject additional information in the response
-     */
-    public function shutdown()
-    {
-        // noop
     }
 }
