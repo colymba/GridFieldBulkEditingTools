@@ -30,7 +30,6 @@ jQuery.entwine('colymba', ($) => {
     },
   });
 
-
   /**
    * Bulkselect table cell behaviours
    */
@@ -91,7 +90,6 @@ jQuery.entwine('colymba', ($) => {
     }
   });
 
-
   /**
    * Bulk action dropdown behaviours
    */
@@ -129,7 +127,6 @@ jQuery.entwine('colymba', ($) => {
         $btn.find('img').remove();
       }
 
-
       if (config[value].destructive) {
         $btn.addClass('btn-outline-danger');
       } else {
@@ -137,7 +134,6 @@ jQuery.entwine('colymba', ($) => {
       }
     }
   });
-
 
   /**
    * bulk action button behaviours
