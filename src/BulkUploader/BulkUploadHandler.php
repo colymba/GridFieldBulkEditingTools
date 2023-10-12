@@ -7,7 +7,6 @@ use SilverStripe\Control\Controller;
 use SilverStripe\Control\RequestHandler;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
-use SilverStripe\Core\Convert;
 use SilverStripe\Versioned\RecursivePublishable;
 
 use SilverStripe\AssetAdmin\Controller\AssetAdmin;
