@@ -30,7 +30,6 @@ jQuery.entwine('colymba', ($) => {
     },
   });
 
-
   /**
    * Bulkselect table cell behaviours
    */
@@ -91,7 +90,6 @@ jQuery.entwine('colymba', ($) => {
     }
   });
 
-
   /**
    * Bulk action dropdown behaviours
    */
@@ -129,7 +127,6 @@ jQuery.entwine('colymba', ($) => {
         $btn.find('img').remove();
       }
 
-
       if (config[value].destructive) {
         $btn.addClass('btn-outline-danger');
       } else {
@@ -137,7 +134,6 @@ jQuery.entwine('colymba', ($) => {
       }
     }
   });
-
 
   /**
    * bulk action button behaviours
@@ -179,12 +175,14 @@ jQuery.entwine('colymba', ($) => {
       const inputData = { records: ids };
 
       if (ids.length <= 0) {
+        // eslint-disable-next-line no-alert
         alert(i18n._t('GRIDFIELD_BULK_MANAGER.BULKACTION_EMPTY_SELECT'));
         return false;
       }
 
       // if ( $btn.hasClass('ss-ui-action-destructive') )
       if (config[action].destructive) {
+        // eslint-disable-next-line no-alert
         if (!confirm(i18n._t('GRIDFIELD_BULK_MANAGER.CONFIRM_DESTRUCTIVE_ACTION'))) {
           return false;
         }
