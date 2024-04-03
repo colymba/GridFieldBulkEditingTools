@@ -130,7 +130,7 @@ class EditHandler extends Handler
             FormAction::create('doSave', _t('GRIDFIELD_BULKMANAGER_EDIT_HANDLER.SAVE_BTN_LABEL', 'Save all'))
                 ->setAttribute('id', 'bulkEditingSaveBtn')
                 ->addExtraClass('btn btn-success')
-                ->setAttribute('data-icon', 'accept')
+                ->setAttribute('data-icon', '! ')
                 ->setUseButtonTag(true)
         );
 
@@ -138,7 +138,7 @@ class EditHandler extends Handler
             FormAction::create('Cancel', _t('GRIDFIELD_BULKMANAGER_EDIT_HANDLER.CANCEL_BTN_LABEL', 'Cancel'))
                 ->setAttribute('id', 'bulkEditingUpdateCancelBtn')
                 ->addExtraClass('btn btn-danger cms-panel-link')
-                ->setAttribute('data-icon', 'decline')
+                ->setAttribute('data-icon', 'P ')
                 ->setAttribute('href', $one_level_up->Link)
                 ->setUseButtonTag(true)
                 ->setAttribute('src', '') //changes type to image so isn't hooked by default actions handlers
