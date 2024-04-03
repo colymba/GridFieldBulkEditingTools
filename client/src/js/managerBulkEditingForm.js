@@ -33,7 +33,6 @@ jQuery.entwine('colymba', ($) => {
     }
   });
 
-
   /**
    * Contains each rocrds editing fields,
    * tracks changes and updates...
