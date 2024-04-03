@@ -1,49 +1,50 @@
 /* global window */
-import jQuery from 'jquery';
+import jQuery from "jquery";
 
-jQuery.entwine('violet88', ($) => {
+jQuery.entwine("colymba", ($) => {
   /**
    * Toggle all accordion forms
    * open or closed
    */
-  $('#bulkEditToggle').entwine({
+  $("#bulkEditToggle").entwine({
     onclick() {
-      const toggleFields = this.parents('form').find('.ss-toggle .ui-accordion-header');
-      let state = this.data('state');
+      const toggleFields = this.parents("form").find(
+        ".ss-toggle .ui-accordion-header",
+      );
+      let state = this.data("state");
 
-      if (!state || state === 'close') {
-        state = 'open';
+      if (!state || state === "close") {
+        state = "open";
       } else {
-        state = 'close';
+        state = "close";
       }
 
       toggleFields.each(function () {
         const $this = $(this);
 
-        if (state === 'open' && !$this.hasClass('ui-state-active')) {
+        if (state === "open" && !$this.hasClass("ui-state-active")) {
           $this.click();
         }
 
-        if (state === 'close' && $this.hasClass('ui-state-active')) {
+        if (state === "close" && $this.hasClass("ui-state-active")) {
           $this.click();
         }
       });
 
-      this.data('state', state);
-    }
+      this.data("state", state);
+    },
   });
-
 
   /**
    * Contains each rocrds editing fields,
    * tracks changes and updates...
    */
-  $('.bulkEditingFieldHolder').entwine({
+  $(".bulkEditingFieldHolder").entwine({
     onchange() {
-      this.removeClass('updated');
-      if (!this.hasClass('hasUpdate')) {
-        this.addClass('hasUpdate');
+      this.removeClass("updated");
+      if (!this.hasClass("hasUpdate")) {
+        this.addClass("hasUpdate");
       }
-    }
+    },
   });
 });

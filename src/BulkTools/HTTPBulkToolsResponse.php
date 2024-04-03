@@ -1,6 +1,6 @@
 <?php
 
-namespace Violet88\BulkTools;
+namespace Colymba\BulkTools;
 
 use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Forms\GridField\GridField;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Violet88\BulkManager\BulkAction;
+namespace Colymba\BulkManager\BulkAction;
 
-use Violet88\BulkManager\BulkAction\Handler;
-use Violet88\BulkTools\HTTPBulkToolsResponse;
+use Colymba\BulkManager\BulkAction\Handler;
+use Colymba\BulkTools\HTTPBulkToolsResponse;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Core\Convert;

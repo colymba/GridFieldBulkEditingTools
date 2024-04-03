@@ -1,5 +1,5 @@
 {
-    "name": "violet88/gridfield-bulk-editing-tools",
+    "name": "colymba/gridfield-bulk-editing-tools",
     "type": "silverstripe-vendormodule",
     "description": "SilverStripe GridField component to upload images/files and edit records in bulk",
     "homepage": "https://github.com/colymba/GridFieldBulkEditingTools",
@@ -35,9 +35,9 @@
     },
     "autoload": {
         "psr-4": {
-            "Violet88\\BulkTools\\": "src/BulkTools/",
-            "Violet88\\BulkManager\\": "src/BulkManager/",
-            "Violet88\\BulkUpload\\": "src/BulkUploader/"
+            "Colymba\\BulkTools\\": "src/BulkTools/",
+            "Colymba\\BulkManager\\": "src/BulkManager/",
+            "Colymba\\BulkUpload\\": "src/BulkUploader/"
         }
     },
     "config": {

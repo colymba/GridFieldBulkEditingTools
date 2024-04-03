@@ -1,9 +1,9 @@
 <?php
 
-namespace Violet88\BulkManager\BulkAction;
+namespace Colymba\BulkManager\BulkAction;
 
-use Violet88\BulkManager\BulkAction\Handler;
-use Violet88\BulkTools\HTTPBulkToolsResponse;
+use Colymba\BulkManager\BulkAction\Handler;
+use Colymba\BulkTools\HTTPBulkToolsResponse;
 use SilverStripe\Core\Convert;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
@@ -100,13 +100,11 @@ class PublishHandler extends Handler
         $response = new HTTPBulkToolsResponse(false, $this->gridField);
 
         try {
-            foreach ($records as $record)
-            {
+            foreach ($records as $record) {
                 $done = $record->publishRecursive();
-                if ($done)
-                {
+                if ($done) {
                     $response->addSuccessRecord($record);
-                }else{
+                } else {
                     $response->addFailedRecord($record, $done);
                 }
             }

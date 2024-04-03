@@ -1,8 +1,8 @@
 <?php
 
-namespace Violet88\BulkUpload;
+namespace Colymba\BulkUpload;
 
-use Violet88\BulkTools\HTTPBulkToolsResponse;
+use Colymba\BulkTools\HTTPBulkToolsResponse;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\RequestHandler;
 use SilverStripe\Control\HTTPRequest;
@@ -112,8 +112,7 @@ class BulkUploadHandler extends RequestHandler
         $assetAdmin = AssetAdmin::singleton();
         $uploadResponse = $assetAdmin->apiCreateFile($request);
 
-        if ($uploadResponse->getStatusCode() == 200)
-        {
+        if ($uploadResponse->getStatusCode() == 200) {
             $responseData = Convert::json2array($uploadResponse->getBody());
             $responseData = array_shift($responseData);
 

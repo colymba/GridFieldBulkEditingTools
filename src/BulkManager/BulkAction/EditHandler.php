@@ -1,8 +1,8 @@
 <?php
 
-namespace Violet88\BulkManager\BulkAction;
+namespace Colymba\BulkManager\BulkAction;
 
-use Violet88\BulkManager\BulkAction\Handler;
+use Colymba\BulkManager\BulkAction\Handler;
 use SilverStripe\Control\Controller;
 use SilverStripe\Core\Convert;
 use SilverStripe\Control\HTTPResponse;
@@ -141,7 +141,7 @@ class EditHandler extends Handler
                 ->setAttribute('data-icon', 'decline')
                 ->setAttribute('href', $one_level_up->Link)
                 ->setUseButtonTag(true)
-                ->setAttribute('src', '')//changes type to image so isn't hooked by default actions handlers
+                ->setAttribute('src', '') //changes type to image so isn't hooked by default actions handlers
         );
 
         $recordList = $this->getRecordIDList();
@@ -164,7 +164,7 @@ class EditHandler extends Handler
         );
         $header = LiteralField::create(
             'bulkEditHeader',
-            '<h1 id="bulkEditHeader">'.$headerText.'</h1>'
+            '<h1 id="bulkEditHeader">' . $headerText . '</h1>'
         );
         $recordsFieldList->push($header);
 
@@ -184,9 +184,9 @@ class EditHandler extends Handler
                 $record->getTitle(),
                 $recordEditingFields
             )
-            ->setHeadingLevel(4)
-            ->setAttribute('data-id', $id)
-            ->addExtraClass('bulkEditingFieldHolder');
+                ->setHeadingLevel(4)
+                ->setAttribute('data-id', $id)
+                ->addExtraClass('bulkEditingFieldHolder');
 
             $recordsFieldList->push($toggleField);
         }
@@ -206,7 +206,7 @@ class EditHandler extends Handler
         //and add record ids GET var
         $bulkEditForm->setAttribute(
             'action',
-            $this->Link('bulkEditForm?records[]='.implode('&', $recordList))
+            $this->Link('bulkEditForm?records[]=' . implode('&', $recordList))
         );
 
         return $bulkEditForm;
@@ -368,9 +368,9 @@ class EditHandler extends Handler
         $form->addExtraClass('center cms-content');
         $form->setAttribute('data-pjax-fragment', 'CurrentForm Content');
 
-        Requirements::javascript('violet88/gridfield-bulk-editing-tools:client/dist/js/main.js');
-        Requirements::css('violet88/gridfield-bulk-editing-tools:client/dist/styles/main.css');
-        Requirements::add_i18n_javascript('violet88/gridfield-bulk-editing-tools:lang');
+        Requirements::javascript('colymba/gridfield-bulk-editing-tools:client/dist/js/main.js');
+        Requirements::css('colymba/gridfield-bulk-editing-tools:client/dist/styles/main.css');
+        Requirements::add_i18n_javascript('colymba/gridfield-bulk-editing-tools:lang');
 
         if ($this->request->isAjax()) {
             $response = new HTTPResponse(

@@ -1,6 +1,6 @@
 <?php
 
-namespace Violet88\BulkManager\BulkAction;
+namespace Colymba\BulkManager\BulkAction;
 
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\RequestHandler;
