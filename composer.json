@@ -21,8 +21,7 @@
         }
     ],
     "require": {
-        "silverstripe/framework": "^5",
-        "silverstripe/asset-admin": "^2"
+        "silverstripe/framework": "^5 || ^4"
     },
     "extra": {
         "branch-alias": {
