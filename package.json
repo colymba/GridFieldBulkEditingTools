@@ -10,7 +10,7 @@
     "watch": "NODE_ENV=development webpack --watch --progress",
     "css": "WEBPACK_CHILD=css npm run build",
     "tx": "tx push --source && tx pull --all && node transifex.js",
-    "lint": "eslint client/src && lint-sass",
+    "lint": "eslint client/src && yarn lint-sass",
     "lint-js": "eslint client/src",
     "lint-js-fix": "eslint client/src --fix",
     "lint-sass": "stylelint **/client/src/**/*.scss"
