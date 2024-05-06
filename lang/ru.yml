@@ -1,14 +1,17 @@
 ru:
-  GRIDFIELD_BULK_MANAGER:
-    COMPONENT_TITLE: Редактировать одну или несколько записей одновременно
-    EDIT_SELECT_LABEL: Редактировать
-    UNLINK_SELECT_LABEL: Отвязать
-    DELETE_SELECT_LABEL: Удалить
-    ACTION_BTN_LABEL: Поехали
-    SELECT_ALL_LABEL: Выбрать все
   GRIDFIELD_BULKMANAGER_EDIT_HANDLER:
-    HEADER_TEXT: Редактировать {count} {class}
-    TOGGLE_ALL_LINK: Показать/Скрыть все
-    SAVE_BTN_LABEL: Сохранить все
     CANCEL_BTN_LABEL: Отменить
+    HEADER_TEXT: 'Редактировать {count} {class}'
+    SAVE_BTN_LABEL: 'Сохранить все'
     SAVE_RESULT_TEXT: '{count} {class} успешно сохранены'
+    TOGGLE_ALL_LINK: 'Показать/Скрыть все'
+  GRIDFIELD_BULK_MANAGER:
+    ACTION_BTN_LABEL: Поехали
+    ARCHIVE_SELECT_LABEL: Archive
+    COMPONENT_TITLE: 'Редактировать одну или несколько записей одновременно'
+    DELETE_SELECT_LABEL: Удалить
+    EDIT_SELECT_LABEL: Редактировать
+    PUBLISH_SELECT_LABEL: Publish
+    SELECT_ALL_LABEL: 'Select all'
+    UNLINK_SELECT_LABEL: Отвязать
+    UNPUBLISH_SELECT_LABEL: UnPublish

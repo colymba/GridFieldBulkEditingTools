@@ -1,14 +1,14 @@
 pl:
-  GRIDFIELD_BULK_MANAGER:
-    COMPONENT_TITLE: Modyfikuj jednocześnie jedną lub więcej pozycji.
-    EDIT_SELECT_LABEL: Edytuj
-    UNLINK_SELECT_LABEL: Odłącz
-    DELETE_SELECT_LABEL: Usuń
-    ACTION_BTN_LABEL: Wykonaj
-    SELECT_ALL_LABEL: Zaznacz wszystkie
   GRIDFIELD_BULKMANAGER_EDIT_HANDLER:
-    HEADER_TEXT: Edycja {count} {class}
-    TOGGLE_ALL_LINK: Pokaż/ukryj wszystkie
-    SAVE_BTN_LABEL: Zapisz wszystkie
     CANCEL_BTN_LABEL: Anuluj
+    HEADER_TEXT: 'Edycja {count} {class}'
+    SAVE_BTN_LABEL: 'Zapisz wszystkie'
     SAVE_RESULT_TEXT: 'Zapisano pomyślnie {count} {class}'
+    TOGGLE_ALL_LINK: 'Pokaż/ukryj wszystkie'
+  GRIDFIELD_BULK_MANAGER:
+    ACTION_BTN_LABEL: Wykonaj
+    COMPONENT_TITLE: 'Modyfikuj jednocześnie jedną lub więcej pozycji.'
+    DELETE_SELECT_LABEL: Usuń
+    EDIT_SELECT_LABEL: Edytuj
+    SELECT_ALL_LABEL: 'Zaznacz wszystkie'
+    UNLINK_SELECT_LABEL: Odłącz
