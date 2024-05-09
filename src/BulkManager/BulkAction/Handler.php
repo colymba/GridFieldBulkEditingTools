@@ -8,6 +8,7 @@ use SilverStripe\Forms\GridField\GridFieldDetailForm;
 use SilverStripe\Forms\GridField\GridFieldDetailForm_ItemRequest;
 use SilverStripe\ORM\DataList;
 use SilverStripe\View\ArrayData;
+use SilverStripe\Forms\GridField\GridField;
 
 /**
  * Base class to extend for all custom bulk action handlers

@@ -1,36 +1,22 @@
-:warning: I haven't been able to give as much love as I would like to these repos as they deserve. If you have time and are interested to help maintain them, give me a shout. :rotating_light:
+# GridField Bulk Editing Tools
 
-GridField Bulk Editing Tools
-============================
+:warning: I haven't been able to give as much love as I would like to these repos as they deserve. If you have time and are interested to help maintain them, give me a shout. :rotating_light:
 
 [![Latest Stable Version](https://poser.pugx.org/colymba/gridfield-bulk-editing-tools/v/stable.svg)](https://github.com/colymba/GridFieldBulkEditingTools/releases)
 [![Latest Unstable Version](https://poser.pugx.org/colymba/gridfield-bulk-editing-tools/v/unstable.svg)](https://github.com/colymba/GridFieldBulkEditingTools/tree/master)
 [![License](https://poser.pugx.org/colymba/gridfield-bulk-editing-tools/license.svg)](#license-and-copyright)
 
-Set of SilverStripe 4 GridField components to facilitate bulk file upload & record editing.
-
+Set of SilverStripe CMS GridField components to facilitate bulk file upload & record editing.
 
 ## Components:
 * [Bulk Upload](#bulk-upload): Upload multiple images or files at once into DataObjects
 * [Bulk Manager](#bulk-manager): Delete, Unlink, Edit (and more) multiple records at once
 
-## Requirements
-* SilverStripe 4.0 (master / 3.+)
-* SilverStripe 3.1 (version 2.+ / 1.+)
-* Silverstripe 3.0 (version 0.5)
-
 ## Installation
-`composer require colymba/gridfield-bulk-editing-tools`
 
-## 3.0.0 deprecations
-The 3.x versions of this module require SilverStripe 4.x+, and PHP 5.5 or above:
-
-* Namespaces are implemented, and some class names have changed (see `.upgrade.yml` for mapping)
-
-## 2.0.0 deprecations
-Major deprections in latest 2.0.0 release:
-* The `GridFieldBulkImageUpload` has been renamed to `GridFieldBulkUpload`.
-* `onBulkImageUpload` callback has been renamed to `onBulkUpload`
+```sh
+composer require colymba/gridfield-bulk-editing-tools
+```
 
 ## Bulk Upload
 Upload multiple images or files at once into DataObjects. Perfect for galleries and the like.
