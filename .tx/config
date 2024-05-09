@@ -1,17 +1,17 @@
 [main]
 host = https://www.transifex.com
 
-[gridfieldbulkeditingtools.yml]
-file_filter = lang/<lang>.yml
+[o:colymba:p:gridfieldbulkeditingtools:r:en.json]
+file_filter  = client/src/lang/<lang>.json
+source_file  = client/src/lang/en.json
+source_lang  = en
+type         = JSON
 minimum_perc = 0
-source_file = lang/en.yml
-source_lang = en
-type = YML
 
-[gridfieldbulkeditingtools.js]
-file_filter = client/src/lang/<lang>.json
+[o:colymba:p:gridfieldbulkeditingtools:r:master]
+file_filter  = lang/<lang>.yml
+source_file  = lang/en.yml
+source_lang  = en
+type         = YML
 minimum_perc = 0
-source_file = client/src/lang/en.json
-source_lang = en
-type = JSON
 
