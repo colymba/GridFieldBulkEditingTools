@@ -196,7 +196,7 @@ class HTTPBulkToolsResponse extends HTTPResponse
      */
     public function addSuccessRecords(SS_List $records)
     {
-        array_push($this->successRecords, $records->toArray());
+        $this->successRecords = array_merge($this->successRecords, $records->toArray());
         return $this;
     }
 

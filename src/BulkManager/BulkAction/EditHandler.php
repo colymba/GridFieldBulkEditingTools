@@ -4,7 +4,6 @@ namespace Colymba\BulkManager\BulkAction;
 
 use Colymba\BulkManager\BulkAction\Handler;
 use SilverStripe\Control\Controller;
-use SilverStripe\Core\Convert;
 use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\Form;
@@ -373,9 +372,9 @@ class EditHandler extends Handler
         Requirements::add_i18n_javascript('colymba/gridfield-bulk-editing-tools:lang');
 
         if ($this->request->isAjax()) {
-            $response = new HTTPResponse(
-                Convert::raw2json(array('Content' => $form->forAjaxTemplate()->getValue()))
-            );
+            $response = new HTTPResponse(json_encode([
+                'Content' => $form->forAjaxTemplate()->getValue()
+            ]));
             $response->addHeader('X-Pjax', 'Content');
             $response->addHeader('Content-Type', 'text/json');
             $response->addHeader('X-Title', 'SilverStripe - Bulk ' . $this->gridField->list->dataClass . ' Editing');
