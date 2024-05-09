@@ -9,7 +9,7 @@ sk:
     ACTION_BTN_LABEL: Vykonaj
     ARCHIVE_SELECT_LABEL: Archivovať
     COMPONENT_TITLE: 'Uprav jednu alebo viac položiek súčasne.'
-    DELETE_SELECT_LABEL: Odstrániť
+    DELETE_SELECT_LABEL: Zmazať
     EDIT_SELECT_LABEL: Upraviť
     PUBLISH_SELECT_LABEL: Zverejniť
     SELECT_ALL_LABEL: 'Označiť všetky'
