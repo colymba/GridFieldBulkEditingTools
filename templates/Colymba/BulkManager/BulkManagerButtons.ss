@@ -1,6 +1,6 @@
 <tr class="bulkManagerOptions form--no-dividers">
     <th colspan="$Colspan">
-            
+
         $Menu
 
         <a data-url="$Button.DataURL"
@@ -11,15 +11,14 @@
         </a>
 
         <div class="message notice"></div>
-        
+
     </th>
-    <th>
+    <th class="bulkSelectAll__container">
         <label class="form-check-label">
             <input class="no-change-track bulkSelectAll form-check-input"
                 type="checkbox"
                 title="<% _t('GRIDFIELD_BULK_MANAGER.SELECT_ALL_LABEL', '$Select.Label') %>"
                 name="toggleSelectAll" />
-                
         </label>
     </th>
 </tr>
