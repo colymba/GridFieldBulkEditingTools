@@ -28,6 +28,10 @@
   }
 }
 
+.bulkSelectAll__container {
+  position: relative;
+}
+
 .cms table.grid-field__table
 {
   tr.bulkManagerOptions
@@ -118,6 +122,7 @@
   {
     .col-bulkSelect
     {
+      position: relative;
       width: 25px;
       text-align: center;
     }
