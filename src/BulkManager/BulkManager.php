@@ -129,8 +129,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
 
         $handler = Injector::inst()->get($handlerClassName);
         $urlSegment = $handler->config()->get('url_segment');
-        if (!$urlSegment)
-        {
+        if (!$urlSegment) {
             $rc = new ReflectionClass($handlerClassName);
             $urlSegment = $rc->getShortName();
         }
@@ -154,10 +153,8 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
             user_error("Provide either a class name or URL segment", E_USER_ERROR);
         }
 
-        foreach ($this->config['actions'] as $url => $class)
-        {
-            if ($handlerClassName === $class || $urlSegment === $url)
-            {
+        foreach ($this->config['actions'] as $url => $class) {
+            if ($handlerClassName === $class || $urlSegment === $url) {
                 unset($this->config['actions'][$url]);
                 return $this;
             }
@@ -290,7 +287,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
             ->addExtraClass('bulkActionName no-change-track form-group--no-label')
             ->setAttribute('id', '')
             ->setEmptyString(_t('SilverStripe\Admin\LeftAndMain.DropdownBatchActionsDefault', 'Choose an action...'));
-            
+
 
         $templateData = array(
             'Menu' => $dropDownActionsList->FieldHolder(),

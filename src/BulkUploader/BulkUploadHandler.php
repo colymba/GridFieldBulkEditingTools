@@ -70,7 +70,7 @@ class BulkUploadHandler extends RequestHandler
      * Add file ID to the Dataobject
      * Add DataObject to Gridfield list
      * Publish DataObject if enabled
-     * 
+     *
      * @param integer     $fileID The newly uploaded/attached file ID
      *
      * @return  DataObject The new DataObject
@@ -86,7 +86,7 @@ class BulkUploadHandler extends RequestHandler
         $fileRelationName = $this->component->getFileRelationName($this->gridField);
         $record->{"{$fileRelationName}ID"} = $fileID;
         $record->write(); //HasManyList call write on record but not ManyManyList, so we call it here again
-        
+
         $this->gridField->list->add($record);
 
         if (
@@ -111,9 +111,8 @@ class BulkUploadHandler extends RequestHandler
     {
         $assetAdmin = AssetAdmin::singleton();
         $uploadResponse = $assetAdmin->apiCreateFile($request);
-        
-        if ($uploadResponse->getStatusCode() == 200)
-        {
+
+        if ($uploadResponse->getStatusCode() == 200) {
             $responseData = Convert::json2array($uploadResponse->getBody());
             $responseData = array_shift($responseData);
 
@@ -121,7 +120,7 @@ class BulkUploadHandler extends RequestHandler
 
             $bulkToolsResponse = new HTTPBulkToolsResponse(false, $this->gridField);
             $bulkToolsResponse->addSuccessRecord($record);
-            
+
             $responseData['bulkTools'] = json_decode($bulkToolsResponse->getBody() ?? '');
             $uploadResponse->setBody(json_encode(array($responseData)));
         }

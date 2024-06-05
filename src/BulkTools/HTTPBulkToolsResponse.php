@@ -123,7 +123,7 @@ class HTTPBulkToolsResponse extends HTTPResponse
      */
     public function addHeader($header, $value)
     {
-        if($header === "content-type") {
+        if ($header === "content-type") {
             return $this;
         }
         return parent::addHeader($header, $value);
@@ -139,7 +139,7 @@ class HTTPBulkToolsResponse extends HTTPResponse
      */
     public function removeHeader($header)
     {
-        if($header === "content-type") {
+        if ($header === "content-type") {
             return $this;
         }
         return parent::removeHeader($header);
@@ -333,7 +333,7 @@ class HTTPBulkToolsResponse extends HTTPResponse
             );
 
             foreach ($this->successRecords as $record) {
-                $data = array('id' => $record->ID, 'class' => str_replace('\\', '\\\\', $record->ClassName));
+                $data = array('id' => $record->ID, 'class' => str_replace('\\', '\\\\', $record->ClassName ?? ''));
                 if (!$this->removesRows) {
                     $data['row'] = $this->getRecordGridfieldRow($record);
                 }

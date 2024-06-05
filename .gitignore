@@ -7,3 +7,6 @@
 **/css/bourbon
 **/.sass-cache
 node_modules/
+vendor/
+public/
+composer.lock

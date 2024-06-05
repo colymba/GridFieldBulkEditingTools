@@ -183,7 +183,8 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
 
         $imageField = null;
         foreach ($hasOneFields as $field => $type) {
-            if ($type === 'SilverStripe\\Assets\\Image'
+            if (
+                $type === 'SilverStripe\\Assets\\Image'
                 ||  $type === 'SilverStripe\\Assets\\File'
                 || is_subclass_of($type, 'SilverStripe\\Assets\\File')
             ) {
@@ -245,7 +246,7 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
         $uploadField = BulkUploadField::create($gridField, $fieldName, '')
             ->setForm($gridField->getForm())
             ->setRecord(DataObject::create()) // avoid UploadField to get auto-config from the Page (e.g fix allowedMaxFileNumber)
-            ;
+        ;
 
         //UploadField setup
         foreach ($this->ufSetup as $fn => $param) {
@@ -293,8 +294,8 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
             'Colspan' => (count($gridField->getColumns() ?? [])),
             'UploadField' => $uploadField->Field() // call ->Field() to get requirements in right order
         ));
-
-        Requirements::javascript('colymba/gridfield-bulk-editing-tools:client/dist/js/main.js');
+        //This one is no longer needed since the javascript is now loaded at the top of the cms
+        //Requirements::javascript('colymba/gridfield-bulk-editing-tools:client/dist/js/main.js');
         Requirements::css('colymba/gridfield-bulk-editing-tools:client/dist/styles/main.css');
         Requirements::add_i18n_javascript('colymba/gridfield-bulk-editing-tools:client/lang');
 
