@@ -1,21 +1,21 @@
-name: Keepalive
+name: Dispatch CI
 
 on:
-  # At 3:15 AM UTC, on day 16 of the month
+  # At 6:30 AM UTC, only on Monday and Tuesday
   schedule:
-    - cron: '15 3 16 * *'
-  workflow_dispatch:
+    - cron: '30 6 * * 1,2'
 
 permissions: {}
 
 jobs:
-  keepalive:
-    name: Keepalive
+  dispatch-ci:
+    name: Dispatch CI
     # Only run cron on the colymba account
     if: (github.event_name == 'schedule' && github.repository_owner == 'colymba') || (github.event_name != 'schedule')
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       actions: write
     steps:
-      - name: Keepalive
-        uses: silverstripe/gha-keepalive@v1
+      - name: Dispatch CI
+        uses: silverstripe/gha-dispatch-ci@v1

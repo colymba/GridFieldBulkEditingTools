@@ -1,10 +1,12 @@
 name: Merge-up
 
 on:
-  # At 11:55 PM UTC, only on Friday
+  # At 6:30 AM UTC, only on Friday
   schedule:
-    - cron: '55 23 * * 5'
+    - cron: '30 6 * * 5'
   workflow_dispatch:
+
+permissions: {}
 
 jobs:
   merge-up:
@@ -12,6 +14,9 @@ jobs:
     # Only run cron on the colymba account
     if: (github.event_name == 'schedule' && github.repository_owner == 'colymba') || (github.event_name != 'schedule')
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
     steps:
       - name: Merge-up
         uses: silverstripe/gha-merge-up@v1
