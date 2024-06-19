@@ -55,6 +55,7 @@
           min-width: 120px;
         }
 
+        /* stylelint-disable-next-line selector-max-compound-selectors */
         .chosen-container-single .chosen-single
         {
           border-top-right-radius: 0;
@@ -67,7 +68,6 @@
         float: left;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
-
         height: 36px;
         line-height: 26px;
         margin-left: -1px;
@@ -91,13 +91,10 @@
         float: left;
         clear: none;
         max-width: 100%;
-
         margin: 0;
         padding: 0 1.25rem;
-
         height: 36px;
         line-height: 34px;
-
         opacity: 0;
         overflow: auto;
 
@@ -110,10 +107,6 @@
         {
           opacity: 1;
         }
-      }
-
-      .bulkSelectAll
-      {
       }
     }
   }// .bulkManagerOptions

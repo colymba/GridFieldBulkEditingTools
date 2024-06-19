@@ -3,9 +3,7 @@
 {
 	float: left;
 	width: 70%;
-
-	margin: 40px 0 20px 0;
-
+	margin: 40px 0 20px;
 	font-size: 30px;
 	font-weight: bold;
 }
@@ -15,9 +13,7 @@
 	float: right;
 	clear: right;
 	width: 25%;
-
-	margin: 40px 0 20px 0;
-
+	margin: 40px 0 20px;
 	text-decoration: underline;
 	text-align: right;
 	cursor: pointer;
@@ -32,13 +28,7 @@
 	&.hasUpdate .ui-accordion-header
 	{
 		background-color: #f2ba11;
-		
-		background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f2ba11), color-stop(100%, #df6e00));
-		background-image: -webkit-linear-gradient(top, #f2ba11 0%, #df6e00 100%);
-		background-image: -moz-linear-gradient(top, #f2ba11 0%, #df6e00 100%);
-		background-image: -o-linear-gradient(top, #f2ba11 0%, #df6e00 100%);
-		background-image: -ms-linear-gradient(top, #f2ba11 0%, #df6e00 100%);
-		background-image: linear-gradient(top, #f2ba11 0%, #df6e00 100%);
+		background-image: linear-gradient(to top, #f2ba11 0%, #df6e00 100%);
 
 		a
 		{
@@ -50,13 +40,7 @@
 	&.updated .ui-accordion-header
 	{
 		background-color: #a4ca3a;
-		
-		background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #a4ca3a), color-stop(100%, #59781D));
-		background-image: -webkit-linear-gradient(top, #a4ca3a 0%, #59781D 100%);
-		background-image: -moz-linear-gradient(top, #a4ca3a 0%, #59781D 100%);
-		background-image: -o-linear-gradient(top, #a4ca3a 0%, #59781D 100%);
-		background-image: -ms-linear-gradient(top, #a4ca3a 0%, #59781D 100%);
-		background-image: linear-gradient(top, #a4ca3a 0%, #59781D 100%);
+		background-image: linear-gradient(to top, #a4ca3a 0%, #59781D 100%);
 
 		a
 		{
