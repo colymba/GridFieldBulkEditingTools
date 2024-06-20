@@ -1338,10 +1338,10 @@
   resolved "https://registry.yarnpkg.com/@sect/modernizr-loader/-/modernizr-loader-1.0.5.tgz#512afc60c715cd658fdffab244123661e1339083"
   integrity sha512-L8y2BTVeLtdSe1XzBcD2DOlc+7fR7Z/uNdhsKvf3d3x3gmEKz9sfl2wJ3VzFhEd+a/O6qgacuhbziphG2p4s8g==
 
-"@silverstripe/eslint-config@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@silverstripe/eslint-config/-/eslint-config-1.2.1.tgz#17ed5e955308a4a89e87f5090df66ca1e8ea462d"
-  integrity sha512-T4Lz1aZEDLxRpSNe4EgEmLKPfofxba0p0+YkL/AOD8VM/sng7VM9vKwMoqICbsUGvNoymHfeWtARlCa575O4PA==
+"@silverstripe/eslint-config@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@silverstripe/eslint-config/-/eslint-config-1.3.0.tgz#fa88f47cacd6103f6b759d81e1d86f9e93799413"
+  integrity sha512-Q3+sQKO1ysyMLhJ91kOl2LqJhQICfHFeqMx09EH0xx3dRHgjsQvqHIzVWEzPkM/l7D79m+Ma/WBnon30S7TVlA==
   dependencies:
     eslint "^8.26.0"
     eslint-config-airbnb "^19.0.4"
