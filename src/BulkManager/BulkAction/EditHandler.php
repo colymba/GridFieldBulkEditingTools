@@ -365,7 +365,7 @@ class EditHandler extends Handler
             'type' => 'Includes',
             'SilverStripe\\Admin\\LeftAndMain_EditForm',
         ]);
-        $form->addExtraClass('center cms-content');
+        $form->addExtraClass('center cms-content flexbox-area-grow');
         $form->setAttribute('data-pjax-fragment', 'CurrentForm Content');
 
         Requirements::javascript('colymba/gridfield-bulk-editing-tools:client/dist/js/main.js');
