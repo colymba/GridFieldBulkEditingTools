@@ -19,6 +19,15 @@ $config->getComponentByType('Colymba\\BulkManager\\BulkManager')->setConfig($ref
 The available configuration options are:
 * 'editableFields' : array of string referencing specific CMS fields available for editing
 
+## Removing and Adding actions
+To remove an action call removeBulkAction using the fully namespaced classname.
+```php
+    $gridField->getConfig()->getComponentByType('\Colymba\BulkManager\BulkManager')->removeBulkAction(\Colymba\BulkManager\BulkAction\UnlinkHandler::class);
+```
+To add an action:
+```php
+    $gridField->getConfig()->getComponentByType('\Colymba\BulkManager\BulkManager')->addBulkAction(\Colymba\BulkManager\BulkAction\UnlinkHandler::class);
+```
 ## Custom actions
 You can remove or add individual action or replace them all via `addBulkAction()` and `removeBulkAction()`
 
