@@ -248,7 +248,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
     public function getColumnMetadata($gridField, $columnName)
     {
         if ($columnName == 'BulkSelect') {
-            return array('title' => 'Select');
+            return array('title' => _t('GRIDFIELD_BULK_MANAGER.SELECT_LABEL', 'Select'));
         }
     }
 

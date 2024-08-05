@@ -3,7 +3,12 @@
     "type": "silverstripe-vendormodule",
     "description": "SilverStripe GridField component to upload images/files and edit records in bulk",
     "homepage": "https://github.com/colymba/GridFieldBulkEditingTools",
-    "keywords": ["silverstripe", "bulk upload", "image upload", "gridfield bulk upload"],
+    "keywords": [
+        "silverstripe",
+        "bulk upload",
+        "image upload",
+        "gridfield bulk upload"
+    ],
     "license": "BSD-3-Clause",
     "authors": [
         {
@@ -16,13 +21,10 @@
         }
     ],
     "require": {
-        "silverstripe/framework": "^5",
-        "silverstripe/asset-admin": "^2"
+        "silverstripe/framework": "^6",
+        "silverstripe/asset-admin": "^3"
     },
     "extra": {
-        "branch-alias": {
-            "dev-master": "4.x-dev"
-        },
         "expose": [
             "client/dist",
             "client/lang"
@@ -34,5 +36,9 @@
             "Colymba\\BulkManager\\": "src/BulkManager/",
             "Colymba\\BulkUpload\\": "src/BulkUploader/"
         }
+    },
+    "require-dev": {
+        "silverstripe/standards": "^1",
+        "phpstan/extension-installer": "^1.3"
     }
 }

@@ -1,18 +1,13 @@
 fr:
-  GRIDFIELD_BULK_UPLOAD: null
+  GRIDFIELD_BULKMANAGER_EDIT_HANDLER:
+    CANCEL_BTN_LABEL: Annuler
+    HEADER_TEXT: 'Edition de {count} {class}'
+    SAVE_BTN_LABEL: 'Sauvegarder tout'
+    SAVE_RESULT_TEXT: '{count} {class} sauvegardés avec succès.'
+    TOGGLE_ALL_LINK: 'Afficher/Masquer tout'
   GRIDFIELD_BULK_MANAGER:
     COMPONENT_TITLE: 'Modifier une ou plusieurs entrée à la fois.'
-    EDIT_SELECT_LABEL: Editer
-    UNLINK_SELECT_LABEL: Dissocier
     DELETE_SELECT_LABEL: Supprimer
-    ACTION_BTN_LABEL: Go
+    EDIT_SELECT_LABEL: Editer
     SELECT_ALL_LABEL: 'Sélectionner tout'
-    PUBLISH_SELECT_LABEL: ''
-    UNPUBLISH_SELECT_LABEL: ''
-    ARCHIVE_SELECT_LABEL: ''
-  GRIDFIELD_BULKMANAGER_EDIT_HANDLER:
-    HEADER_TEXT: 'Edition de {count} {class}'
-    TOGGLE_ALL_LINK: 'Afficher/Masquer tout'
-    SAVE_BTN_LABEL: 'Sauvegarder tout'
-    CANCEL_BTN_LABEL: Annuler
-    SAVE_RESULT_TEXT: '{count} {class} sauvegardés avec succès.'
+    UNLINK_SELECT_LABEL: Dissocier
