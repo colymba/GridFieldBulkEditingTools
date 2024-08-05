@@ -20,9 +20,6 @@
         "silverstripe/asset-admin": "^2"
     },
     "extra": {
-        "branch-alias": {
-            "dev-master": "4.x-dev"
-        },
         "expose": [
             "client/dist",
             "client/lang"
