@@ -80,7 +80,7 @@ class BulkUploadHandler extends RequestHandler
         $record = $recordClass::create();
         $record->write();
 
-        $record->extend('onBulkUpload', $this->gridField);
+        $record->extend('onBulkUpload', $this->gridField, $fileID, $record);
 
         $fileRelationName = $this->component->getFileRelationName($this->gridField);
         $record->{"{$fileRelationName}ID"} = $fileID;
