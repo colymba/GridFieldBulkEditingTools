@@ -249,7 +249,15 @@ class BulkUploader implements GridField_HTMLProvider, GridField_URLHandler
 
         //UploadField setup
         foreach ($this->ufSetup as $fn => $param) {
-            $uploadField->{$fn}($param);
+            $funcs = explode('.', $fn);
+            $lastCall = array_pop($funcs);
+
+            $res = $uploadField;
+            foreach ($funcs as $call) {
+                $res = $res->{$call}();
+            }
+            
+            $res->{$lastCall}($param);
         }
 
         $schema['data']['createFileEndpoint'] = [
