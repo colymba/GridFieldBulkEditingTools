@@ -14,7 +14,7 @@ use SilverStripe\Forms\GridField\GridField_ColumnProvider;
 use SilverStripe\Forms\GridField\GridField_HTMLProvider;
 use SilverStripe\Forms\GridField\GridField_URLHandler;
 use SilverStripe\ORM\DataObject;
-use SilverStripe\View\ArrayData;
+use SilverStripe\Model\ArrayData;
 use SilverStripe\View\Requirements;
 use SilverStripe\Control\Controller;
 
@@ -290,7 +290,7 @@ class BulkManager implements GridField_HTMLProvider, GridField_ColumnProvider, G
             ->addExtraClass('bulkActionName no-change-track form-group--no-label')
             ->setAttribute('id', '')
             ->setEmptyString(_t('SilverStripe\Admin\LeftAndMain.DropdownBatchActionsDefault', 'Choose an action...'));
-            
+
 
         $templateData = array(
             'Menu' => $dropDownActionsList->FieldHolder(),

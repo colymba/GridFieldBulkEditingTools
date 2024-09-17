@@ -3,7 +3,7 @@
 namespace Colymba\BulkUpload;
 
 use SilverStripe\ORM\DataObject;
-use SilverStripe\View\ArrayData;
+use SilverStripe\Model\ArrayData;
 
 use SilverStripe\View\Requirements;
 use SilverStripe\Control\Controller;
