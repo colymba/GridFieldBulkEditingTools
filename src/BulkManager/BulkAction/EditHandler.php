@@ -24,7 +24,7 @@ class EditHandler extends Handler
     /**
      * URL segment used to call this handler
      * If none given, @BulkManager will fallback to the Unqualified class name
-     * 
+     *
      * @var string
      */
     private static $url_segment = 'edit';
@@ -53,14 +53,14 @@ class EditHandler extends Handler
 
     /**
      * Front-end label for this handler's action
-     * 
+     *
      * @var string
      */
     protected $label = 'Edit';
 
     /**
      * Front-end icon path for this handler's action.
-     * 
+     *
      * @var string
      */
     protected $icon = '';
@@ -68,22 +68,22 @@ class EditHandler extends Handler
     /**
      * Extra classes to add to the bulk action button for this handler
      * Can also be used to set the button font-icon e.g. font-icon-trash
-     * 
+     *
      * @var string
      */
     protected $buttonClasses = 'font-icon-edit';
-    
+
     /**
      * Whether this handler should be called via an XHR from the front-end
-     * 
+     *
      * @var boolean
      */
     protected $xhr = false;
-    
+
     /**
      * Set to true is this handler will destroy any data.
      * A warning and confirmation will be shown on the front-end.
-     * 
+     *
      * @var boolean
      */
     protected $destructive = false;
@@ -107,7 +107,7 @@ class EditHandler extends Handler
      */
     public function Link($action = null)
     {
-        return Controller::join_links(parent::Link(), $this->stat('url_segment'), $action);
+        return Controller::join_links(parent::Link(), static::config()->url_segment, $action);
     }
 
     /**
@@ -129,7 +129,7 @@ class EditHandler extends Handler
             FormAction::create('doSave', _t('GRIDFIELD_BULKMANAGER_EDIT_HANDLER.SAVE_BTN_LABEL', 'Save all'))
                 ->setAttribute('id', 'bulkEditingSaveBtn')
                 ->addExtraClass('btn btn-success')
-                ->setAttribute('data-icon', 'accept')
+                // ->setAttribute('data-icon', 'accept')
                 ->setUseButtonTag(true)
         );
 
@@ -137,7 +137,7 @@ class EditHandler extends Handler
             FormAction::create('Cancel', _t('GRIDFIELD_BULKMANAGER_EDIT_HANDLER.CANCEL_BTN_LABEL', 'Cancel'))
                 ->setAttribute('id', 'bulkEditingUpdateCancelBtn')
                 ->addExtraClass('btn btn-danger cms-panel-link')
-                ->setAttribute('data-icon', 'decline')
+                // ->setAttribute('data-icon', 'decline')
                 ->setAttribute('href', $one_level_up->Link)
                 ->setUseButtonTag(true)
                 ->setAttribute('src', '')//changes type to image so isn't hooked by default actions handlers
@@ -364,7 +364,7 @@ class EditHandler extends Handler
             'type' => 'Includes',
             'SilverStripe\\Admin\\LeftAndMain_EditForm',
         ]);
-        $form->addExtraClass('center cms-content');
+        $form->addExtraClass('center cms-content flexbox-area-grow fill-height');
         $form->setAttribute('data-pjax-fragment', 'CurrentForm Content');
 
         Requirements::javascript('colymba/gridfield-bulk-editing-tools:client/dist/js/main.js');
