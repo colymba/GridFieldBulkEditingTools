@@ -4,9 +4,9 @@ namespace Colymba\BulkTools;
 
 use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Forms\GridField\GridField;
-use SilverStripe\ORM\ArrayList;
+use SilverStripe\Model\List\ArrayList;
 use SilverStripe\ORM\DataObject;
-use SilverStripe\ORM\SS_List;
+use SilverStripe\Model\List\SS_List;
 use SilverStripe\View\HTML;
 
 /**

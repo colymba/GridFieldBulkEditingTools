@@ -11,7 +11,7 @@ use SilverStripe\Forms\FormAction;
 use SilverStripe\Forms\LiteralField;
 use SilverStripe\Forms\ToggleCompositeField;
 use SilverStripe\ORM\DataObject;
-use SilverStripe\View\ArrayData;
+use SilverStripe\Model\ArrayData;
 use SilverStripe\View\Requirements;
 
 /**
@@ -24,7 +24,7 @@ class EditHandler extends Handler
     /**
      * URL segment used to call this handler
      * If none given, @BulkManager will fallback to the Unqualified class name
-     * 
+     *
      * @var string
      */
     private static $url_segment = 'edit';
@@ -53,14 +53,14 @@ class EditHandler extends Handler
 
     /**
      * Front-end label for this handler's action
-     * 
+     *
      * @var string
      */
     protected $label = 'Edit';
 
     /**
      * Front-end icon path for this handler's action.
-     * 
+     *
      * @var string
      */
     protected $icon = '';
@@ -68,22 +68,22 @@ class EditHandler extends Handler
     /**
      * Extra classes to add to the bulk action button for this handler
      * Can also be used to set the button font-icon e.g. font-icon-trash
-     * 
+     *
      * @var string
      */
     protected $buttonClasses = 'font-icon-edit';
-    
+
     /**
      * Whether this handler should be called via an XHR from the front-end
-     * 
+     *
      * @var boolean
      */
     protected $xhr = false;
-    
+
     /**
      * Set to true is this handler will destroy any data.
      * A warning and confirmation will be shown on the front-end.
-     * 
+     *
      * @var boolean
      */
     protected $destructive = false;
