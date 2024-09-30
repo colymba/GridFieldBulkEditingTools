@@ -128,19 +128,17 @@ class EditHandler extends Handler
         $actions->push(
             FormAction::create('doSave', _t('GRIDFIELD_BULKMANAGER_EDIT_HANDLER.SAVE_BTN_LABEL', 'Save all'))
                 ->setAttribute('id', 'bulkEditingSaveBtn')
-                ->addExtraClass('btn btn-success')
-                // ->setAttribute('data-icon', 'accept')
+                ->addExtraClass('btn btn-success font-icon font-icon-save')
                 ->setUseButtonTag(true)
         );
 
         $actions->push(
             FormAction::create('Cancel', _t('GRIDFIELD_BULKMANAGER_EDIT_HANDLER.CANCEL_BTN_LABEL', 'Cancel'))
                 ->setAttribute('id', 'bulkEditingUpdateCancelBtn')
-                ->addExtraClass('btn btn-danger cms-panel-link')
-                // ->setAttribute('data-icon', 'decline')
+                ->addExtraClass('btn btn-danger cms-panel-link font-icon font-icon-cancel')
                 ->setAttribute('href', $one_level_up->Link)
                 ->setUseButtonTag(true)
-                ->setAttribute('src', '')//changes type to image so isn't hooked by default actions handlers
+                ->setAttribute('src', '') //changes type to image so isn't hooked by default actions handlers
         );
 
         $recordList = $this->getRecordIDList();
